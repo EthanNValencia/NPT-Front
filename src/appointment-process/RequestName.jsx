@@ -6,16 +6,36 @@ import { useNavigate } from "react-router-dom";
 
 function RequestName() {
   // Define state variables for form fields
+  const [submitAttempted, setSubmitAttempted] = useState(false);
   const [firstName, setFirstName] = useState("");
+  const [fnValidated, setFnValidated] = useState(false);
   const [lastName, setLastName] = useState("");
+  const [lnValidated, setLnValidated] = useState(false);
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    userContext.setName(firstName, lastName);
-    navigate("/pain-category");
+    setSubmitAttempted(true);
+
+    if (fnValidated && lnValidated) {
+      userContext.setName(firstName, lastName);
+      navigate("/pain-category");
+    }
+  };
+
+  const validateInputFields = () => {
+    if (firstName.length >= 3) {
+      setFnValidated(true);
+    } else {
+      setFnValidated(false);
+    }
+    if (lastName.length >= 3) {
+      setLnValidated(true);
+    } else {
+      setLnValidated(false);
+    }
   };
 
   function goBack() {
@@ -24,14 +44,21 @@ function RequestName() {
 
   return (
     <div>
-      <h1>Please introduce yourself</h1>
+      <h1 className="text-center text-xl">
+        Welcome to Nephew Physical Therapy. Please begin by introducing
+        yourself.
+      </h1>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col justify-center items-center">
-          <div class="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              for="firstName"
-            >
+          <div className="mb-4">
+            {!fnValidated && submitAttempted ? (
+              <div className="text-center text-red-400">
+                Please enter your first name.
+              </div>
+            ) : (
+              <></>
+            )}
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Enter your first name:
             </label>
             <input
@@ -40,15 +67,22 @@ function RequestName() {
               type="text"
               placeholder="First name"
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={(e) => {
+                setFirstName(e.target.value);
+                validateInputFields();
+              }}
             />
           </div>
 
-          <div class="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              for="firstName"
-            >
+          <div className="mb-4">
+            {!lnValidated && submitAttempted ? (
+              <div className="text-center text-red-400">
+                Please enter your last name.
+              </div>
+            ) : (
+              <></>
+            )}
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Enter your last name:
             </label>
             <input
@@ -57,7 +91,10 @@ function RequestName() {
               type="text"
               placeholder="Last name"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={(e) => {
+                setLastName(e.target.value);
+                validateInputFields();
+              }}
             />
           </div>
 

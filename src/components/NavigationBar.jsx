@@ -11,7 +11,7 @@ function NavigationBar() {
         <NavLink className="hover:text-npt_colors-300" to="about">
           About Us
         </NavLink>
-        <NavLink className="hover:text-npt_colors-300" to="faq">
+        <NavLink className="hover:text-npt_colors-300" to="faqs">
           Frequently Asked Questions
         </NavLink>
         <NavLink className="hover:text-npt_colors-300" to="contact">

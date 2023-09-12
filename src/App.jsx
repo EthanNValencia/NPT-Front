@@ -23,17 +23,19 @@ function App() {
           <UserProvider>
             <div className="mx-auto border rounded-lg shadow-md w-fit">
               <Header />
-              <Routes>
-                <Route index element={<Home />} />
-                <Route path="about" element={<AboutUs />} />
-                <Route path="contact" element={<ContactUs />} />
-                <Route path="faq" element={<FrequentlyAskedQuestions />} />
-                <Route path="reviews" element={<Reviews />} />
-                <Route path="request-name" element={<RequestName />} />
-                <Route path="pain-category" element={<PainCategory />} />
-                <Route path="pairing" element={<TherapistPairing />} />
-                <Route path="dev" element={<Everything />} />
-              </Routes>
+              <div className="p-4">
+                <Routes>
+                  <Route index element={<Home />} />
+                  <Route path="about" element={<AboutUs />} />
+                  <Route path="contact" element={<ContactUs />} />
+                  <Route path="faqs" element={<FrequentlyAskedQuestions />} />
+                  <Route path="reviews" element={<Reviews />} />
+                  <Route path="request-name" element={<RequestName />} />
+                  <Route path="pain-category" element={<PainCategory />} />
+                  <Route path="pairing" element={<TherapistPairing />} />
+                  <Route path="dev" element={<Everything />} />
+                </Routes>
+              </div>
             </div>
           </UserProvider>
         </AuthProvider>

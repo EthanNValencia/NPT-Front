@@ -7,19 +7,17 @@ function NtButton(props) {
 
   function onClick() {
     setButtonActive(!buttonActive);
-    console.log(userContext.user);
-    //  userContext.setName("test", "test");
-    console.log(userContext.user);
     console.log(
       "Button was clicked! (Check the Button class to remove this before production)"
     );
+    props.onClick();
   }
 
   function renderButton() {
     if (buttonActive) {
       return <ActiveButton />;
     } else {
-      return <InactiveButton label={"Begin"} />;
+      return <InactiveButton label={props.label} />;
     }
   }
   return <div onClick={onClick}>{renderButton()}</div>;

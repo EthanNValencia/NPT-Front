@@ -1,32 +1,41 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/context";
+import { getProblemCategories } from "../axios/problem-categories-api";
 
 function PainCategory() {
-  const [checkboxes, setCheckboxes] = useState({
-    headAndNeck: false,
-    shoulders: false,
-    elbows: false,
-    wrists: false,
-    midBack: false,
-    lowerBack: false,
-    hip: false,
-    knees: false,
-    footAndAnkle: false,
-    balance: false,
-    vestibularRehab: false,
-    massageTherapy: false,
-    otherOptions: false,
-  });
+  const [checkboxes, setCheckboxes] = useState([]);
   const userContext = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
+  const [problemCategories, setProblemCategories] = useState([]);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setLoading(true);
+    async function getAnsweredFAQs() {
+      getProblemCategories(setLoading, setProblemCategories);
+    }
+    getAnsweredFAQs();
+  }, []);
+
   const handleCheckboxChange = (event) => {
+    // I don't know why this was such a pain the ass. Maybe I am just stupid today.
     const { name, checked } = event.target;
-    setCheckboxes({
-      ...checkboxes,
-      [name]: checked,
-    });
+
+    if (checkboxes.find((item) => item.key === name)) {
+      setCheckboxes(
+        checkboxes.map((value) => {
+          if (value.key === name) {
+            value.selected = !value.selected;
+          }
+          return value;
+        })
+      );
+    } else {
+      setCheckboxes([...checkboxes, { key: name, selected: checked }]); // Do this if array doesn't contain the key.
+      return;
+    }
+    setCheckboxes(checkboxes.filter((value) => value.selected === true));
   };
 
   function goBack() {
@@ -35,152 +44,30 @@ function PainCategory() {
 
   function onContinue() {
     userContext.setPainCategoryArray(checkboxes);
-    navigate("/pairing");
+    console.log(checkboxes);
+    // navigate("/pairing");
   }
 
   return (
     <div>
       <h1 className="text-xl text-center">
-        {userContext.user.firstName} where is the pain that you are
-        experiencing?
+        {userContext.user.firstName} what are you interested in?
       </h1>
       <div className="grid grid-flow-row grid-cols-2">
-        <label>
-          <input
-            type="checkbox"
-            name="headAndNeck"
-            checked={checkboxes.headAndNeck}
-            onChange={handleCheckboxChange}
-          />
-          Head & Neck
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="shoulders"
-            checked={checkboxes.shoulders}
-            onChange={handleCheckboxChange}
-          />
-          Shoulders
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="elbows"
-            checked={checkboxes.elbows}
-            onChange={handleCheckboxChange}
-          />
-          Elbows
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="wrists"
-            checked={checkboxes.wrists}
-            onChange={handleCheckboxChange}
-          />
-          Wrists
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="midBack"
-            checked={checkboxes.midBack}
-            onChange={handleCheckboxChange}
-          />
-          Mid-Back
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="lowerBack"
-            checked={checkboxes.lowerBack}
-            onChange={handleCheckboxChange}
-          />
-          Lower-Back
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="hip"
-            checked={checkboxes.hip}
-            onChange={handleCheckboxChange}
-          />
-          Hip
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="knees"
-            checked={checkboxes.knees}
-            onChange={handleCheckboxChange}
-          />
-          Knees
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="footAndAnkle"
-            checked={checkboxes.footAndAnkle}
-            onChange={handleCheckboxChange}
-          />
-          Foot & Ankle
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            name="otherOptions"
-            checked={checkboxes.otherOptions}
-            onChange={handleCheckboxChange}
-          />
-          Other Options
-        </label>
+        {problemCategories.map((category) => {
+          return (
+            <label key={category.id}>
+              <input
+                type="checkbox"
+                name={category.problemArea}
+                checked={category.checked}
+                onChange={handleCheckboxChange}
+              />
+              {category.problemArea}
+            </label>
+          );
+        })}
       </div>
-
-      {checkboxes.otherOptions ? (
-        <div className="grid grid-flow-row grid-cols-2">
-          <label>
-            <input
-              type="checkbox"
-              name="balance"
-              checked={checkboxes.balance}
-              onChange={handleCheckboxChange}
-            />
-            Balance
-          </label>
-
-          <label>
-            <input
-              type="checkbox"
-              name="vestibularRehab"
-              checked={checkboxes.vestibularRehab}
-              onChange={handleCheckboxChange}
-            />
-            Vestibular Rehab
-          </label>
-
-          <label>
-            <input
-              type="checkbox"
-              name="massageTherapy"
-              checked={checkboxes.massageTherapy}
-              onChange={handleCheckboxChange}
-            />
-            Massage Therapy
-          </label>
-        </div>
-      ) : (
-        <></>
-      )}
       <div className="flex gap-20 justify-center items-center">
         <button
           type="button"
