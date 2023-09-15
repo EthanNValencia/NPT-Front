@@ -8,22 +8,22 @@ function NavigationBar() {
         <NavLink className="hover:text-npt_colors-300" to="/">
           Home
         </NavLink>
-        <NavLink className="hover:text-npt_colors-300" to="about">
+        <NavLink className="hover:text-npt_colors-300" to="/about">
           About Us
         </NavLink>
-        <NavLink className="hover:text-npt_colors-300" to="faqs">
+        <NavLink className="hover:text-npt_colors-300" to="/faqs">
           Frequently Asked Questions
         </NavLink>
-        <NavLink className="hover:text-npt_colors-300" to="contact">
+        <NavLink className="hover:text-npt_colors-300" to="/contact">
           Contact Us
         </NavLink>
         <NavLink
           className="hover:text-npt_colors-300 focus:text-npt_colors-300"
-          to="reviews"
+          to="/reviews"
         >
           Reviews
         </NavLink>
-        <NavLink className="hover:text-npt_colors-300" to="dev">
+        <NavLink className="hover:text-npt_colors-300" to="/dev">
           Dev
         </NavLink>
       </nav>

@@ -2,11 +2,7 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../contexts/context";
 
 function NtButton(props) {
-  const [buttonActive, setButtonActive] = useState(false);
-  const userContext = useContext(UserContext);
-
   function onClick() {
-    setButtonActive(!buttonActive);
     console.log(
       "Button was clicked! (Check the Button class to remove this before production)"
     );
@@ -14,7 +10,7 @@ function NtButton(props) {
   }
 
   function renderButton() {
-    if (buttonActive) {
+    if (props.loading) {
       return <ActiveButton />;
     } else {
       return <InactiveButton label={props.label} />;
@@ -25,10 +21,10 @@ function NtButton(props) {
 
 function ActiveButton() {
   return (
-    <>
+    <div className="flex">
       <button
         type="button"
-        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition ease-in-out duration-150 cursor-not-allowed"
+        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-300 hover:bg-npt_colors-10 hover:text-black transition ease-in-out duration-150 cursor-not-allowed"
         disabled=""
       >
         <svg
@@ -53,21 +49,21 @@ function ActiveButton() {
         </svg>
         Processing...
       </button>
-    </>
+    </div>
   );
 }
 
 function InactiveButton(props) {
   return (
-    <>
+    <div className="flex">
       <button
         type="button"
-        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-indigo-500 hover:bg-indigo-400 transition ease-in-out duration-150 cursor-pointer"
+        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-300 hover:bg-npt_colors-10 hover:text-black transition ease-in-out duration-150 cursor-pointer"
         disabled=""
       >
         {props.label}
       </button>
-    </>
+    </div>
   );
 }
 
