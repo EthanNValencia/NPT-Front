@@ -1,6 +1,11 @@
 import axios from "axios";
+import baseurl from "./baseUrl";
 
-const apiUrl = "http://localhost:8085/api/v1/faqs";
+// "http://localhost:8765/npt-service/api/v1/public";
+
+const apiUrl = baseurl + "/faqs";
+
+// const apiUrl = "http://localhost:8085/api/v1/public/faqs"; // This works
 
 export function submitFAQ(message) {
     var responseMessage;
@@ -11,7 +16,8 @@ export function submitFAQ(message) {
       }
     axios.post(apiUrl + "/ask-question", requestBody)
     .then((response) => {
-      responseMessage = `Post created with ID: ${response.data.id}`;
+      responseMessage = `Question created with ID: ${response.data.id}`;
+      console.log(responseMessage);
       return responseMessage;
     })
     .catch((error) => {

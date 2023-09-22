@@ -24,7 +24,7 @@ function ActiveButton() {
     <div className="flex">
       <button
         type="button"
-        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-300 hover:bg-npt_colors-10 hover:text-black transition ease-in-out duration-150 cursor-not-allowed"
+        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-10 hover:text-black transition ease-in-out duration-150 cursor-not-allowed"
         disabled=""
       >
         <svg
@@ -58,7 +58,7 @@ function InactiveButton(props) {
     <div className="flex">
       <button
         type="button"
-        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-300 hover:bg-npt_colors-10 hover:text-black transition ease-in-out duration-150 cursor-pointer"
+        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-10 hover:text-black transition ease-in-out duration-150 cursor-pointer"
         disabled=""
       >
         {props.label}

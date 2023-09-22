@@ -10,9 +10,12 @@ import FrequentlyAskedQuestions from "./routes/FrequentlyAskedQuestions";
 import Reviews from "./routes/Reviews";
 import Header from "./components/Header";
 import { UserProvider, AuthProvider } from "./contexts/context";
-import RequestName from "./appointment-process/RequestName";
-import PainCategory from "./appointment-process/PainCategory";
-import TherapistPairing from "./appointment-process/TherapistPairing";
+import RequestName from "./routes/appointment-process/1_RequestName";
+import SelectCategory from "./routes/appointment-process/2_SelectCategory";
+import TherapistPairing from "./routes/appointment-process/3_TherapistPairing";
+import Admin from "./routes/Admin";
+import Footer from "./components/Footer";
+import ScheduleAppointment from "./routes/appointment-process/4_ScheduleAppointment";
 
 // w-fit
 function App() {
@@ -21,26 +24,124 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <UserProvider>
-            <div className="mx-auto border rounded-lg shadow-md w-fit">
-              <Header />
-              <div className="p-4">
-                <Routes>
-                  <Route index element={<Home />} />
-                  <Route path="about" element={<AboutUs />} />
-                  <Route path="contact" element={<ContactUs />} />
-                  <Route path="faqs" element={<FrequentlyAskedQuestions />} />
-                  <Route path="reviews" element={<Reviews />} />
-                  <Route path="request-name" element={<RequestName />} />
-                  <Route path="pain-category" element={<PainCategory />} />
-                  <Route path="pairing" element={<TherapistPairing />} />
-                  <Route path="dev" element={<Everything />} />
-                </Routes>
-              </div>
-            </div>
+            <Routes>
+              <Route
+                index
+                element={
+                  <WSW>
+                    <Home />
+                  </WSW>
+                }
+              />
+              <Route
+                path="about"
+                element={
+                  <WSW>
+                    <AboutUs />
+                  </WSW>
+                }
+              />
+              <Route
+                path="contact"
+                element={
+                  <WSW>
+                    <ContactUs />
+                  </WSW>
+                }
+              />
+              <Route
+                path="faqs"
+                element={
+                  <WSW>
+                    <FrequentlyAskedQuestions />
+                  </WSW>
+                }
+              />
+              <Route
+                path="reviews"
+                element={
+                  <WSW>
+                    <Reviews />
+                  </WSW>
+                }
+              />
+              <Route
+                path="request-name"
+                element={
+                  <WSW>
+                    <RequestName />
+                  </WSW>
+                }
+              />
+              <Route
+                path="category"
+                element={
+                  <WSW>
+                    <SelectCategory />
+                  </WSW>
+                }
+              />
+              <Route
+                path="pairing"
+                element={
+                  <WSW>
+                    <TherapistPairing />
+                  </WSW>
+                }
+              />
+              <Route
+                path="dev"
+                element={
+                  <WSW>
+                    <Everything />
+                  </WSW>
+                }
+              />
+              <Route
+                path="admin"
+                element={
+                  <APW>
+                    <Admin />
+                  </APW>
+                }
+              />
+              <Route
+                path="schedule"
+                element={
+                  <APW>
+                    <ScheduleAppointment />
+                  </APW>
+                }
+              />
+            </Routes>
           </UserProvider>
         </AuthProvider>
       </BrowserRouter>
     </>
+  );
+}
+
+function WSW({ children }) {
+  // WSW stands for WebSiteWrap, it is meant to wrap all the routes in the website.
+  // I will make a different wrapper for the admin panel.
+  return (
+    <div className="pt-4 pb-4">
+      <div className="mx-auto border rounded-lg shadow-md w-fit">
+        <Header />
+        <div className="p-4 ">{children}</div>
+        <Footer />
+      </div>
+    </div>
+  );
+}
+
+function APW({ children }) {
+  return (
+    <div className="pt-4 pb-4">
+      <div className="mx-auto border rounded-lg shadow-md w-fit">
+        <div className="p-4">{children}</div>
+      </div>
+    </div>
   );
 }
 

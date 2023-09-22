@@ -1,13 +1,13 @@
 import axios from "axios";
+import baseurl from "./baseUrl";
 
-const apiUrl = "http://localhost:8085/api/v1/problem-area";
-
-
+const apiUrl = baseurl + "/problem-area";
 
 export function getProblemCategories(setLoading, setProblemCategories) {
     axios.get(apiUrl + "/get-categories")
     .then((response) => {
         setLoading(false);
+        console.log(response.data);
         setProblemCategories(response.data);
     })
     .catch((error) => {

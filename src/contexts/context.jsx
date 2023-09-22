@@ -14,38 +14,27 @@ export function UserProvider({ children }) {
     firstName: null,
     lastName: null,
   });
-  const [painCategories, setPainCategories] = useState({
-    headAndNeck: false,
-    shoulders: false,
-    elbows: false,
-    wrists: false,
-    midBack: false,
-    lowerBack: false,
-    hip: false,
-    knees: false,
-    footAndAnkle: false,
-    balance: false,
-    vestibularRehab: false,
-    massageTherapy: false,
-    otherOptions: false,
-  });
+  const [categories, setCategories] = useState([]);
 
-  function setName(firstName, lastName) {
+  function setUserName(firstName, lastName) {
     setUser({
       firstName: firstName,
       lastName: lastName,
     });
   }
 
-  function setPainCategoryArray(checkboxes) {
-    setPainCategories({
-      ...checkboxes,
-    });
+  function setPainCategoryArray(categories) {
+    setCategories([...categories]);
   }
 
   return (
     <UserContext.Provider
-      value={{ user, setName, painCategories, setPainCategoryArray }}
+      value={{
+        user,
+        setUserName,
+        categories,
+        setPainCategoryArray,
+      }}
     >
       {children}
     </UserContext.Provider>
