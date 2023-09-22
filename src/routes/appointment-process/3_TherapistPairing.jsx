@@ -4,7 +4,6 @@ import { UserContext } from "../../contexts/context";
 import EmployeeCard from "../../components/EmployeeCard";
 import { findMyTherapists } from "../../axios/employees-api";
 import Calendar from "react-calendar";
-import TimePickerExample from "../../components/TimePickerExample";
 import TimePicker from "../../components/TimePicker";
 
 function TherapistPairing() {
@@ -13,6 +12,9 @@ function TherapistPairing() {
   const [therapist, setTherapist] = useState({});
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
+  const [therapistSelected, setTherapistSelected] = useState(false);
+  const [dateSelected, setDateSelected] = useState(true);
+  const [timeSelected, setTimeSelected] = useState(false);
 
   const calendarOnChange = (date) => {
     setDate(date);
@@ -28,7 +30,9 @@ function TherapistPairing() {
   }
 
   function selected(employee) {
+    console.log(employee);
     setTherapist(employee);
+    setTherapistSelected(true);
   }
 
   useEffect(() => {
@@ -39,14 +43,12 @@ function TherapistPairing() {
     findTherapistMatches();
   }, []);
 
-  function getEmployeeCardList() {
-    // const userCategories = Object.entries(userContext.painCategories);
-    // console.log(userCategories);
-
+  function employeeCardList() {
     return therapistArray.map((employee, index) => {
       return (
         <EmployeeCard
           key={index}
+          therapist={therapist}
           employee={employee}
           selected={selected}
           fullRender={false}
@@ -55,16 +57,10 @@ function TherapistPairing() {
     });
   }
 
-  return (
-    <div>
-      <div className="xl:max-w-3xl md:max-w-lg sm:max-w-sm xs:max-w-xs mx-auto bg-white shadow-xl min-w-0">
-        <div className="overflow-x-auto flex p-4 gap-2">
-          {getEmployeeCardList()}
-        </div>
-      </div>
-      <h1>Hello {userContext.user.firstName}</h1>
-      {therapist ? <p>You have selected {therapist.name}</p> : <></>}
-      <p>
+  function calendar() {
+    // If therapist was not selected, then there is no point in operating the calendar.
+    if (therapistSelected) {
+      return (
         <Calendar
           onChange={calendarOnChange}
           value={date}
@@ -72,8 +68,68 @@ function TherapistPairing() {
           minDate={new Date()}
           tileDisabled={({ date }) => [0, 6].includes(date.getDay())}
         />
-        <TimePicker />
-      </p>
+      );
+    } else {
+      return (
+        <Calendar
+          onChange={calendarOnChange}
+          value={date}
+          defaultValue={date}
+          tileDisabled={({ date }) =>
+            [0, 1, 2, 3, 4, 5, 6].includes(date.getDay())
+          }
+        />
+      );
+    }
+  }
+
+  function timePicker() {
+    if (therapistSelected) {
+      return <TimePicker disabled={false} />;
+    } else {
+      return <TimePicker disabled={true} />;
+    }
+  }
+
+  function userInstructions() {
+    if (!therapistSelected) {
+      return (
+        <div>
+          <p>
+            Hello, {userContext.user.firstName}! Please begin by selecting your
+            therapist. Each of these excellent therapists have been matched to
+            you based on the area(s) of interest that you selected in the
+            previous step.
+          </p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <p>You have selected {therapist.name}!</p>
+          <p>
+            Next select the day and time that you would like to meet{" "}
+            {therapist.name}.
+          </p>
+        </div>
+      );
+    }
+  }
+
+  return (
+    <div className="xl:max-w-6xl lg:max-w-3xl md:max-w-2xl sm:max-w-sm xs:max-w-xs mx-auto">
+      <div className=" shadow-xl min-w-0 border-2 rounded-md">
+        <div className="overflow-x-auto flex p-4 gap-2">
+          {employeeCardList()}
+        </div>
+      </div>
+      <div className="flex md:flex-row sm:flex-col xs:flex-col gap-4 place-content-center p-4">
+        <div className="text-">{userInstructions()}</div>
+        <div>
+          {calendar()}
+          {timePicker()}
+        </div>
+      </div>
       <div className="flex gap-20 justify-center items-center">
         <button
           type="button"

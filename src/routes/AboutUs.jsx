@@ -30,6 +30,7 @@ function AboutUs() {
       <div className="flex flex-wrap gap-24 gap-x-32 content-center pl-52 pb-12 pt-12 max-w-screen-2xl">
         {employees.map((employee) => (
           <EmployeeCard
+            therapist={therapist}
             key={employee.id}
             employee={employee}
             selected={selected}

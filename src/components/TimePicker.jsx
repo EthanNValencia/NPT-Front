@@ -21,7 +21,6 @@ function TimePicker(props) {
     for (let i = 0; i < beginHours.length; i++) {
       if (beginHours[i] == hour) {
         setSelectEndHour(endHours[i]);
-
         if (hour >= 7 && hour <= 11) {
           setBeginMeredian("AM");
           setEndMeredian("AM");
@@ -44,13 +43,14 @@ function TimePicker(props) {
   }
 
   return (
-    <div className="flex rounded-lg">
-      <div className="border-2 pr-2 pl-1 shadow-xl rounded-lg">
-        <label className="text-xl pr-4">Begin Time:</label>
+    <div className="flex rounded-lg text-xs">
+      <div className="border-2 pr-2 pl-2 shadow-xl rounded-lg">
+        <label className="">Begin Time:</label>
         <select
-          className="h-10 w-10 text-xl text-center"
+          className="h-10 w-10 text-center"
           value={selectedBeginHour}
           onChange={(e) => selectBeginHour(e.target.value)}
+          disabled={props.disabled}
         >
           {beginHours.map((hour) => (
             <option key={hour} className="" value={hour}>
@@ -59,9 +59,10 @@ function TimePicker(props) {
           ))}
         </select>
         <select
-          className="h-10 w-10 text-xl text-center"
+          className="h-10 w-10 text-center"
           value={selectedBeginMinute}
           onChange={(e) => selectBeginMinute(e.target.value)}
+          disabled={props.disabled}
         >
           {mins.map((min) => (
             <option key={min} className="" value={min}>
@@ -69,13 +70,13 @@ function TimePicker(props) {
             </option>
           ))}
         </select>
-        <label className="text-xl">{beginMeredian}</label>
-        <label className="text-xl p-4">End Time:</label>
+        <label className="pr-5">{beginMeredian}</label>
+        <label className="">End Time:</label>
         <select
-          className="h-10 w-10 text-xl text-center"
+          className="h-10 w-10 text-center"
           value={selectedEndHour}
           onChange={(e) => disabled(e.target.value)}
-          disabled
+          disabled={true}
         >
           {endHours.map((hour) => (
             <option key={hour} className="" value={hour}>
@@ -84,7 +85,7 @@ function TimePicker(props) {
           ))}
         </select>
         <select
-          className="h-10 w-10 text-xl text-center select-none"
+          className="h-10 w-10 text-center select-none"
           value={selectedEndMinute}
           onChange={(e) => disabled(e.target.value)}
           disabled
@@ -95,7 +96,7 @@ function TimePicker(props) {
             </option>
           ))}
         </select>
-        <label className="text-xl">{endMeredian}</label>
+        <label className="">{endMeredian}</label>
       </div>
     </div>
   );
