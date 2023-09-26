@@ -62,12 +62,12 @@ function Home() {
         <div className="mx-auto max-w-4xl text-xl">
           <p className="font-semibold">
             Your body is your
-            <bold className="font-extrabold"> most valuable possession </bold>
+            <b className="font-extrabold"> most valuable possession </b>
             and
-            <bold className="font-extrabold"> your greatest asset</bold>. Yet,
+            <b className="font-extrabold"> your greatest asset</b>. Yet,
             we often spend more of our budget on our cars, homes and “stuff.”
             Spending money on health care is an
-            <bold className="font-extrabold"> investment</bold>, not an expense.
+            <b className="font-extrabold"> investment</b>, not an expense.
             Don’t put off to tomorrow what you can do today.
           </p>
         </div>

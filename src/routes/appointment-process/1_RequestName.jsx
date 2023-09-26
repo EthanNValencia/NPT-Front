@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../../contexts/context";
 import { useNavigate } from "react-router-dom";
+import ContinueBack from "../../components/ContinueBack";
 
 // Step 1
 
@@ -17,12 +18,7 @@ function RequestName() {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitAttempted(true);
-
-    if (fnValidated && lnValidated) {
-      userContext.setUserName(firstName, lastName);
-      navigate("/category");
-    }
+    
   };
 
   const validateInputFields = () => {
@@ -40,6 +36,15 @@ function RequestName() {
 
   function goBack() {
     navigate("/");
+  }
+
+  function onContinue() {
+    setSubmitAttempted(true);
+
+    if (fnValidated && lnValidated) {
+      userContext.setUserName(firstName, lastName);
+      navigate("/category");
+    }
   }
 
   return (
@@ -97,26 +102,9 @@ function RequestName() {
               }}
             />
           </div>
-
-          <div className="flex gap-20">
-            <button
-              type="button"
-              className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-300 transition ease-in-out duration-150 cursor-pointer"
-              disabled=""
-              onClick={goBack}
-            >
-              Go Back
-            </button>
-            <button
-              type="submit"
-              className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-300 transition ease-in-out duration-150 cursor-pointer"
-              disabled=""
-            >
-              Continue
-            </button>
-          </div>
         </div>
       </form>
+      <ContinueBack goBack={goBack} onContinue={onContinue}/>
     </div>
   );
 }

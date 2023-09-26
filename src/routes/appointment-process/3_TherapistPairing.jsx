@@ -5,6 +5,7 @@ import EmployeeCard from "../../components/EmployeeCard";
 import { findMyTherapists } from "../../axios/employees-api";
 import Calendar from "react-calendar";
 import TimePicker from "../../components/TimePicker";
+import ContinueBack from "../../components/ContinueBack";
 
 function TherapistPairing() {
   const userContext = useContext(UserContext);
@@ -117,38 +118,23 @@ function TherapistPairing() {
   }
 
   return (
+    <div>
     <div className="xl:max-w-6xl lg:max-w-3xl md:max-w-2xl sm:max-w-sm xs:max-w-xs mx-auto">
       <div className=" shadow-xl min-w-0 border-2 rounded-md">
         <div className="overflow-x-auto flex p-4 gap-2">
           {employeeCardList()}
         </div>
       </div>
-      <div className="flex md:flex-row sm:flex-col xs:flex-col gap-4 place-content-center p-4">
+      <div className="flex md:flex-row sm:flex-col xs:flex-col gap-4 place-content-center pt-4 pb-4">
         <div className="text-">{userInstructions()}</div>
         <div>
           {calendar()}
           {timePicker()}
         </div>
       </div>
-      <div className="flex gap-20 justify-center items-center">
-        <button
-          type="button"
-          className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-300 transition ease-in-out duration-150 cursor-pointer"
-          disabled=""
-          onClick={goBack}
-        >
-          Go Back
-        </button>
-        <button
-          type="button"
-          className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-300 transition ease-in-out duration-150 cursor-pointer"
-          disabled=""
-          onClick={onContinue}
-        >
-          Continue
-        </button>
-      </div>
     </div>
+      <ContinueBack goBack={goBack} onContinue={onContinue}/>
+      </div>
   );
 }
 // overflow-x-scroll flex-row flex

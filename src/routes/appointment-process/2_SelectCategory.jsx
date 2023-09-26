@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/context";
 import { getProblemCategories } from "../../axios/problem-categories-api";
+import ContinueBack from "../../components/ContinueBack";
 
 function SelectCategory() {
   const [isCategorySelected, setIsCategorySelected] = useState(true);
@@ -67,6 +68,7 @@ function SelectCategory() {
 
   return (
     <div>
+    <div>
       <h1 className="text-xl text-center">
         {userContext.user.firstName} what are you interested in?
       </h1>
@@ -97,24 +99,8 @@ function SelectCategory() {
           })}
         </div>
       </div>
-      <div className="flex gap-20 justify-center items-center">
-        <button
-          type="button"
-          className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-300 transition ease-in-out duration-150 cursor-pointer"
-          disabled=""
-          onClick={goBack}
-        >
-          Go Back
-        </button>
-        <button
-          type="button"
-          className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-300 transition ease-in-out duration-150 cursor-pointer"
-          disabled=""
-          onClick={onContinue}
-        >
-          Continue
-        </button>
-      </div>
+    </div>
+    <ContinueBack goBack={goBack} onContinue={onContinue}/>
     </div>
   );
 }

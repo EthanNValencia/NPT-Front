@@ -45,6 +45,8 @@ function TimePicker(props) {
   return (
     <div className="flex rounded-lg text-xs">
       <div className="border-2 pr-2 pl-2 shadow-xl rounded-lg">
+        
+        
         <label className="">Begin Time:</label>
         <select
           className="h-10 w-10 text-center"
@@ -70,7 +72,9 @@ function TimePicker(props) {
             </option>
           ))}
         </select>
-        <label className="pr-5">{beginMeredian}</label>
+        <label className="">{beginMeredian}</label>
+
+
         <label className="">End Time:</label>
         <select
           className="h-10 w-10 text-center"
@@ -97,6 +101,8 @@ function TimePicker(props) {
           ))}
         </select>
         <label className="">{endMeredian}</label>
+        
+
       </div>
     </div>
   );
