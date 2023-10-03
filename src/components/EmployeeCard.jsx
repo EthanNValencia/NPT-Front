@@ -6,12 +6,12 @@ function EmployeeCard(props) {
   useEffect(() => {
     // I had to do this because double clicking the employee cards,
     // would cause them to stay selected visually.
-    if (props.therapist.id === props.employee.id) {
+    if (props.selectedTherapist.name === props.employee.name) {
       setSelected(true);
     } else {
       setSelected(false);
     }
-  }, [props.therapist]);
+  }, [props.selectedTherapist]);
 
   function onClick() {
     console.log(`You clicked ${props.employee.name}`);

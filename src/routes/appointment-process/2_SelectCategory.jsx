@@ -59,7 +59,7 @@ function SelectCategory() {
     }
 
     const painCategoryArray = checkboxes.map((value) => ({
-      problemArea: value.key,
+      name: value.key,
     }));
     userContext.setPainCategoryArray(painCategoryArray);
     console.log(painCategoryArray);
@@ -89,11 +89,11 @@ function SelectCategory() {
                 <input
                   className=""
                   type="checkbox"
-                  name={category.problemArea}
+                  name={category.name}
                   checked={category.checked}
                   onChange={handleCheckboxChange}
                 />
-                {category.problemArea}
+                {category.name}
               </label>
             );
           })}

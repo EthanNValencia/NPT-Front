@@ -6,21 +6,34 @@ import { findMyTherapists } from "../../axios/employees-api";
 import Calendar from "react-calendar";
 import TimePicker from "../../components/TimePicker";
 import ContinueBack from "../../components/ContinueBack";
+import SelectDisableExample from "../../components/SelectDisableExample";
 
 function TherapistPairing() {
   const userContext = useContext(UserContext);
   const [therapistArray, setTherapistArray] = useState([]);
-  const [therapist, setTherapist] = useState({});
+  const [selectedTherapist, setSelectedTherapist] = useState({});
   const navigate = useNavigate();
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date()); // selected date
   const [therapistSelected, setTherapistSelected] = useState(false);
-  const [dateSelected, setDateSelected] = useState(true);
-  const [timeSelected, setTimeSelected] = useState(false);
+  const [selectedDateSchedule, setSelectedDateSchedule] = useState([]);
+  // const [dateSelected, setDateSelected] = useState(true);
+  // const [timeSelected, setTimeSelected] = useState(false);
 
   const calendarOnChange = (date) => {
     setDate(date);
+    const key = formatDate(date);
+    if(selectedTherapist.appointments) {
+      setSelectedDateSchedule(selectedTherapist.appointments[key]);
+    }
     console.log(date);
   };
+
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   function goBack() {
     navigate("/category");
@@ -32,12 +45,16 @@ function TherapistPairing() {
 
   function selected(employee) {
     console.log(employee);
-    setTherapist(employee);
+    setSelectedTherapist(employee);
+    setDate(new Date());
+    const key = formatDate(date);
+    if(selectedTherapist.appointments) {
+      setSelectedDateSchedule(selectedTherapist.appointments[key]);
+    }
     setTherapistSelected(true);
   }
 
   useEffect(() => {
-    //setLoading(true);
     async function findTherapistMatches() {
       findMyTherapists(setTherapistArray, userContext.categories);
     }
@@ -49,7 +66,7 @@ function TherapistPairing() {
       return (
         <EmployeeCard
           key={index}
-          therapist={therapist}
+          selectedTherapist={selectedTherapist}
           employee={employee}
           selected={selected}
           fullRender={false}
@@ -86,7 +103,7 @@ function TherapistPairing() {
 
   function timePicker() {
     if (therapistSelected) {
-      return <TimePicker disabled={false} />;
+      return <TimePicker disabled={false} selectedDateSchedule={selectedDateSchedule} selectedTherapist={selectedTherapist} />;
     } else {
       return <TimePicker disabled={true} />;
     }
@@ -107,10 +124,10 @@ function TherapistPairing() {
     } else {
       return (
         <div>
-          <p>You have selected {therapist.name}!</p>
+          <p>You have selected {selectedTherapist.name}!</p>
           <p>
             Next select the day and time that you would like to meet{" "}
-            {therapist.name}.
+            {selectedTherapist.name}.
           </p>
         </div>
       );
