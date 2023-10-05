@@ -5,7 +5,7 @@ import EmployeeCard from "../components/EmployeeCard";
 function AboutUs() {
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState([]);
-  const [therapist, setTherapist] = useState({});
+  const [selectedTherapist, setSelectedTherapist] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -16,7 +16,7 @@ function AboutUs() {
   }, []);
 
   function selected(employee) {
-    setTherapist(employee);
+    setSelectedTherapist(employee);
   }
 
   return (
@@ -30,7 +30,8 @@ function AboutUs() {
       <div className="flex flex-wrap gap-24 gap-x-32 content-center pl-52 pb-12 pt-12 max-w-screen-2xl">
         {employees.map((employee) => (
           <EmployeeCard
-            therapist={therapist}
+            therapist={selectedTherapist}
+            selectedEmployee={selectedTherapist}
             key={employee.id}
             employee={employee}
             selected={selected}

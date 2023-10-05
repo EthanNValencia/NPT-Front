@@ -21,10 +21,7 @@ function TherapistPairing() {
 
   const calendarOnChange = (date) => {
     setDate(date);
-    const key = formatDate(date);
-    if(selectedTherapist.appointments) {
-      setSelectedDateSchedule(selectedTherapist.appointments[key]);
-    }
+    setSchedule(date);
     console.log(date);
   };
 
@@ -33,6 +30,13 @@ function TherapistPairing() {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+
+  function setSchedule(date) {
+    const key = formatDate(date);
+    if(selectedTherapist.appointments) {
+      setSelectedDateSchedule(selectedTherapist.appointments[key]);
+    }
   }
 
   function goBack() {
@@ -46,11 +50,9 @@ function TherapistPairing() {
   function selected(employee) {
     console.log(employee);
     setSelectedTherapist(employee);
-    setDate(new Date());
-    const key = formatDate(date);
-    if(selectedTherapist.appointments) {
-      setSelectedDateSchedule(selectedTherapist.appointments[key]);
-    }
+    const date = new Date();
+    setDate(date);
+    setSchedule(date);
     setTherapistSelected(true);
   }
 
@@ -66,13 +68,26 @@ function TherapistPairing() {
       return (
         <EmployeeCard
           key={index}
-          selectedTherapist={selectedTherapist}
+          selectedEmployee={selectedTherapist}
           employee={employee}
           selected={selected}
           fullRender={false}
         />
       );
     });
+  }
+
+  function generateAvailableCalendarDays({ date }) {
+    const options = { weekday: 'short' };
+    const dayName = date.toLocaleDateString('en-US', options);
+    var bool = true;
+    selectedTherapist.schedule.forEach(element => {
+      if(element.day == dayName) {
+        bool = false;
+        return;
+      }
+    });
+    return bool;
   }
 
   function calendar() {
@@ -84,10 +99,12 @@ function TherapistPairing() {
           value={date}
           defaultValue={new Date()}
           minDate={new Date()}
-          tileDisabled={({ date }) => [0, 6].includes(date.getDay())}
+          // tileDisabled={({ date }) => [0, 6].includes(date.getDay())}
+          tileDisabled={generateAvailableCalendarDays}
         />
       );
     } else {
+      // This will return a date that disables all dates. 
       return (
         <Calendar
           onChange={calendarOnChange}

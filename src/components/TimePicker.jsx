@@ -4,7 +4,7 @@ function TimePicker(props) {
   
   const beginHour = 7; // This should be generated from the employee profile.
   const endHour = 17; // This should be generated from the employee profile.
-  const selectedTherapist = props.selectedTherapist;
+  // const selectedTherapist = props.selectedTherapist;
   const times = generateAvailableTimes(props.selectedDateSchedule);
   
   function disabled(e) {
@@ -140,7 +140,7 @@ function TimePicker(props) {
               </option>
             ))}
           </select>
-          <label className="pr-4">{selectedTime.meredian[0]}</label>
+          <label className="pr-16">{selectedTime.meredian[0]}</label>
 
           <label className="">End Time:</label>
           <select
