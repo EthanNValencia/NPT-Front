@@ -14,6 +14,7 @@ function TimePicker(props) {
   const [selectedTime, setSelectedTime] = useState(times[timeIndex]);
   // const [selectedMinutes, setSelectedMinutes] = useState(() => initSelectedMinutes(times));
   const [selectedMinute, setSelectedMinute] = useState(() => initSelectedMinute(times));
+  const [index, setIndex] = useState(0);
   // initIndexOfTime(times);
   
   useEffect(() => {
@@ -24,6 +25,7 @@ function TimePicker(props) {
     console.log("indexOfTime: " + timeIndex);
     console.log("Times: " + JSON.stringify(times))
     console.log("SelectedDate " + JSON.stringify(selectedDate));
+    setIndex(timeIndex);
   }, [props.selectedEmployee, props.selectedDate]);
 
   function init(times) {
@@ -176,6 +178,7 @@ function TimePicker(props) {
     setSelectedTime(time);
     timeIndex = findIndexTimeByBeginHour(e);
     console.log("timeIndex: " + timeIndex);
+    setIndex(timeIndex);
     // setSelectedMinutes(time.mins);
   }
 
@@ -253,15 +256,17 @@ function TimePicker(props) {
             onChange={(e) => onChangeBeginMinute(e.target.value)}
             disabled={props.disabled}
           >
-            {times[timeIndex].mins.map((min) => (
+            {times[index].mins.map((min) => (
               <option key={min.min} className="" value={min.min} disabled={min.disabled}>
+                {console.log("Timeindex: " + timeIndex + " " + JSON.stringify(times[timeIndex]))}
                 {checkMinuteForZero(min.min)}
               </option>
             ))}
           </select>
 
           <label className="pr-6">{selectedTime.meredian[0]}</label>
-
+            {/* <><p>Time index: {timeIndex}</p> <p>useState index: {index}</p></> */}
+            
           <label className="">End Time:</label>
           <select
             className="h-10 w-10 text-center"
@@ -281,7 +286,7 @@ function TimePicker(props) {
             onChange={(e) => disabled(e.target.value)}
             disabled={true}
           >
-            {times[timeIndex].mins.map((min) => (
+            {times[index].mins.map((min) => (
               <option key={min.min} className="" value={min.min} disabled={min.disabled}>
               {checkMinuteForZero(min.min)}
             </option>
