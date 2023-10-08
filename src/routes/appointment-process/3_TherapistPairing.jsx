@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/context";
 import EmployeeCard from "../../components/EmployeeCard";
-import { findMyTherapists } from "../../axios/employees-api";
+import { findMyTherapists } from "../../axios/api";
 import Calendar from "react-calendar";
 import TimePicker from "../../components/TimePicker";
 import ContinueBack from "../../components/ContinueBack";

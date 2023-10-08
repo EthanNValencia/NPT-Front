@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getEmployees } from "../axios/employees-api";
+import { getEmployees } from "../axios/api";
 import EmployeeCard from "../components/EmployeeCard";
 
 function AboutUs() {

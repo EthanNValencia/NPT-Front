@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/context";
-import { getProblemCategories } from "../../axios/problem-categories-api";
+import { getProblemCategories } from "../../axios/api";
 import ContinueBack from "../../components/ContinueBack";
 
 function SelectCategory() {

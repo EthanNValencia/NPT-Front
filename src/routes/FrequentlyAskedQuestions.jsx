@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NtButton from "../components/NtButton";
 import FAQsDiv from "../components/FAQsDiv";
-import { submitFAQ, getAllAnsweredFAQs } from "../axios/faq-api";
+import { postFaq, getAnsweredFAQs } from "../axios/api";
 import FAQsLoading from "../components/loading/FAQsLoading";
 
 function FrequentlyAskedQuestions() {
@@ -9,18 +9,26 @@ function FrequentlyAskedQuestions() {
   const [message, setMessage] = useState();
   const [loading, setLoading] = useState(true);
 
-  function onClick() {
-    async function submiteNewFAQs(message) {
-      submitFAQ(message);
+  async function onClick() {
+    try {
+      const response = await postFaq(message);
+      console.log('FAQ submitted:', response);
+    } catch (error) {
+      console.error('Error submitting FAQ:', error);
     }
-    submiteNewFAQs(message);
   }
-
+  
   useEffect(() => {
-    async function getAnsweredFAQs() {
-      getAllAnsweredFAQs(setLoading, setFAQs);
+    async function fetchFaqs() {
+      try {
+        const data = await getAnsweredFAQs();
+        console.log(data);
+        setFAQs(data);
+      } catch (error) {
+        console.error('Error loading FAQ:', error);
+      }
     }
-    getAnsweredFAQs();
+    fetchFaqs();
   }, []);
 
   return (
@@ -31,7 +39,7 @@ function FrequentlyAskedQuestions() {
       </div>
 
       {faqs.map((faq) => (
-        <FAQsDiv faq={faq} key={faq.id} />
+        <FAQsDiv faq={faq} key={faq.key} />
       ))}
 
       {/*
