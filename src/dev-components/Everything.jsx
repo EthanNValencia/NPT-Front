@@ -8,6 +8,7 @@ import StartPT from "../wp-components/StartPT";
 import PelvicFloor from "../wp-components/PelvicFloor";
 import Calendar from "react-calendar";
 import NtButton from "../components/NtButton";
+import RadioButtons from "./RadioButtons";
 
 function Everything() {
   const [date, setDate] = useState(new Date());
@@ -19,13 +20,12 @@ function Everything() {
 
   return (
     <div>
-      <NtButton inactiveButtonLabel="Begin" />
+      <RadioButtons />
       <Calendar
         onChange={calendarOnChange}
         value={date}
         defaultValue={new Date()}
       />
-
       <p className="bg-npt_colors-10">npt_colors-10</p>
       <p className="bg-npt_colors-20">npt_colors-20</p>
       <p className="bg-npt_colors-30">npt_colors-30</p>

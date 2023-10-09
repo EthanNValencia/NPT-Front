@@ -43,6 +43,7 @@ function RequestName() {
 
     if (fnValidated && lnValidated) {
       userContext.setUserName(firstName, lastName);
+      userContext.setAppointmentName(firstName, lastName);
       navigate("/category");
     }
   }

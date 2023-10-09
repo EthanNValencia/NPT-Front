@@ -6,15 +6,27 @@ function EmployeeCard(props) {
   useEffect(() => {
     // I had to do this because double clicking the employee cards,
     // would cause them to stay selected visually.
-    if (props.selectedEmployee.name === props.employee.name) {
+    if (props.selectedEmployee.key === props.employee.key) {
       setSelected(true);
     } else {
       setSelected(false);
     }
   }, [props.selectedEmployee]);
 
+  function getEmployeeName() {
+    if(props.employee.middleName) {
+      return props.employee.firstName + " " + props.employee.middleName + " " + props.employee.lastName;
+    }
+    return props.employee.firstName + " " + props.employee.lastName;
+  }
+
   function onClick() {
-    console.log(`You clicked ${props.employee.name}`);
+    // console.log(console.log(props.employee));
+    // console.log(JSON.stringify(props.selectedEmployee))
+    // console.log(props.employee.firstName);
+    // console.log(props.selectedEmployee.middleName)
+    // console.log(props.selectedEmployee.lastName)
+    // console.log(`You clicked ${getEmployeeName()}`);
     props.selected(props.employee);
   }
 
@@ -33,7 +45,7 @@ function EmployeeCard(props) {
           </div>
           <div className="flex flex-col flex-grow py-5 pl-20 text-right">
             <strong className="text-slate-900 text-xs font-medium ">
-              {props.employee.name}
+              {getEmployeeName()}
             </strong>
             <span className="text-slate-500 text-xs font-medium">
               {props.employee.role}
@@ -59,7 +71,7 @@ function EmployeeCard(props) {
           </div>
           <div className="flex flex-col flex-grow py-5 pl-20 text-right">
             <strong className="text-slate-900 text-xs font-medium ">
-              {props.employee.name}
+              {getEmployeeName()}
             </strong>
             <span className="text-slate-500 text-xs font-medium">
               {props.employee.role}
@@ -83,7 +95,7 @@ function EmployeeCard(props) {
           />
           <div className="flex flex-col text-left py-5 pl-20">
             <strong className="text-slate-900 text-sm font-medium ">
-              {props.employee.name}
+              {getEmployeeName()}
             </strong>
             <span className="text-slate-500 text-sm font-medium">
               {props.employee.role}, {props.employee.role_id}
@@ -110,7 +122,7 @@ function EmployeeCard(props) {
           />
           <div className="flex flex-col text-left py-5 pl-20">
             <strong className="text-slate-900 text-sm font-medium ">
-              {props.employee.name}
+              {getEmployeeName()}
             </strong>
             <span className="text-slate-500 text-sm font-medium">
               {props.employee.role}, {props.employee.role_id}

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/context";
 import EmployeeCard from "../../components/EmployeeCard";
-import { findMyTherapists } from "../../axios/api";
+import { findMyMatch } from "../../axios/api";
 import Calendar from "react-calendar";
 import TimePicker from "../../components/TimePicker";
 import ContinueBack from "../../components/ContinueBack";
@@ -20,7 +20,7 @@ function TherapistPairing() {
     if(selectedEmployee.schedule == undefined) {
       return date;
     }
-    for(var i = 0; i < 7; i++) {
+    for(var i = 0; i < 7; i++) { // 7 days in a week, but this should not fully execute unless the employee has no schedule. 
       const options = { weekday: 'short' };
       const dayName = date.toLocaleDateString('en-US', options);
       console.log(JSON.stringify(selectedEmployee.schedule))
@@ -64,24 +64,32 @@ function TherapistPairing() {
   }
 
   function onContinue() {
-    // navigate("/");
+    console.log(JSON.stringify(selectedEmployee));
+    console.log();
+    userContext.setEmployeeName(selectedEmployee.firstName, selectedEmployee.middleName, selectedEmployee.lastName);
+    // userContext.setAppointmentTimes();
+    // navigate("/notes");
   }
 
   function selected(employee) {
     console.log(employee);
     setSelectedEmployee(employee);
-    // const date = new Date();
-    // setSelectedDate(date);
-    // setSchedule(date);
     setIsEmployeeSelected(true);
   }
 
   useEffect(() => {
-    async function findTherapistMatches() {
-      findMyTherapists(setEmployeeMatchArray, userContext.categories);
+    async function fetchMatches() {
+      try {
+        const matchedTherapists = await findMyMatch(userContext.services);
+        setEmployeeMatchArray(matchedTherapists);
+        console.log(matchedTherapists);
+      } catch (error) {
+        console.error('Error finding therapist matches:', error);
+      }
     }
-    findTherapistMatches();
-  }, []);
+
+    fetchMatches();
+  }, []); 
 
   function employeeCardList() {
     return employeeMatchArray.map((employee, index) => {
@@ -140,10 +148,17 @@ function TherapistPairing() {
 
   function timePicker() {
     if (isEmployeeSelected) {
-      return <TimePicker disabled={false} selectedDate={selectedDate} selectedEmployee={selectedEmployee} />;
+      return <TimePicker disabled={false} selectedDate={selectedDate} selectedEmployee={selectedEmployee} minimumAppointmentDuration={1} maxAppointmentDuration={3} />;
     } else {
       return <TimePicker disabled={true} />;
     }
+  }
+
+  function getEmployeeName(employee) {
+    if(employee.middleName) {
+      return employee.firstName + " " + employee.middleName + " " + employee.lastName;
+    }
+    return employee.firstName + " " + employee.lastName;
   }
 
   function userInstructions() {
@@ -161,10 +176,10 @@ function TherapistPairing() {
     } else {
       return (
         <div>
-          <p>You have selected {selectedEmployee.name}!</p>
+          <p>You have selected {getEmployeeName(selectedEmployee)}!</p>
           <p>
             Next select the day and time that you would like to meet{" "}
-            {selectedEmployee.name}.
+            {getEmployeeName(selectedEmployee)}.
           </p>
         </div>
       );

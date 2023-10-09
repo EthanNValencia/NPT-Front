@@ -15,6 +15,18 @@ function AboutUs() {
     getNptEmployees();
   }, []);
 
+  useEffect(() => {
+    async function fetchEmployees() {
+      try {
+        const data = await getEmployees();
+        setEmployees(data);
+      } catch (error) {
+        console.error('Error loading FAQ:', error);
+      }
+    }
+    fetchEmployees();
+  }, []);
+
   function selected(employee) {
     setSelectedTherapist(employee);
   }
@@ -32,7 +44,7 @@ function AboutUs() {
           <EmployeeCard
             therapist={selectedTherapist}
             selectedEmployee={selectedTherapist}
-            key={employee.id}
+            key={employee.key}
             employee={employee}
             selected={selected}
             fullRender={true}

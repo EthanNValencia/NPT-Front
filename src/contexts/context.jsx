@@ -14,7 +14,48 @@ export function UserProvider({ children }) {
     firstName: null,
     lastName: null,
   });
-  const [categories, setCategories] = useState([]);
+
+  const [services, setServices] = useState({});
+
+  const [selectedEmployee, setSelectedEmployee] = useState([]);
+
+  const [appointment, setAppointment] = useState({
+    employeeFirstName: null,
+    employeeMiddleName: null,
+    employeeLastName: null,
+    appointmentFirstName: null, // 
+    appointmentLastName: null, //
+    appointmentEmail: null,
+    appointmentPhoneNumber: null,
+    appointmentBeginTime: null, 
+    appointmentEndTime: null, 
+    appointmentNotes: null, 
+    serviceName: null //
+  });
+
+  function setAppointmentName(firstName, lastName) {
+    const updateAppointment = {...appointment, appointmentFirstName: firstName, appointmentLastName: lastName};
+    setAppointment(updateAppointment);
+  }
+
+  function setAppointmentServiceName(name) {
+    const updateAppointment = {...appointment, serviceName: name};
+    setAppointment(updateAppointment);
+  }
+
+  function setEmployeeName(firstName, middleName, lastName) {
+    const updateAppointment = {...appointment, employeeFirstName: firstName, employeeMiddleName: middleName, employeeLastName: lastName};
+    setAppointment(updateAppointment);
+  }
+
+  function setAppointmentTimes(beginTime, endTime) {
+    const updateAppointment = {...appointment, appointmentBeginTime: beginTime, appointmentEndTime: endTime};
+    setAppointment(updateAppointment);
+  }
+
+  function filloutAppointment() {
+
+  }
 
   function setUserName(firstName, lastName) {
     setUser({
@@ -23,8 +64,10 @@ export function UserProvider({ children }) {
     });
   }
 
-  function setPainCategoryArray(categories) {
-    setCategories([...categories]);
+  function setSelectedService(service) {
+    const array = []; // Your array
+    array.push(service);
+    setServices(array);
   }
 
   return (
@@ -32,8 +75,14 @@ export function UserProvider({ children }) {
       value={{
         user,
         setUserName,
-        categories,
-        setPainCategoryArray,
+        services,
+        setSelectedService,
+        selectedEmployee,
+        setSelectedEmployee, 
+        setAppointmentName, 
+        setAppointmentServiceName,
+        setEmployeeName, 
+        setAppointmentTimes
       }}
     >
       {children}
