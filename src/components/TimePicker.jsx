@@ -10,14 +10,15 @@ function TimePicker(props) {
   const beginTimes = generateAvailableBeginTimes(selectedDateSchedule);
   let beginTimeIndex = init(beginTimes);
   const [beginTime, setBeginTime] = useState(beginTimes[beginTimeIndex]);
-  const [indexBeginMin, setIndexBeginMin] = useState(() => initIndexBeginMinute(beginTimes));
+  const [indexBeginMin, setIndexBeginMin] = useState(() => initIndexBeginMinute());
   const [indexBeginTime, setIndexBeginTime] = useState(0);
-  
-  const [endTimes, setEndTimes] = useState(generateAvailableEndTimes());
-  const [endMin, setEndMin] = useState(beginMin);
-  const [indexEndTime, setIndexEndTime] = useState(initIndexEndMinute(endTimes));
 
   const [beginMin, setBeginMin] = useState(beginTimes[indexBeginTime].mins[indexBeginMin].min);
+
+  const [endTimes, setEndTimes] = useState(generateAvailableEndTimes());
+  const [indexEndTime, setIndexEndTime] = useState(initIndexEndTime());
+  const [indexEndMinute, setIndexEndMinute] = useState(initIndexEndMinute());
+  const [endMin, setEndMin] = useState(initEndMin());
   
   useEffect(() => {
     beginTimeIndex = init(beginTimes);
@@ -44,6 +45,10 @@ function TimePicker(props) {
       return 0;
   }
 
+  function initEndMin() {
+    return endTimes[indexEndTime].mins[indexEndMinute].min;
+  }
+
   function initIndexBeginMinute() {
     for(var i = 0; i < beginTime.mins.length; i++) {
       if(beginTime.mins[i].disabled == false) {
@@ -53,8 +58,16 @@ function TimePicker(props) {
   }
 
   function initIndexEndMinute() {
-    for(var i = 0; i < endTimes.mins.length; i++) {
-      if(endTimes.mins[i].disabled == false) {
+    for(var i = 0; i < endTimes[indexEndTime].mins.length; i++) {
+      if(endTimes[indexEndTime].mins[i].disabled == false) {
+        return i;
+      }
+    }
+  }
+
+  function initIndexEndTime() {
+    for(var i = 0; i < endTimes.length; i++) {
+      if(endTimes[0].disabled == false) {
         return i;
       }
     }
@@ -110,7 +123,7 @@ function TimePicker(props) {
     }
     console.log("minuteIndex: " + indexBeginMin);
     console.log("timeIndex: " + indexBeginTime);
-    console.log("endMin: " + endMin);
+    // console.log("endMin: " + endMin);
     console.log("beginMin: " + beginMin);
     console.log("MinAppDur: " + props.minimumAppointmentDuration); // 1
     console.log("MaxAppDur: " + props.maxAppointmentDuration); // 3
@@ -118,7 +131,8 @@ function TimePicker(props) {
     let endTimesArray = [];
     // let counter = props.minimumAppointmentDuration + props.maxAppointmentDuration;
     var obj;
-    obj = { endHour: beginTimes[indexBeginTime].beginHour, mins: beginTimes[indexBeginTime].mins, disabled: false };
+    const minuteArray = beginTimes[indexBeginTime].mins;
+    obj = { endHour: beginTimes[indexBeginTime].beginHour, mins: minuteArray, disabled: false };
     endTimesArray.push(obj);
     if(indexBeginTime < beginTimes.length) {
       obj = { endHour: beginTimes[indexBeginTime + 1].beginHour, mins: beginTimes[indexBeginTime + 1].mins, disabled: false };

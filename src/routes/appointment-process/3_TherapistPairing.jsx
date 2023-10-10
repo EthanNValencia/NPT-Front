@@ -4,8 +4,9 @@ import { UserContext } from "../../contexts/context";
 import EmployeeCard from "../../components/EmployeeCard";
 import { findMyMatch } from "../../axios/api";
 import Calendar from "react-calendar";
-import TimePicker from "../../components/TimePicker";
+import TimePicker2 from "../../components/TimePicker2";
 import ContinueBack from "../../components/ContinueBack";
+import DisabledTimePicker from "../../components/DisabledTimePicker";
 
 function TherapistPairing() {
   const userContext = useContext(UserContext);
@@ -23,7 +24,6 @@ function TherapistPairing() {
     for(var i = 0; i < 7; i++) { // 7 days in a week, but this should not fully execute unless the employee has no schedule. 
       const options = { weekday: 'short' };
       const dayName = date.toLocaleDateString('en-US', options);
-      console.log(JSON.stringify(selectedEmployee.schedule))
       const match = selectedEmployee.schedule.filter(element => element.day == dayName);
       if(match.length > 0) {
          return date;
@@ -35,14 +35,11 @@ function TherapistPairing() {
   useEffect(() => {
     const date = findAValidInitalDate(selectedDate);
     setSelectedDate(date);
-    console.log("selectedDate: " + selectedDate);
   }, [selectedEmployee]);
 
 
   const calendarOnChange = (date) => {
     setSelectedDate(date);
-    // setSchedule(date);
-    console.log(date);
   };
   /*
   function formatDate(date) {
@@ -64,15 +61,12 @@ function TherapistPairing() {
   }
 
   function onContinue() {
-    console.log(JSON.stringify(selectedEmployee));
-    console.log();
     userContext.setEmployeeName(selectedEmployee.firstName, selectedEmployee.middleName, selectedEmployee.lastName);
     // userContext.setAppointmentTimes();
     // navigate("/notes");
   }
 
   function selected(employee) {
-    console.log(employee);
     setSelectedEmployee(employee);
     setIsEmployeeSelected(true);
   }
@@ -82,7 +76,6 @@ function TherapistPairing() {
       try {
         const matchedTherapists = await findMyMatch(userContext.services);
         setEmployeeMatchArray(matchedTherapists);
-        console.log(matchedTherapists);
       } catch (error) {
         console.error('Error finding therapist matches:', error);
       }
@@ -148,9 +141,9 @@ function TherapistPairing() {
 
   function timePicker() {
     if (isEmployeeSelected) {
-      return <TimePicker disabled={false} selectedDate={selectedDate} selectedEmployee={selectedEmployee} minimumAppointmentDuration={1} maxAppointmentDuration={3} />;
+      return <TimePicker2 disabled={false} selectedDate={selectedDate} selectedEmployee={selectedEmployee} minimumAppointmentDuration={1} maxAppointmentDuration={3} />;
     } else {
-      return <TimePicker disabled={true} />;
+      return <DisabledTimePicker disabled={true} />;
     }
   }
 
