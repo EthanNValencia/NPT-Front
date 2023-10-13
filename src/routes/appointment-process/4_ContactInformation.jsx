@@ -3,12 +3,12 @@ import { UserContext } from "../../contexts/context";
 import { getServices } from "../../axios/api";
 
 
-function Notes() {
+function ContactInformation() {
   const userContext = useContext(UserContext);
 
   return <div>
-
+    <p>{console.log(JSON.stringify(userContext.appointment))}</p>
   </div>;
 }
 
-export default Notes;
+export default ContactInformation;

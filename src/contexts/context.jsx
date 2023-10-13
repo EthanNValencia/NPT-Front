@@ -50,11 +50,20 @@ export function UserProvider({ children }) {
 
   function setAppointmentTimes(beginTime, endTime) {
     const updateAppointment = {...appointment, appointmentBeginTime: beginTime, appointmentEndTime: endTime};
+    console.log(JSON.stringify(appointment));
     setAppointment(updateAppointment);
   }
 
   function filloutAppointment() {
 
+  }
+
+  function printUserContext() {
+    console.log("--- Begin User Context ---");
+    console.log("user: " + JSON.stringify(user));
+    console.log("services: " + JSON.stringify(services));
+    console.log("appointment: " + JSON.stringify(appointment));
+    console.log("--- End User Context ---");
   }
 
   function setUserName(firstName, lastName) {

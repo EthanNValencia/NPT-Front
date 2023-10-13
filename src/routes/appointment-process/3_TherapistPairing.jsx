@@ -16,6 +16,7 @@ function TherapistPairing() {
   const [selectedDate, setSelectedDate] = useState(new Date()); // selected date
   const [isEmployeeSelected, setIsEmployeeSelected] = useState(false); // boolean check
   // const [selectedDateSchedule, setSelectedDateSchedule] = useState([]);
+  const [selectedTimes, setSelectedTimes] = useState([{hourValue: null, minuteValue: null, hourIndex: null, minuteIndex: null}, {hourValue: null, minuteValue: null, hourIndex: null, minuteIndex: null}]);
 
   function findAValidInitalDate(date) {
     if(selectedEmployee.schedule == undefined) {
@@ -30,6 +31,13 @@ function TherapistPairing() {
       }
       date.setDate(date.getDate() + 1);
     }
+  }
+
+  function saveSelectedTimes(begin, end) {
+    const newBegin = { ...selectedTimes[0], ...begin };
+    const newEnd = { ...selectedTimes[1], ...end };
+    const newSelectedTimes = [newBegin, newEnd];
+    setSelectedTimes(newSelectedTimes);
   }
 
   useEffect(() => {
@@ -61,13 +69,48 @@ function TherapistPairing() {
   }
 
   function onContinue() {
-    userContext.setEmployeeName(selectedEmployee.firstName, selectedEmployee.middleName, selectedEmployee.lastName);
-    // userContext.setAppointmentTimes();
-    // navigate("/notes");
+  
+    // console.log("selectedTimes: " + JSON.stringify(selectedTimes));
+    const check = verifySelectedTimes();
+    if(check == false) {
+      console.log("Failed");
+      return;
+    }
+    // [{"hourValue":13,"minuteValue":0,"hourIndex":0,"minuteIndex":0},{"hourValue":13,"minuteValue":30,"hourIndex":0,"minuteIndex":1}]
+    
+    // console.log("Mins: " + selectedTimes[0].minuteValue + "-" + selectedTimes[1].minuteValue);
+    const beginHour = selectedTimes[0].hourValue;
+    const beginMinute = selectedTimes[0].minuteValue;
+    const endHour = selectedTimes[1].hourValue;
+    const endMinute = selectedTimes[1].minuteValue;
+
+    let beginDate = new Date(selectedDate); 
+    beginDate.setHours(beginHour, beginMinute);
+    beginDate.setSeconds(0);
+
+    let endDate = new Date(selectedDate);
+    endDate.setHours(endHour, endMinute);
+    endDate.setSeconds(0);
+
+    userContext.setAppointmentTimes(beginDate, endDate);
+
+    console.log("Success");
+    navigate("/contact-information");
+  }
+
+  function verifySelectedTimes() {
+    if(selectedTimes[0].hourIndex == null || selectedTimes[0].hourValue == null || selectedTimes[0].minuteIndex == null || selectedTimes[0].minuteValue == null) {
+      return false;
+    }
+    if(selectedTimes[1].hourIndex == null || selectedTimes[1].hourValue == null || selectedTimes[1].minuteIndex == null || selectedTimes[1].minuteValue == null) {
+      return false;
+    }
+    return true;
   }
 
   function selected(employee) {
     setSelectedEmployee(employee);
+    userContext.setEmployeeName(employee.firstName, employee.middleName, employee.lastName);
     setIsEmployeeSelected(true);
   }
 
@@ -141,7 +184,7 @@ function TherapistPairing() {
 
   function timePicker() {
     if (isEmployeeSelected) {
-      return <TimePicker2 disabled={false} selectedDate={selectedDate} selectedEmployee={selectedEmployee} minimumAppointmentDuration={1} maxAppointmentDuration={3} />;
+      return <TimePicker2 disabled={false} selectedDate={selectedDate} selectedEmployee={selectedEmployee} minimumAppointmentDuration={30} maxAppointmentDuration={60} saveSelectedTimes={saveSelectedTimes} />;
     } else {
       return <DisabledTimePicker disabled={true} />;
     }
