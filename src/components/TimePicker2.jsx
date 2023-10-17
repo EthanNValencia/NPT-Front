@@ -12,7 +12,6 @@ function TimePicker(props) {
   useEffect(() => {
     const newRange = setBeginAndEndHours();
     setRange(newRange);
-    // console.log("NewRange: " + newRange);
     const newBeginTimes = generateAvailableBeginTimes(appointmentsSchedule, newRange);
     setBeginTimes(newBeginTimes);
   }, [selectedEmployee, selectedDate]);

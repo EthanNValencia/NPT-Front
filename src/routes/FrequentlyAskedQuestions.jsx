@@ -7,7 +7,7 @@ import FAQsLoading from "../components/loading/FAQsLoading";
 function FrequentlyAskedQuestions() {
   const [faqs, setFAQs] = useState([]);
   const [message, setMessage] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   async function onClick() {
     try {
