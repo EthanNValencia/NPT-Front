@@ -1,20 +1,20 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../../contexts/context";
 import { useNavigate } from "react-router-dom";
 import ContinueBack from "../../components/ContinueBack";
 import MultipleCheckBoxes from "../../components/MultipleCheckBoxes";
-
+import validator from "validator";
 
 function ContactInformation() {
   const userContext = useContext(UserContext);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [submitAttempted, setSubmitAttempted] = useState(false);
-  const [emailValidated, setEmailValidated] = useState(false);
-  const [phoneNumberValidated, setPhoneNumberValidated] = useState(false);
+  const [emailIsValidated, setEmailIsValidated] = useState(false);
+  const [phoneNumberIsValidated, setPhoneNumberIsValidated] = useState(false);
   const [emailIsSelected, setEmailIsSelected] = useState(false);
   const [phoneIsSelected, setPhoneIsSelected] = useState(false);
-  // setEmailIsSelected, setPhoneIsSelected
+  const [contactTypeIsSelected, setContactTypeIsSelected] = useState(false);
   const navigate = useNavigate();
 
   const modifyPhoneNumber = (phoneNum) => {
@@ -38,32 +38,81 @@ function ContactInformation() {
   }
 
   const validateInputFields = () => {
-    
+    if(emailIsSelected || phoneIsSelected) {
+      setContactTypeIsSelected(true);
+    } else {
+      setContactTypeIsSelected(false);
+    }
+
+    if(emailIsSelected) {
+      if(validator.isEmail(email)) {
+        setEmailIsValidated(true);
+      } else {
+        setEmailIsValidated(false);
+      }
+    }
+
+    if(phoneIsSelected) {
+      if(validatePhoneNumber(phoneNumber)) {
+        setPhoneNumberIsValidated(true);
+      } else {
+        setPhoneNumberIsValidated(false);
+      }
+    }
   };
 
-  const handleSubmit = () => {
+  // 123-123-1212
+  const validatePhoneNumber = (phoneNum) => {
+    if(phoneNum.length != 12) {
+      return false;
+    }
+    for (let i = 0; i < phoneNum.length; i++) {
+      let check = false;
+      if (i == 3) {
+        check = shouldEqual("-", phoneNum[i]);
+      } else if (i == 7) {
+        check = shouldEqual("-", phoneNum[i]);
+      } else {
+        check = isNumeric(phoneNum[i]);
+      }
+      if(check == false) {
+        return false;
+      }
+    }
+    return true;
+  }
 
+  const shouldEqual = (str1, str2) => {
+    if(str1 == str2) {
+      return true;
+    }
+    return false;
   }
 
   const goBack = () => {
-    navigate("/");
+    navigate("/pairing");
   }
 
   const onContinue = () => {
+    validateInputFields();
     setSubmitAttempted(true);
-    if (emailValidated && phoneNumberValidated) {
-      // userContext.setUserName(firstName, lastName);
-      navigate("/category");
+    if (emailIsValidated && phoneNumberIsValidated && contactTypeIsSelected) {
+      userContext.setAppointmentPhoneAndOrEmail(phoneNumber, email);
+      console.log("Yay!");
+      navigate("/notes");
     }
+    // console.log("phone: " + phoneNumberIsValidated + ", email: " + emailIsValidated);
   }
 
   return (<div>
     <h1 className="text-center text-xl mb-4">You're almost there! Now we need to know how to contact you.</h1>
     <h1 className="text-center text-xl mb-4">How would you prefer to be contacted?</h1>
 
+    {!contactTypeIsSelected && submitAttempted ? (<div className="text-center text-red-400 mb-4"><p>Please select your preferred means of communication.</p> </div>) : (<></>)}
+
     <MultipleCheckBoxes emailIsSelected={emailIsSelected} setEmailIsSelected={setEmailIsSelected} phoneIsSelected={phoneIsSelected} setPhoneIsSelected={setPhoneIsSelected} />
-    <div onSubmit={handleSubmit}>
-      {!phoneNumberValidated && submitAttempted ? (
+    <div>
+      {!phoneNumberIsValidated && submitAttempted && phoneIsSelected ? (
             <div className="text-center text-red-400">
               <p>Please enter a valid phone number.</p>
               <p>The expected format is: 616-543-4342</p>
@@ -91,7 +140,7 @@ function ContactInformation() {
           </div>
         ) : (<></>)}
       
-          {!emailValidated && submitAttempted ? (
+          {!emailIsValidated && submitAttempted && emailIsSelected ? (
             <div className="text-center text-red-400">
               Please enter your email address.
             </div>

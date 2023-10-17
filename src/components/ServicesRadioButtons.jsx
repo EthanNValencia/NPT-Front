@@ -5,7 +5,7 @@ export default function ServicesRadioButtons({ services, selected, setSelected }
   // const [selected, setSelected] = useState(services[0]);
 
   function handleOnChange(service) {
-    console.log(service);
+    // console.log(service);
     setSelected(service);
   }
 

@@ -16,6 +16,7 @@ import TherapistPairing from "./routes/appointment-process/3_TherapistPairing";
 import Admin from "./routes/Admin";
 import Footer from "./components/Footer";
 import ContactInformation from "./routes/appointment-process/4_ContactInformation";
+import Notes from "./routes/appointment-process/5_Notes";
 
 // w-fit
 function App() {
@@ -94,6 +95,14 @@ function App() {
                 element={
                   <WSW>
                     <ContactInformation />
+                  </WSW>
+                }
+              />
+              <Route
+                path="notes"
+                element={
+                  <WSW>
+                    <Notes />
                   </WSW>
                 }
               />

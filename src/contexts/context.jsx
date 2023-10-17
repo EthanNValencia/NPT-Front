@@ -22,13 +22,13 @@ export function UserProvider({ children }) {
   const [appointment, setAppointment] = useState({
     employeeFirstName: null,
     employeeMiddleName: null,
-    employeeLastName: null,
+    employeeLastName: null, 
     appointmentFirstName: null, // 
     appointmentLastName: null, //
-    appointmentEmail: null,
-    appointmentPhoneNumber: null,
-    appointmentBeginTime: null, 
-    appointmentEndTime: null, 
+    appointmentEmail: null, //
+    appointmentPhoneNumber: null, //
+    appointmentBeginTime: null,  //
+    appointmentEndTime: null,  //
     appointmentNotes: null, 
     serviceName: null //
   });
@@ -50,7 +50,11 @@ export function UserProvider({ children }) {
 
   function setAppointmentTimes(beginTime, endTime) {
     const updateAppointment = {...appointment, appointmentBeginTime: beginTime, appointmentEndTime: endTime};
-    console.log(JSON.stringify(appointment));
+    setAppointment(updateAppointment);
+  }
+
+  function setAppointmentPhoneAndOrEmail(phone, email) {
+    const updateAppointment = {...appointment, appointmentEmail: email, appointmentPhoneNumber: phone};
     setAppointment(updateAppointment);
   }
 
@@ -91,7 +95,10 @@ export function UserProvider({ children }) {
         setAppointmentName, 
         setAppointmentServiceName,
         setEmployeeName, 
-        setAppointmentTimes
+        setAppointmentTimes,
+        printUserContext,
+        setAppointmentPhoneAndOrEmail,
+        appointment
       }}
     >
       {children}

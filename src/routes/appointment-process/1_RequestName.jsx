@@ -50,9 +50,11 @@ function RequestName() {
 
   return (
     <div>
+      <h1 className="text-center text-xl mb-4 flex justify-around">
+        Welcome to Nephew Physical Therapy. This process will walk you through creating a tentative appointment. After your appointment is submitted we will reach out to you confirm your appointment. 
+      </h1>
       <h1 className="text-center text-xl mb-4">
-        Welcome to Nephew Physical Therapy. Please begin by introducing
-        yourself.
+        Please begin by introducing yourself.
       </h1>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col justify-center items-center">
