@@ -8,6 +8,7 @@ import ServicesRadioButtons from "../../components/ServicesRadioButtons";
 function SelectCategory() {
   const userContext = useContext(UserContext);
   const [serviceSelected, setServiceSelected] = useState(true);
+  const [continueIsEnabled, setContinueIsEnabled] = useState(false);
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
   const [selected, setSelected] = useState({"id": 1, "name": undefined});
@@ -23,6 +24,14 @@ function SelectCategory() {
     }
     fetchServices();
   }, []);
+
+  useEffect(() => {
+    if (selected.name == undefined) {
+      setContinueIsEnabled(false);
+    } else {
+      setContinueIsEnabled(true);
+    }
+  }, [selected])
 
   function goBack() {
     navigate("/request-name");
@@ -56,7 +65,7 @@ function SelectCategory() {
       <ServicesRadioButtons services={services} selected={selected} setSelected={setSelected} />
     </div>
 
-    <ContinueBack goBack={goBack} onContinue={onContinue}/>
+    <ContinueBack goBack={goBack} onContinue={onContinue} continueIsEnabled={continueIsEnabled}/>
     </div>
   );
 }

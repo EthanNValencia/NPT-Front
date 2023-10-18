@@ -13,9 +13,10 @@ function TherapistPairing() {
   const [employeeMatchArray, setEmployeeMatchArray] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState({}); // employee object
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState(new Date()); // selected date
+  const [selectedDate, setSelectedDate] = useState(null); // selected date
   const [isEmployeeSelected, setIsEmployeeSelected] = useState(false); // boolean check
-  // const [selectedDateSchedule, setSelectedDateSchedule] = useState([]);
+  const [isDateSelected, setIsDateSelected] = useState(false);
+  const [isTimeSelected, setIsTimeSelected] = useState(false);
   const [selectedTimes, setSelectedTimes] = useState([{hourValue: null, minuteValue: null, hourIndex: null, minuteIndex: null}, {hourValue: null, minuteValue: null, hourIndex: null, minuteIndex: null}]);
 
   function findAValidInitalDate(date) {
@@ -37,16 +38,18 @@ function TherapistPairing() {
     const newBegin = { ...selectedTimes[0], ...begin };
     const newEnd = { ...selectedTimes[1], ...end };
     const newSelectedTimes = [newBegin, newEnd];
+    setIsTimeSelected(true);
     setSelectedTimes(newSelectedTimes);
   }
 
   useEffect(() => {
-    const date = findAValidInitalDate(selectedDate);
-    setSelectedDate(date);
+    // const date = findAValidInitalDate(selectedDate);
+    // setSelectedDate(date);
   }, [selectedEmployee]);
 
 
   const calendarOnChange = (date) => {
+    setIsDateSelected(true);
     setSelectedDate(date);
   };
   /*
@@ -70,7 +73,6 @@ function TherapistPairing() {
 
   function onContinue() {
   
-    // console.log("selectedTimes: " + JSON.stringify(selectedTimes));
     const check = verifySelectedTimes();
     if(check == false) {
       console.log("Failed");
@@ -94,7 +96,7 @@ function TherapistPairing() {
 
     userContext.setAppointmentTimes(beginDate, endDate);
 
-    console.log("Success");
+    // console.log("Success");
     navigate("/contact-information");
   }
 
@@ -161,9 +163,8 @@ function TherapistPairing() {
         <Calendar
           onChange={calendarOnChange}
           value={selectedDate}
-          defaultValue={findAValidInitalDate(selectedDate)}
+          defaultValue={selectedDate}
           minDate={new Date()}
-          // tileDisabled={({ date }) => [0, 6].includes(date.getDay())}
           tileDisabled={generateAvailableCalendarDays}
         />
       );
@@ -183,7 +184,7 @@ function TherapistPairing() {
   }
 
   function timePicker() {
-    if (isEmployeeSelected) {
+    if (isEmployeeSelected && isDateSelected) {
       return <TimePicker2 disabled={false} selectedDate={selectedDate} selectedEmployee={selectedEmployee} minimumAppointmentDuration={30} maxAppointmentDuration={60} saveSelectedTimes={saveSelectedTimes} />;
     } else {
       return <DisabledTimePicker disabled={true} />;
@@ -201,24 +202,27 @@ function TherapistPairing() {
     if (!isEmployeeSelected) {
       return (
         <div>
-          <p>
-            Hello, {userContext.user.firstName}! Please begin by selecting your
+          <p className="text-lg">
+            {userContext.user.firstName}, begin by selecting your
             therapist. Each of these excellent therapists have been matched to
-            you based on the area(s) of interest that you selected in the
-            previous step.
+            you based on the service you selected in the previous step.
           </p>
         </div>
       );
     } else {
       return (
         <div>
-          <p>You have selected {getEmployeeName(selectedEmployee)}!</p>
-          <p>
-            Next select the day and time that you would like to meet{" "}
-            {getEmployeeName(selectedEmployee)}.
-          </p>
+          <p>You have selected {getEmployeeName(selectedEmployee)}! Next select the day and time that you would like to meet.</p>
         </div>
       );
+    }
+  }
+
+  const checkOrTick = (boolean) => {
+    if(boolean) {
+      return <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M7 13.4545L9.66667 16L17 9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
+    } else {
+      return <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6Z" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
     }
   }
 
@@ -231,16 +235,31 @@ function TherapistPairing() {
         </div>
       </div>
       <div className="flex md:flex-row sm:flex-col xs:flex-col gap-4 place-content-center pt-4 pb-4">
-        <div className="text-">{userInstructions()}</div>
-        <div>
+      <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl ring-1 ring-gray-900/5 rounded-lg w-full">
+        <div className="text-xs px-2 pt-2 shadow-sm rounded-lg ring-1 ring-gray-900/5 w-fit float-right">
+            <div className="grid grid-flow-row grid-cols-6 grid-rows-3">
+              <p className="col-span-5 flex justify-center items-center">Therapist Selected:</p>
+              <p className="col-span-1 ">{checkOrTick(isEmployeeSelected)}</p>
+              <p className="col-span-5 flex justify-center items-center">Date Selected:</p>
+              <p className="col-span-1">{checkOrTick(isDateSelected)}</p>
+              <p className="col-span-5 flex justify-center items-center">Time Selected:</p>
+              <p className="col-span-1">{checkOrTick(isTimeSelected)}</p>
+            </div>
+        </div>
+        {userInstructions()}</div>
+        <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-lg">
           {calendar()}
-          {timePicker()}
+          <div className="mt-2">
+            {timePicker()}
+          </div>
         </div>
       </div>
     </div>
-      <ContinueBack goBack={goBack} onContinue={onContinue}/>
+      <ContinueBack goBack={goBack} onContinue={onContinue} continueIsEnabled={isEmployeeSelected && isDateSelected && isTimeSelected} />
       </div>
   );
+
+
 }
 // overflow-x-scroll flex-row flex
 export default TherapistPairing;

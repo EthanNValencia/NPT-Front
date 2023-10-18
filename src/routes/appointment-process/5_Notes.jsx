@@ -5,7 +5,10 @@ import ContinueBack from "../../components/ContinueBack";
 
 
 function Notes() {
+    const [openNote, setOpenNote] = useState(false);
     const [note, setNote] = useState("");
+    const [continueIsEnabled, setContinueIsEnabled] = useState(false);
+    const [looksGood, setLooksGood] = useState(false);
     const userContext = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -31,17 +34,18 @@ function Notes() {
         return readableTime;
     }
 
-    const submit = () => {
-        console.log("Submit!");
+    const onChangeLooksGood = () => {
+        setLooksGood(true);
+        setContinueIsEnabled(true);
     }
 
-    const test = () => {
-        console.log("Test");
+    const onChangeNoteSection = () => {
+        setOpenNote(!openNote);
     }
 
     return (
     <div>
-        <h1 className="flex justify-around">You are almost there!</h1>
+        <h1 className="flex justify-around mb-4 text-xl">You are almost there!</h1>
         <div className="flex justify-around flex-row">
             <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-lg">
                 <div> 
@@ -64,33 +68,60 @@ function Notes() {
                     </div>
                 </div>
                 <div className="flex justify-around py-2">
-                    <button
-                        onClick={submit}
+                    {!looksGood ? 
+                    (<button
+                        onClick={onChangeLooksGood}
                         type="button"
                         className="inline-flex items-center px-8 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-10 hover:text-black first-line:transition ease-in-out duration-150 cursor-pointer">
                         Looks Good!
-                    </button>
-                    <svg className="hover:shadow-xl hover:ring-gray-900/5 hover:bg-npt_colors-10 hover:rounded-lg bg-npt_colors-350 rounded-lg first-line:transition ease-in-out duration-150 cursor-pointer" onClick={test} width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 14V7C20 5.34315 18.6569 4 17 4H12M20 14L13.5 20M20 14H15.5C14.3954 14 13.5 14.8954 13.5 16V20M13.5 20H7C5.34315 20 4 18.6569 4 17V12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7 4V7M7 10V7M7 7H4M7 7H10" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </button>) : 
+                    (<button
+                        onClick={onChangeLooksGood}
+                        type="button"
+                        className="inline-flex items-center px-8 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350">
+                        <div className="shrink-0 text-white">
+                            <CheckIcon className="h-6 w-6" />
+                        </div>
+                    </button>)}
+                    <svg className="hover:shadow-xl hover:ring-gray-900/5 hover:bg-npt_colors-10 hover:rounded-lg bg-npt_colors-350 rounded-lg first-line:transition ease-in-out duration-150 cursor-pointer fill-white hover:fill-black" onClick={onChangeNoteSection} width="40px" height="40px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M13.5,20 C14.3284271,20 15,19.3284271 15,18.5 C15,17.1192881 16.1192881,16 17.5,16 C18.3284271,16 19,15.3284271 19,14.5 L19,11.5 C19,11.2238576 19.2238576,11 19.5,11 C19.7761424,11 20,11.2238576 20,11.5 L20,14.5 C20,18.0898509 17.0898509,21 13.5,21 L6.5,21 C5.11928813,21 4,19.8807119 4,18.5 L4,5.5 C4,4.11928813 5.11928813,3 6.5,3 L12.5,3 C12.7761424,3 13,3.22385763 13,3.5 C13,3.77614237 12.7761424,4 12.5,4 L6.5,4 C5.67157288,4 5,4.67157288 5,5.5 L5,18.5 C5,19.3284271 5.67157288,20 6.5,20 L13.5,20 L13.5,20 Z M15.7913481,19.5014408 C16.9873685,18.9526013 17.9526013,17.9873685 18.5014408,16.7913481 C18.1948298,16.9255432 17.8561101,17 17.5,17 C16.6715729,17 16,17.6715729 16,18.5 C16,18.8561101 15.9255432,19.1948298 15.7913481,19.5014408 L15.7913481,19.5014408 Z M18,6 L20.5,6 C20.7761424,6 21,6.22385763 21,6.5 C21,6.77614237 20.7761424,7 20.5,7 L18,7 L18,9.5 C18,9.77614237 17.7761424,10 17.5,10 C17.2238576,10 17,9.77614237 17,9.5 L17,7 L14.5,7 C14.2238576,7 14,6.77614237 14,6.5 C14,6.22385763 14.2238576,6 14.5,6 L17,6 L17,3.5 C17,3.22385763 17.2238576,3 17.5,3 C17.7761424,3 18,3.22385763 18,3.5 L18,6 Z M8.5,9 C8.22385763,9 8,8.77614237 8,8.5 C8,8.22385763 8.22385763,8 8.5,8 L12.5,8 C12.7761424,8 13,8.22385763 13,8.5 C13,8.77614237 12.7761424,9 12.5,9 L8.5,9 Z M8.5,12 C8.22385763,12 8,11.7761424 8,11.5 C8,11.2238576 8.22385763,11 8.5,11 L15.5,11 C15.7761424,11 16,11.2238576 16,11.5 C16,11.7761424 15.7761424,12 15.5,12 L8.5,12 Z M8.5,15 C8.22385763,15 8,14.7761424 8,14.5 C8,14.2238576 8.22385763,14 8.5,14 L13.5,14 C13.7761424,14 14,14.2238576 14,14.5 C14,14.7761424 13.7761424,15 13.5,15 L8.5,15 Z"></path> </g></svg>
                 </div>
                 <div className="">
-                    <textarea
+                    {openNote ? 
+                    (<textarea
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     id="message"
                     rows="4"
-                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-npt_colors-30 focus:border-npt_colors-30 "
+                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-npt_colors-30 focus:border-npt_colors-30"
                     placeholder="Write your note here..."
-                    ></textarea>
+                    ></textarea>)
+                    : (<></>)}
                 </div>
             </div>
             </div>
         </div>
-
-
-        
-        <ContinueBack goBack={goBack} onContinue={onContinue} continueDisabled={true}/>
+        <ContinueBack goBack={goBack} onContinue={onContinue} continueIsEnabled={continueIsEnabled}/>
     </div>
   )
 }
 
 export default Notes;
+
+function CheckIcon(props) {
+    // Example: 
+    // <div className="shrink-0 text-white">
+    // <CheckIcon className="h-6 w-6" />
+    // </div>
+    return (
+      <svg viewBox="0 0 24 24" fill="none" {...props}>
+        <circle cx={12} cy={12} r={12} fill="#fff" opacity="0.2" />
+        <path
+          d="M7 13l3 3 7-7"
+          stroke="#fff"
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    )
+  }

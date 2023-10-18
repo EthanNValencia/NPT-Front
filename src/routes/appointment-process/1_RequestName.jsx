@@ -12,6 +12,7 @@ function RequestName() {
   const [fnValidated, setFnValidated] = useState(false);
   const [lastName, setLastName] = useState("");
   const [lnValidated, setLnValidated] = useState(false);
+  const [continueIsEnabled, setContinueIsEnabled] = useState(false);
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -22,15 +23,26 @@ function RequestName() {
   };
 
   const validateInputFields = () => {
+    let fnValid = false;
+    let lnValid = false;
     if (firstName.length >= 3) {
+      fnValid = true;
       setFnValidated(true);
     } else {
+      fnValid = false;
       setFnValidated(false);
     }
     if (lastName.length >= 3) {
+      lnValid = true;
       setLnValidated(true);
     } else {
+      lnValid = false;
       setLnValidated(false);
+    }
+    if(fnValid && lnValid) {
+      setContinueIsEnabled(true);
+    } else {
+      setContinueIsEnabled(false);
     }
   };
 
@@ -50,7 +62,7 @@ function RequestName() {
 
   return (
     <div>
-      <h1 className="text-center text-xl mb-4 flex justify-around">
+      <h1 className="text-center text-xl mb-4 flex w-fit">
         Welcome to Nephew Physical Therapy. This process will walk you through creating a tentative appointment. After your appointment is submitted we will reach out to you confirm your appointment. 
       </h1>
       <h1 className="text-center text-xl mb-4">
@@ -107,7 +119,7 @@ function RequestName() {
           </div>
         </div>
       </form>
-      <ContinueBack goBack={goBack} onContinue={onContinue}/>
+      <ContinueBack goBack={goBack} onContinue={onContinue} continueIsEnabled={continueIsEnabled}/>
     </div>
   );
 }

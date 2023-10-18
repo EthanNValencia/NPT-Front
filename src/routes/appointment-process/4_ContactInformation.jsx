@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../contexts/context";
 import { useNavigate } from "react-router-dom";
 import ContinueBack from "../../components/ContinueBack";
@@ -15,7 +15,21 @@ function ContactInformation() {
   const [emailIsSelected, setEmailIsSelected] = useState(false);
   const [phoneIsSelected, setPhoneIsSelected] = useState(false);
   const [contactTypeIsSelected, setContactTypeIsSelected] = useState(false);
+  const [continueIsEnabled, setContinueIsEnabled] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!emailIsSelected) {
+      setEmail(""); 
+    }
+    if(!phoneIsSelected) {
+      setPhoneNumber("");
+    }
+  }, [emailIsSelected, phoneIsSelected]);
+
+  useEffect(() => {
+    validateInputFields();
+  }, [email, phoneNumber]);
 
   const modifyPhoneNumber = (phoneNum) => {
     let modifiedPhoneNumber = phoneNum;
@@ -39,11 +53,12 @@ function ContactInformation() {
 
   const validateInputFields = () => {
     if(emailIsSelected || phoneIsSelected) {
+      setContinueIsEnabled(true);
       setContactTypeIsSelected(true);
     } else {
+      setContinueIsEnabled(false);
       setContactTypeIsSelected(false);
     }
-
     if(emailIsSelected) {
       if(validator.isEmail(email)) {
         setEmailIsValidated(true);
@@ -51,7 +66,6 @@ function ContactInformation() {
         setEmailIsValidated(false);
       }
     }
-
     if(phoneIsSelected) {
       if(validatePhoneNumber(phoneNumber)) {
         setPhoneNumberIsValidated(true);
@@ -93,12 +107,23 @@ function ContactInformation() {
     navigate("/pairing");
   }
 
+  const validContinueConditions = () => {
+    if((emailIsSelected && emailIsValidated) && (phoneIsSelected && phoneNumberIsValidated)) {
+      return true;
+    }
+    if((emailIsSelected && emailIsValidated) && (!phoneIsSelected && !phoneNumberIsValidated)) {
+      return true;
+    }
+    if((!emailIsSelected && !emailIsValidated) && (phoneIsSelected && phoneNumberIsValidated)) {
+      return true;
+    }
+    return false;
+  }
+
   const onContinue = () => {
-    validateInputFields();
     setSubmitAttempted(true);
-    if (emailIsValidated && phoneNumberIsValidated && contactTypeIsSelected) {
+    if (validContinueConditions()) {
       userContext.setAppointmentPhoneAndOrEmail(phoneNumber, email);
-      console.log("Yay!");
       navigate("/notes");
     }
     // console.log("phone: " + phoneNumberIsValidated + ", email: " + emailIsValidated);
@@ -135,6 +160,7 @@ function ContactInformation() {
               value={phoneNumber}
               onChange={(e) => {
                 modifyPhoneNumber(e.target.value);
+                validateInputFields();
               }}
             />
           </div>
@@ -160,6 +186,7 @@ function ContactInformation() {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
+              validateInputFields();
             }}
           />
           
@@ -167,7 +194,7 @@ function ContactInformation() {
         ) : (<></>)}
       </div>
     </div>
-    <ContinueBack goBack={goBack} onContinue={onContinue}/>
+    <ContinueBack goBack={goBack} onContinue={onContinue} continueIsEnabled={continueIsEnabled} />
     </div>);
 }
 
