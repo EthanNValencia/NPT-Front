@@ -134,8 +134,8 @@ function WSW({ children }) {
   // WSW stands for WebSiteWrap, it is meant to wrap all the routes in the website.
   // I will make a different wrapper for the admin panel.
   return (
-    <div className="pt-4 pb-4">
-      <div className="mx-auto border rounded-lg shadow-md w-fit">
+    <div className="p-1 w-full h-full max-w-7xl">
+      <div className="mx-auto border rounded-lg shadow-md">
         <Header />
         <div className="p-4 ">{children}</div>
         <Footer />
@@ -145,8 +145,9 @@ function WSW({ children }) {
 }
 
 function APW({ children }) {
+  // Admin Panel Wrap
   return (
-    <div className="pt-4 pb-4">
+    <div className="pt-2 pb-2">
       <div className="mx-auto border rounded-lg shadow-md w-fit">
         <div className="p-4">{children}</div>
       </div>

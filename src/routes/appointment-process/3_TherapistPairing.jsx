@@ -220,23 +220,23 @@ function TherapistPairing() {
 
   const checkOrTick = (boolean) => {
     if(boolean) {
-      return <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M7 13.4545L9.66667 16L17 9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
+      return <svg className="fill-none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M7 13.4545L9.66667 16L17 9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
     } else {
-      return <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M4 6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6Z" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+      return <svg className="fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M7 13.4545L9.66667 16L17 9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
     }
   }
 
   return (
     <div>
-    <div className="xl:max-w-6xl lg:max-w-3xl md:max-w-2xl sm:max-w-sm xs:max-w-xs mx-auto">
+    <div className="w-full mx-auto">
       <div className=" shadow-xl min-w-0 border-2 rounded-md">
         <div className="overflow-x-auto flex p-4 gap-2">
           {employeeCardList()}
         </div>
       </div>
       <div className="flex md:flex-row sm:flex-col xs:flex-col gap-4 place-content-center pt-4 pb-4">
-      <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl ring-1 ring-gray-900/5 rounded-lg w-full">
-        <div className="text-xs px-2 pt-2 shadow-sm rounded-lg ring-1 ring-gray-900/5 w-fit float-right">
+      <div className="relative bg-white px-2 py-2 shadow-xl ring-1 ring-gray-900/5 rounded-lg w-full">
+        <div className="text-xs px-2 py-2 shadow-sm rounded-lg ring-1 ring-gray-900/5 w-fit float-right">
             <div className="grid grid-flow-row grid-cols-6 grid-rows-3">
               <p className="col-span-5 flex justify-center items-center">Therapist Selected:</p>
               <p className="col-span-1 ">{checkOrTick(isEmployeeSelected)}</p>
@@ -246,7 +246,9 @@ function TherapistPairing() {
               <p className="col-span-1">{checkOrTick(isTimeSelected)}</p>
             </div>
         </div>
-        {userInstructions()}</div>
+        {userInstructions()}
+        <p>I want to render specific things about the selected therapist here.</p>
+        </div>
         <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-lg">
           {calendar()}
           <div className="mt-2">

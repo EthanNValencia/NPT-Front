@@ -61,8 +61,9 @@ function RequestName() {
   }
 
   return (
-    <div>
-      <h1 className="text-center text-xl mb-4 flex w-fit">
+    <div className="">
+      <div className="bg-white px-2 pt-2 pb-2 mb-4 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-lg">
+      <h1 className="text-center text-xl mb-4 flex max-w-max">
         Welcome to Nephew Physical Therapy. This process will walk you through creating a tentative appointment. After your appointment is submitted we will reach out to you confirm your appointment. 
       </h1>
       <h1 className="text-center text-xl mb-4">
@@ -93,7 +94,6 @@ function RequestName() {
               }}
             />
           </div>
-
           <div className="mb-4">
             {!lnValidated && submitAttempted ? (
               <div className="text-center text-red-400">
@@ -119,6 +119,7 @@ function RequestName() {
           </div>
         </div>
       </form>
+      </div>
       <ContinueBack goBack={goBack} onContinue={onContinue} continueIsEnabled={continueIsEnabled}/>
     </div>
   );

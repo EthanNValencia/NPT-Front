@@ -4,7 +4,7 @@ import NavigationBar from "./NavigationBar";
 
 function Header() {
   return (
-    <div className="p-4 rounded-t-lg flex justify-between justify-items-center items-center bg-npt_colors-325 text-white">
+    <div className="p-4 rounded-t-lg flex justify-between justify-items-center items-center bg-npt_colors-325 text-white w-full">
       <div className="flex-nowrap pr-10">
         <div className="">
         <h1 className="xl:text-xl lg:text-md md:text-xs sm:text-sm font-bold">
