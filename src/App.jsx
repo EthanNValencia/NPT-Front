@@ -17,8 +17,8 @@ import Admin from "./routes/Admin";
 import Footer from "./components/Footer";
 import ContactInformation from "./routes/appointment-process/4_ContactInformation";
 import Notes from "./routes/appointment-process/5_Notes";
+import Login from "./routes/Login";
 
-// w-fit
 function App() {
   return (
     <>
@@ -122,6 +122,14 @@ function App() {
                   </APW>
                 }
               />
+              <Route
+                path="login"
+                element={
+                  <LW>
+                    <Login />
+                  </LW>
+                }
+              />
             </Routes>
           </UserProvider>
         </AuthProvider>
@@ -149,6 +157,17 @@ function APW({ children }) {
   return (
     <div className="pt-2 pb-2">
       <div className="mx-auto border rounded-lg shadow-md w-fit">
+        <div className="p-4">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function LW({ children }) {
+  // Login Wrap
+  return (
+    <div className="bg-nss-20 h-screen w-screen flex items-center justify-center">
+      <div className="bg-nss-21 mx-auto border rounded-lg shadow-md w-fit border-nss-1 ">
         <div className="p-4">{children}</div>
       </div>
     </div>
