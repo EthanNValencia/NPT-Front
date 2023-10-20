@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { createContext } from "react";
 
 export const UserContext = createContext();
@@ -15,23 +15,43 @@ export function UserProvider({ children }) {
     lastName: null,
   });
 
-  const [services, setServices] = useState({});
+  const [services, setServices] = useState([]);
 
   const [selectedEmployee, setSelectedEmployee] = useState([]);
 
   const [appointment, setAppointment] = useState({
-    employeeFirstName: null,
-    employeeMiddleName: null,
+    employeeFirstName: null, 
+    employeeMiddleName: null, 
     employeeLastName: null, 
-    appointmentFirstName: null, // 
-    appointmentLastName: null, //
-    appointmentEmail: null, //
-    appointmentPhoneNumber: null, //
-    appointmentBeginTime: null,  //
-    appointmentEndTime: null,  //
+    appointmentFirstName: null, 
+    appointmentLastName: null,  
+    appointmentEmail: null, 
+    appointmentPhoneNumber: null, 
+    appointmentBeginTime: null,  
+    appointmentEndTime: null,  
     appointmentNotes: null, 
-    serviceName: null //
+    serviceName: null, 
   });
+
+  const navigateAppointment = (navigate) => {
+    // console.log("appointment: " + JSON.stringify(appointment));
+    if(appointment.appointmentFirstName == null || appointment.appointmentLastName == null) {
+      navigate("/request-name");
+      return; 
+    }
+    if(appointment.serviceName == null) {
+      navigate("/category");
+      return; 
+    }
+    if(appointment.employeeFirstName == null || appointment.employeeLastName == null || appointment.appointmentBeginTime == null || appointment.appointmentEndTime == null) {
+      navigate("/pairing");
+      return;
+    }
+    if(appointment.appointmentEmail == null && appointment.appointmentPhoneNumber == null) {
+      navigate("/contact-information");
+      return;
+    }
+  }
 
   function setAppointmentName(firstName, lastName) {
     const updateAppointment = {...appointment, appointmentFirstName: firstName, appointmentLastName: lastName};
@@ -55,6 +75,11 @@ export function UserProvider({ children }) {
 
   function setAppointmentPhoneAndOrEmail(phone, email) {
     const updateAppointment = {...appointment, appointmentEmail: email, appointmentPhoneNumber: phone};
+    setAppointment(updateAppointment);
+  }
+
+  function setNote(note) {
+    const updateAppointment = {...appointment, appointmentNotes: note};
     setAppointment(updateAppointment);
   }
 
@@ -98,7 +123,9 @@ export function UserProvider({ children }) {
         setAppointmentTimes,
         printUserContext,
         setAppointmentPhoneAndOrEmail,
-        appointment
+        appointment,
+        setNote,
+        navigateAppointment
       }}
     >
       {children}

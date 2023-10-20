@@ -19,6 +19,10 @@ function ContactInformation() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    userContext.navigateAppointment(navigate);
+  }, []);
+
+  useEffect(() => {
     if(!emailIsSelected) {
       setEmail(""); 
     }

@@ -155,7 +155,7 @@ function WSW({ children }) {
 function APW({ children }) {
   // Admin Panel Wrap
   return (
-    <div className="pt-2 pb-2">
+    <div className="pt-2 pb-2 flex items-center">
       <div className="mx-auto border rounded-lg shadow-md w-fit">
         <div className="p-4">{children}</div>
       </div>

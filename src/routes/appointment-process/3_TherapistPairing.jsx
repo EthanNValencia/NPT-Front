@@ -19,6 +19,10 @@ function TherapistPairing() {
   const [isTimeSelected, setIsTimeSelected] = useState(false);
   const [selectedTimes, setSelectedTimes] = useState([{hourValue: null, minuteValue: null, hourIndex: null, minuteIndex: null}, {hourValue: null, minuteValue: null, hourIndex: null, minuteIndex: null}]);
 
+  useEffect(() => {
+    userContext.navigateAppointment(navigate);
+  }, []);
+
   function findAValidInitalDate(date) {
     if(selectedEmployee.schedule == undefined) {
       return date;
@@ -220,9 +224,9 @@ function TherapistPairing() {
 
   const checkOrTick = (boolean) => {
     if(boolean) {
-      return <svg className="fill-none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M7 13.4545L9.66667 16L17 9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
+      return <svg className="fill-none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M7 13.4545L9.66667 16L17 9" stroke="#000000" strokeLinecap="round" strokeLinejoin="round"></path> <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" strokeLinecap="round" strokeLinejoin="round"></rect> </g></svg>
     } else {
-      return <svg className="fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M7 13.4545L9.66667 16L17 9" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path> <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></rect> </g></svg>
+      return <svg className="fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path d="M7 13.4545L9.66667 16L17 9" stroke="#000000" strokeLinecap="round" strokeLinejoin="round"></path> <rect x="4" y="4" width="16" height="16" rx="2" stroke="#000000" strokeLinecap="round" strokeLinejoin="round"></rect> </g></svg>
     }
   }
 

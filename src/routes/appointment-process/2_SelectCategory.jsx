@@ -14,6 +14,10 @@ function SelectCategory() {
   const [selected, setSelected] = useState({"id": 1, "name": undefined});
 
   useEffect(() => {
+    userContext.navigateAppointment(navigate);
+  }, []);
+
+  useEffect(() => {
     async function fetchServices() {
       try {
         const response = await getServices();

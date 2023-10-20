@@ -63,3 +63,18 @@ export async function getServices() {
     throw error;
   }
 }
+
+const appointmentApiUrl = baseUrl + "/appointment/"
+
+export async function postAppointment(appointment) {
+  const requestBody = {
+    ...appointment,
+  };
+  try {
+    const response = await axios.post(appointmentApiUrl, requestBody);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating post:', error);
+    throw error;
+  }
+}
