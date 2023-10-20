@@ -6,9 +6,6 @@ import React from "react";
 // https://www.yelp.com/biz/nephew-physical-therapy-holland
 
 function Footer() {
-
-  // TODO need to load this data from the backend. 
-  
   const youtubeUrl = "https://www.youtube.com/channel/UCP0_SudzP9_KQQKsUXOJPRg";
   const facebookUrl = "https://www.facebook.com/nephewpt";
   const instagramUrl = "https://www.instagram.com/nephewpt/";

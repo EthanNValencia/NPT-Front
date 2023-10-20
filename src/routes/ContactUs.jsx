@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getOffices } from "../axios/api";
 
 function ContactUs() {
-  const d = new Date();
+  const [offices, setOffices] = useState([]); // TODO: Implement this data below.
+
+  useEffect(() => {
+    async function fetchOffices() {
+      try {
+        const data = await getOffices();
+        setOffices(data);
+        console.log(JSON.stringify(data));
+      } catch (error) {
+        console.error("Error loading FAQ:", error);
+      }
+    }
+    fetchOffices();
+  }, []);
 
   return (
     <div>

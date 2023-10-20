@@ -20,72 +20,98 @@ export function UserProvider({ children }) {
   const [selectedEmployee, setSelectedEmployee] = useState([]);
 
   const [appointment, setAppointment] = useState({
-    employeeFirstName: null, 
-    employeeMiddleName: null, 
-    employeeLastName: null, 
-    appointmentFirstName: null, 
-    appointmentLastName: null,  
-    appointmentEmail: null, 
-    appointmentPhoneNumber: null, 
-    appointmentBeginTime: null,  
-    appointmentEndTime: null,  
-    appointmentNotes: null, 
-    serviceName: null, 
+    employeeFirstName: null,
+    employeeMiddleName: null,
+    employeeLastName: null,
+    appointmentFirstName: null,
+    appointmentLastName: null,
+    appointmentEmail: null,
+    appointmentPhoneNumber: null,
+    appointmentBeginTime: null,
+    appointmentEndTime: null,
+    appointmentNotes: null,
+    serviceName: null,
   });
 
   const navigateAppointment = (navigate) => {
-    // console.log("appointment: " + JSON.stringify(appointment));
-    if(appointment.appointmentFirstName == null || appointment.appointmentLastName == null) {
+    console.log("appointment: " + JSON.stringify(appointment));
+    if (
+      appointment.appointmentFirstName == null ||
+      appointment.appointmentLastName == null
+    ) {
       navigate("/request-name");
-      return; 
+      return;
     }
-    if(appointment.serviceName == null) {
+    if (appointment.serviceName == null) {
       navigate("/category");
-      return; 
+      return;
     }
-    if(appointment.employeeFirstName == null || appointment.employeeLastName == null || appointment.appointmentBeginTime == null || appointment.appointmentEndTime == null) {
+    if (
+      appointment.employeeFirstName == null ||
+      appointment.employeeLastName == null ||
+      appointment.appointmentBeginTime == null ||
+      appointment.appointmentEndTime == null
+    ) {
       navigate("/pairing");
       return;
     }
-    if(appointment.appointmentEmail == null && appointment.appointmentPhoneNumber == null) {
+    if (
+      appointment.appointmentEmail == null &&
+      appointment.appointmentPhoneNumber == null
+    ) {
       navigate("/contact-information");
       return;
     }
-  }
+  };
 
   function setAppointmentName(firstName, lastName) {
-    const updateAppointment = {...appointment, appointmentFirstName: firstName, appointmentLastName: lastName};
+    const updateAppointment = {
+      ...appointment,
+      appointmentFirstName: firstName,
+      appointmentLastName: lastName,
+    };
     setAppointment(updateAppointment);
   }
 
   function setAppointmentServiceName(name) {
-    const updateAppointment = {...appointment, serviceName: name};
+    const updateAppointment = { ...appointment, serviceName: name };
     setAppointment(updateAppointment);
   }
 
   function setEmployeeName(firstName, middleName, lastName) {
-    const updateAppointment = {...appointment, employeeFirstName: firstName, employeeMiddleName: middleName, employeeLastName: lastName};
+    const updateAppointment = {
+      ...appointment,
+      employeeFirstName: firstName,
+      employeeMiddleName: middleName,
+      employeeLastName: lastName,
+    };
     setAppointment(updateAppointment);
   }
 
   function setAppointmentTimes(beginTime, endTime) {
-    const updateAppointment = {...appointment, appointmentBeginTime: beginTime, appointmentEndTime: endTime};
+    const updateAppointment = {
+      ...appointment,
+      appointmentBeginTime: beginTime,
+      appointmentEndTime: endTime,
+    };
     setAppointment(updateAppointment);
   }
 
   function setAppointmentPhoneAndOrEmail(phone, email) {
-    const updateAppointment = {...appointment, appointmentEmail: email, appointmentPhoneNumber: phone};
+    const updateAppointment = {
+      ...appointment,
+      appointmentEmail: email,
+      appointmentPhoneNumber: phone,
+    };
     setAppointment(updateAppointment);
   }
 
   function setNote(note) {
-    const updateAppointment = {...appointment, appointmentNotes: note};
+    const updateAppointment = { ...appointment, appointmentNotes: note };
     setAppointment(updateAppointment);
   }
 
-  function filloutAppointment() {
-
-  }
+  function filloutAppointment() {}
 
   function printUserContext() {
     console.log("--- Begin User Context ---");
@@ -116,16 +142,16 @@ export function UserProvider({ children }) {
         services,
         setSelectedService,
         selectedEmployee,
-        setSelectedEmployee, 
-        setAppointmentName, 
+        setSelectedEmployee,
+        setAppointmentName,
         setAppointmentServiceName,
-        setEmployeeName, 
+        setEmployeeName,
         setAppointmentTimes,
         printUserContext,
         setAppointmentPhoneAndOrEmail,
         appointment,
         setNote,
-        navigateAppointment
+        navigateAppointment,
       }}
     >
       {children}
