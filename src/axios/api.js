@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:8765/npt-service/api/v1/public";
-const faqsUrl = baseUrl + "/faqs/";
+const publicUrl = "http://localhost:8765/npt-service/api/v1/public";
+const authUrl = "http://localhost:8765/security-service/api/v1/auth";
+const faqsUrl = publicUrl + "/faqs/";
 
 export async function postFaq(message) {
   const requestBody = {
@@ -28,7 +29,7 @@ export async function getAnsweredFAQs() {
   }
 }
 
-const employeeApiUrl = baseUrl + "/employees/";
+const employeeApiUrl = publicUrl + "/employees/";
 
 // This is the endpoint used to get the employees in the about us.
 export async function getEmployees() {
@@ -55,7 +56,7 @@ export async function findMyMatch(services) {
   }
 }
 
-const specialtyApiUrl = baseUrl + "/problem-area";
+const specialtyApiUrl = publicUrl + "/problem-area";
 
 export async function getServices() {
   try {
@@ -67,7 +68,7 @@ export async function getServices() {
   }
 }
 
-const appointmentApiUrl = baseUrl + "/appointment/";
+const appointmentApiUrl = publicUrl + "/appointment/";
 
 export async function postAppointment(appointment) {
   const requestBody = {
@@ -82,11 +83,27 @@ export async function postAppointment(appointment) {
   }
 }
 
-const officeApiUrl = baseUrl + "/office/";
+const officeApiUrl = publicUrl + "/office/";
 
 export async function getOffices() {
   try {
     const response = await axios.get(officeApiUrl);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function register(user, type) {
+  const registerUrl = authUrl + "/register/" + type;
+
+  const requestBody = {
+    ...user,
+  };
+
+  try {
+    const response = await axios.get(registerUrl, requestBody);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
