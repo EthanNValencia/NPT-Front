@@ -18,6 +18,7 @@ import Footer from "./components/Footer";
 import ContactInformation from "./routes/appointment-process/4_ContactInformation";
 import Notes from "./routes/appointment-process/5_Notes";
 import Login from "./routes/Login";
+import Options from "./routes/Options";
 
 function App() {
   return (
@@ -127,6 +128,14 @@ function App() {
                 element={
                   <LW>
                     <Login />
+                  </LW>
+                }
+              />
+              <Route
+                path="options"
+                element={
+                  <LW>
+                    <Options />
                   </LW>
                 }
               />

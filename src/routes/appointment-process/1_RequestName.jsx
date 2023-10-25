@@ -19,7 +19,6 @@ function RequestName() {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    
   };
 
   const validateInputFields = () => {
@@ -39,7 +38,7 @@ function RequestName() {
       lnValid = false;
       setLnValidated(false);
     }
-    if(fnValid && lnValid) {
+    if (fnValid && lnValid) {
       setContinueIsEnabled(true);
     } else {
       setContinueIsEnabled(false);
@@ -63,64 +62,70 @@ function RequestName() {
   return (
     <div className="">
       <div className="bg-white px-2 pt-2 pb-2 mb-4 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-lg">
-      <h1 className="text-center text-xl mb-4 flex max-w-max">
-        Welcome to Nephew Physical Therapy. This process will walk you through creating a tentative appointment. After your appointment is submitted we will reach out to you confirm your appointment. 
-      </h1>
-      <h1 className="text-center text-xl mb-4">
-        Please begin by introducing yourself.
-      </h1>
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col justify-center items-center">
-          <div className="mb-4">
-            {!fnValidated && submitAttempted ? (
-              <div className="text-center text-red-400">
-                Please enter your first name.
-              </div>
-            ) : (
-              <></>
-            )}
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Enter your first name:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="firstName"
-              type="text"
-              placeholder="First name"
-              value={firstName}
-              onChange={(e) => {
-                setFirstName(e.target.value);
-                validateInputFields();
-              }}
-            />
+        <h1 className="text-center text-xl mb-4 flex max-w-max">
+          Welcome to Nephew Physical Therapy. This process will walk you through
+          creating a tentative appointment. After your appointment is submitted
+          we will reach out to you confirm your appointment.
+        </h1>
+        <h1 className="text-center text-xl mb-4">
+          Please begin by introducing yourself.
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col justify-center items-center">
+            <div className="mb-4">
+              {!fnValidated && submitAttempted ? (
+                <div className="text-center text-red-400">
+                  Please enter your first name.
+                </div>
+              ) : (
+                <></>
+              )}
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Enter your first name:
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="firstName"
+                type="text"
+                placeholder="First name"
+                value={firstName}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                  validateInputFields();
+                }}
+              />
+            </div>
+            <div className="mb-4">
+              {!lnValidated && submitAttempted ? (
+                <div className="text-center text-red-400">
+                  Please enter your last name.
+                </div>
+              ) : (
+                <></>
+              )}
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Enter your last name:
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="firstName"
+                type="text"
+                placeholder="Last name"
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                  validateInputFields();
+                }}
+              />
+            </div>
           </div>
-          <div className="mb-4">
-            {!lnValidated && submitAttempted ? (
-              <div className="text-center text-red-400">
-                Please enter your last name.
-              </div>
-            ) : (
-              <></>
-            )}
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Enter your last name:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="firstName"
-              type="text"
-              placeholder="Last name"
-              value={lastName}
-              onChange={(e) => {
-                setLastName(e.target.value);
-                validateInputFields();
-              }}
-            />
-          </div>
-        </div>
-      </form>
+        </form>
       </div>
-      <ContinueBack goBack={goBack} onContinue={onContinue} continueIsEnabled={continueIsEnabled}/>
+      <ContinueBack
+        goBack={goBack}
+        onContinue={onContinue}
+        continueIsEnabled={continueIsEnabled}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import axios from "axios";
 const publicUrl = "http://localhost:8765/npt-service/api/v1/public";
 const authUrl = "http://localhost:8765/security-service/api/v1/auth";
 const faqsUrl = publicUrl + "/faqs/";
+let token = null;
 
 export async function postFaq(message) {
   const requestBody = {
@@ -103,7 +104,39 @@ export async function register(user, type) {
   };
 
   try {
-    const response = await axios.get(registerUrl, requestBody);
+    const response = await axios.post(registerUrl, requestBody);
+    token = response.data.token;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function authenticate(user) {
+  const registerUrl = authUrl + "/authenticate";
+
+  const requestBody = {
+    ...user,
+  };
+
+  try {
+    const response = await axios.post(registerUrl, requestBody);
+    token = response.data.token;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function validate(action) {
+  const registerUrl = authUrl + "/validate/" + token;
+
+  const requestBody = {
+    ...action,
+  };
+
+  try {
+    const response = await axios.post(registerUrl, requestBody);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import NssButton from "../nss/NssButton";
 import NssInputText from "../nss/NssInputText";
+import { register, authenticate } from "../axios/api";
+import { useNavigate } from "react-router-dom";
 
 const Checkbox = ({ label, value, onChange }) => {
   return (
@@ -18,8 +20,10 @@ function Login() {
   const [lastName, setLastName] = useState("");
   const [serviceName, setServiceName] = useState("");
   const [createAccount, setCreateAccount] = useState(false);
+  const [auth, setAuth] = useState(false);
   const [user, setUser] = useState(false);
   const [admin, setAdmin] = useState(false);
+  const navigate = useNavigate();
 
   const handleUserChange = () => {
     setUser(!user);
@@ -29,16 +33,33 @@ function Login() {
     setAdmin(!admin);
   };
 
-  const onClick = () => {
-    console.log("Click");
+  const onLogin = () => {
+    const userCred = { email: username, password: password };
+    const authenitcated = authenticate(userCred);
+    setAuth(authenitcated);
+    if (authenitcated) {
+      navigate("/options");
+    }
   };
 
   const onSignUp = () => {
     setCreateAccount(!createAccount);
   };
 
-  const register = () => {
-    console.log("Register");
+  const handleRegistration = async () => {
+    try {
+      const newUser = {
+        email: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        serviceName: serviceName,
+      };
+      register(newUser, "admin");
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
   };
 
   const onChangePassword = (val) => {
@@ -89,7 +110,7 @@ function Login() {
             </div>
           </div>
           <div className="flex justify-center gap-4 pt-2">
-            <NssButton onClick={onClick} label="Login" />
+            <NssButton onClick={onLogin} label="Login" />
           </div>
           <div className="flex">
             <div className="flex justify-center gap-4 pt-2 pr-2">
@@ -97,6 +118,7 @@ function Login() {
             </div>
             <NssButton onClick={onSignUp} label="Sign Up" />
           </div>
+          {auth ? <div>Authenticated!</div> : <></>}
         </div>
       ) : (
         <div>
@@ -162,7 +184,7 @@ function Login() {
             </div>
           </div>
           <div className="flex justify-center gap-2">
-            <NssButton onClick={register} label="Submit" />
+            <NssButton onClick={handleRegistration} label="Submit" />
             <NssButton onClick={onSignUp} label="Login Page" />
           </div>
         </div>
