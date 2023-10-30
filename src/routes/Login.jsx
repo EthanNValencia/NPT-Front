@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import NssButton from "../nss/NssButton";
 import NssInputText from "../nss/NssInputText";
-import { register, authenticate } from "../axios/api";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/context";
 
 const Checkbox = ({ label, value, onChange }) => {
   return (
@@ -24,6 +24,7 @@ function Login() {
   const [user, setUser] = useState(false);
   const [admin, setAdmin] = useState(false);
   const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
 
   const handleUserChange = () => {
     setUser(!user);
@@ -33,11 +34,11 @@ function Login() {
     setAdmin(!admin);
   };
 
-  const onLogin = () => {
+  const onLogin = async () => {
     const userCred = { email: username, password: password };
-    const authenitcated = authenticate(userCred);
-    setAuth(authenitcated);
-    if (authenitcated) {
+    const authenticated = await authContext.authenticateCredentials(userCred);
+    setAuth(authenticated);
+    if (authenticated) {
       navigate("/options");
     }
   };
@@ -55,7 +56,7 @@ function Login() {
         lastName: lastName,
         serviceName: serviceName,
       };
-      register(newUser, "admin");
+      await authContext.registerNewAccount(newUser, "admin");
     } catch (error) {
       console.error("Error fetching data:", error);
       throw error;
@@ -83,7 +84,7 @@ function Login() {
   };
 
   return (
-    <div className="bg-nss">
+    <div className="">
       {!createAccount ? (
         <div>
           <div className="flex justify-center">Login</div>

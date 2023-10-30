@@ -15,7 +15,7 @@ function Home() {
 
   return (
     <div>
-      <div className="overflow-hidden mx-auto relative flex items-center">
+      <div className="overflow-hidden mx-auto relative flex items-center max-w-7xl">
         <img src={bannerImage} alt="Image did not load." className="" />
         <div className="absolute right-12 top-12">
           <button
@@ -64,11 +64,11 @@ function Home() {
             Your body is your
             <b className="font-extrabold"> most valuable possession </b>
             and
-            <b className="font-extrabold"> your greatest asset</b>. Yet,
-            we often spend more of our budget on our cars, homes and “stuff.”
+            <b className="font-extrabold"> your greatest asset</b>. Yet, we
+            often spend more of our budget on our cars, homes and “stuff.”
             Spending money on health care is an
-            <b className="font-extrabold"> investment</b>, not an expense.
-            Don’t put off to tomorrow what you can do today.
+            <b className="font-extrabold"> investment</b>, not an expense. Don’t
+            put off to tomorrow what you can do today.
           </p>
         </div>
 

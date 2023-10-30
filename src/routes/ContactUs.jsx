@@ -11,13 +11,28 @@ function ContactUs() {
       try {
         const data = await getOffices();
         setOffices(data);
-        console.log(JSON.stringify(data));
       } catch (error) {
-        console.error("Error loading FAQ:", error);
+        console.error("Error loading offices:", error);
       }
     }
     fetchOffices();
   }, []);
+
+  // Sat, Mon, Tue, Wed, Thu, Fri, Sun
+  const sortOfficeSchedule = (schedule) => {
+    const newSchedule = {
+      Sun: 0,
+      Mon: 1,
+      Tue: 2,
+      Wed: 3,
+      Thu: 4,
+      Fri: 5,
+      Sat: 6,
+    };
+    return schedule.sort((a, b) => newSchedule[a.day] - newSchedule[b.day]);
+  };
+
+  const swap = () => {};
 
   const DisclosureComponent = (props) => {
     const { title, contents } = props;
@@ -27,15 +42,21 @@ function ContactUs() {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-npt_colors-350 px-4 py-2 text-left text-sm font-medium text-white hover:bg-npt_colors-10 hover:text-black focus:outline-none focus-visible:ring focus-visible:ring-npt_colors-30 focus-visible:ring-opacity-75">
+                <Disclosure.Button
+                  className={`${
+                    open
+                      ? "bg-npt_colors-10 text-black"
+                      : "bg-npt_colors-350 text-white"
+                  } flex w-full justify-between rounded-lg px-4 py-2 text-left text-sm font-medium hover:bg-npt_colors-10 hover:text-black focus:outline-none focus-visible:ring focus-visible:ring-npt_colors-30 focus-visible:ring-opacity-75`}
+                >
                   <span>{title}</span>
                   <ChevronUpIcon
                     className={`${
-                      open ? "rotate-180 transform" : ""
-                    } h-5 w-5 text-white`}
+                      open ? "rotate-180 transform text-black" : "text-white"
+                    } h-5 w-5 hover:text-black`}
                   />
                 </Disclosure.Button>
-                <Disclosure.Panel className="px-4 pt-2 text-sm text-gray-500">
+                <Disclosure.Panel className="px-4 pt-2 text-sm text-gray-500 w-56">
                   {contents}
                 </Disclosure.Panel>
               </>
@@ -126,135 +147,272 @@ function ContactUs() {
     );
   };
 
+  const Schedule = (props) => {
+    const { day, beginTime, endTime, index } = props;
+    const today = new Date();
+    const options = { weekday: "short" };
+    const dayOfWeek = new Intl.DateTimeFormat("en-US", options).format(today);
+    const now = new Date();
+    const startTimeDate = new Date();
+    const endTimeDate = new Date();
+    const beginTimeComponent = beginTime.split(":");
+    const endTimeComponent = endTime.split(":");
+    const beginHour = parseInt(beginTimeComponent[0], 10);
+    const beginMinute = parseInt(beginTimeComponent[1], 10);
+    const endHour = parseInt(endTimeComponent[0], 10);
+    const endMinute = parseInt(endTimeComponent[1], 10);
+    const beginMeredian = setMeredian(beginHour);
+    const endMeredian = setMeredian(endHour);
+
+    function setMeredian(hour) {
+      if (hour > 12) {
+        return "PM";
+      } else {
+        return "AM";
+      }
+    }
+
+    function maskHour(hour) {
+      if (hour > 12) {
+        return hour % 12;
+      }
+      return hour;
+    }
+
+    function maskMinute(minute) {
+      if (minute == 0) {
+        return "00";
+      } else {
+        return minute;
+      }
+    }
+
+    startTimeDate.setHours(beginHour, beginMinute);
+
+    endTimeDate.setHours(endHour, endMinute);
+
+    if (dayOfWeek === day) {
+      return (
+        <div className="grid grid-cols-9" key={index}>
+          <div className="col-span-1">{day}</div>
+          <div className="col-span-2 text-right">
+            {maskHour(beginHour) +
+              ":" +
+              maskMinute(beginMinute) +
+              " " +
+              beginMeredian}
+          </div>
+          <div className="col-span-1 text-center">{"-"}</div>
+          <div className="col-span-2 text-left">
+            {maskHour(endHour) +
+              ":" +
+              maskMinute(endMinute) +
+              " " +
+              endMeredian}
+          </div>
+          {now >= startTimeDate && now <= endTimeDate ? (
+            <div className="col-span-3 text-npt_colors-300">We are open!</div>
+          ) : (
+            <div className="col-span-3 text-red-800">We are closed!</div>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-9" key={index}>
+        <div className="col-span-1">{day}</div>
+        <div className="col-span-2 text-right">
+          {maskHour(beginHour) +
+            ":" +
+            maskMinute(beginMinute) +
+            " " +
+            beginMeredian}
+        </div>
+        <div className="col-span-1 text-center">{"-"}</div>
+        <div className="col-span-2 text-left">
+          {maskHour(endHour) + ":" + maskMinute(endMinute) + " " + endMeredian}
+        </div>
+      </div>
+    );
+  };
+
   const WalkIns = (props) => {
     const { acceptingWalkIns } = props;
-    // TODO: Break this into logic, if acceptingWalkIns
     return (
       <div className="flex text-lg">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="1.5em"
-          viewBox="0 0 512 512"
-        >
-          <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V240c0 8.8-7.2 16-16 16s-16-7.2-16-16V64c0-17.7-14.3-32-32-32s-32 14.3-32 32V336c0 1.5 0 3.1 .1 4.6L67.6 283c-16-15.2-41.3-14.6-56.6 1.4s-14.6 41.3 1.4 56.6L124.8 448c43.1 41.1 100.4 64 160 64H304c97.2 0 176-78.8 176-176V128c0-17.7-14.3-32-32-32s-32 14.3-32 32V240c0 8.8-7.2 16-16 16s-16-7.2-16-16V64c0-17.7-14.3-32-32-32s-32 14.3-32 32V240c0 8.8-7.2 16-16 16s-16-7.2-16-16V32z" />
-        </svg>
-        <div>We do not accept walk-ins!</div>
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="1.5em"
-          viewBox="0 0 640 512"
-        >
-          <path d="M208 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM123.7 200.5c1-.4 1.9-.8 2.9-1.2l-16.9 63.5c-5.6 21.1-.1 43.6 14.7 59.7l70.7 77.1 22 88.1c4.3 17.1 21.7 27.6 38.8 23.3s27.6-21.7 23.3-38.8l-23-92.1c-1.9-7.8-5.8-14.9-11.2-20.8l-49.5-54 19.3-65.5 9.6 23c4.4 10.6 12.5 19.3 22.8 24.5l26.7 13.3c15.8 7.9 35 1.5 42.9-14.3s1.5-35-14.3-42.9L281 232.7l-15.3-36.8C248.5 154.8 208.3 128 163.7 128c-22.8 0-45.3 4.8-66.1 14l-8 3.5c-32.9 14.6-58.1 42.4-69.4 76.5l-2.6 7.8c-5.6 16.8 3.5 34.9 20.2 40.5s34.9-3.5 40.5-20.2l2.6-7.8c5.7-17.1 18.3-30.9 34.7-38.2l8-3.5zm-30 135.1L68.7 398 9.4 457.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L116.3 441c4.6-4.6 8.2-10.1 10.6-16.1l14.5-36.2-40.7-44.4c-2.5-2.7-4.8-5.6-7-8.6zM550.6 153.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L530.7 224H384c-17.7 0-32 14.3-32 32s14.3 32 32 32H530.7l-25.4 25.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l80-80c12.5-12.5 12.5-32.8 0-45.3l-80-80z" />
-        </svg>
-        <div>We accept walk-ins!</div>
+        {!acceptingWalkIns ? (
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1.5em"
+              viewBox="0 0 512 512"
+            >
+              <path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V240c0 8.8-7.2 16-16 16s-16-7.2-16-16V64c0-17.7-14.3-32-32-32s-32 14.3-32 32V336c0 1.5 0 3.1 .1 4.6L67.6 283c-16-15.2-41.3-14.6-56.6 1.4s-14.6 41.3 1.4 56.6L124.8 448c43.1 41.1 100.4 64 160 64H304c97.2 0 176-78.8 176-176V128c0-17.7-14.3-32-32-32s-32 14.3-32 32V240c0 8.8-7.2 16-16 16s-16-7.2-16-16V64c0-17.7-14.3-32-32-32s-32 14.3-32 32V240c0 8.8-7.2 16-16 16s-16-7.2-16-16V32z" />
+            </svg>
+            <div>We do not accept walk-ins!</div>
+          </>
+        ) : (
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1.5em"
+              viewBox="0 0 640 512"
+            >
+              <path d="M208 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM123.7 200.5c1-.4 1.9-.8 2.9-1.2l-16.9 63.5c-5.6 21.1-.1 43.6 14.7 59.7l70.7 77.1 22 88.1c4.3 17.1 21.7 27.6 38.8 23.3s27.6-21.7 23.3-38.8l-23-92.1c-1.9-7.8-5.8-14.9-11.2-20.8l-49.5-54 19.3-65.5 9.6 23c4.4 10.6 12.5 19.3 22.8 24.5l26.7 13.3c15.8 7.9 35 1.5 42.9-14.3s1.5-35-14.3-42.9L281 232.7l-15.3-36.8C248.5 154.8 208.3 128 163.7 128c-22.8 0-45.3 4.8-66.1 14l-8 3.5c-32.9 14.6-58.1 42.4-69.4 76.5l-2.6 7.8c-5.6 16.8 3.5 34.9 20.2 40.5s34.9-3.5 40.5-20.2l2.6-7.8c5.7-17.1 18.3-30.9 34.7-38.2l8-3.5zm-30 135.1L68.7 398 9.4 457.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L116.3 441c4.6-4.6 8.2-10.1 10.6-16.1l14.5-36.2-40.7-44.4c-2.5-2.7-4.8-5.6-7-8.6zM550.6 153.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L530.7 224H384c-17.7 0-32 14.3-32 32s14.3 32 32 32H530.7l-25.4 25.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l80-80c12.5-12.5 12.5-32.8 0-45.3l-80-80z" />
+            </svg>
+            <div>We accept walk-ins!</div>
+          </>
+        )}
       </div>
     );
   };
 
   return (
-    <div>
+    <div className="">
+      <div className="text-center">V1</div>
       {offices.map((office, index) => (
         <div key={index} className="flex justify-around flex-row">
-          <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-lg">
-            {office.introduction}
-            <div className="py-2">
-              <WalkIns acceptingWalkIns={office.acceptingWalkIns} />
+          <div>
+            <div className="bg-npt_colors-350 text-white rounded-t-xl px-2 pt-2 text-center">
+              {office.introduction}
             </div>
-            <div className="flex flex-row gap-2 justify-center">
-              <NptPhoneButton label="Call Us" phone={office.phone} />
-              <NptEmailButton label="Email Us" email={office.email} />
-              <NptGoogleMapsButton
-                label="Google Map Us"
-                mapUrl={office.mapUrl}
-              />
-            </div>
-            <div>
-              <div>
-                <DisclosureComponent title={"Email"} contents={office.email} />
-                <DisclosureComponent title={"Fax"} contents={office.fax} />
-                <DisclosureComponent title={"Phone"} contents={office.phone} />
-                <DisclosureComponent
-                  title={"Address"}
-                  contents={
-                    office.street +
-                    "., " +
-                    office.unit +
-                    ", " +
-                    office.city +
-                    ", " +
-                    office.state +
-                    ", " +
-                    office.zip
-                  }
+            <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-b-xl">
+              <div className="py-2 flex justify-center">
+                <div>
+                  <WalkIns acceptingWalkIns={office.acceptingWalkIns} />
+                </div>
+              </div>
+              <div className="flex flex-row gap-4 justify-center">
+                <NptPhoneButton label="Call Us" phone={office.phone} />
+                <NptEmailButton label="Email Us" email={office.email} />
+                <NptGoogleMapsButton
+                  label="Google Map Us"
+                  mapUrl={office.mapUrl}
                 />
               </div>
               <div>
-                {office.schedule.map((schedule, index) => (
-                  <div key={index}>
-                    {schedule.day +
-                      " " +
-                      schedule.beginTime +
-                      " - " +
-                      schedule.endTime}
+                <div className="grid grid-cols-2">
+                  <div>
+                    <DisclosureComponent
+                      title={"Email"}
+                      contents={office.email}
+                    />
+                    <DisclosureComponent title={"Fax"} contents={office.fax} />
+                    <DisclosureComponent
+                      title={"Phone"}
+                      contents={office.phone}
+                    />
+                    <DisclosureComponent
+                      title={"Address"}
+                      contents={
+                        office.street +
+                        "., " +
+                        office.unit +
+                        ", " +
+                        office.city +
+                        ", " +
+                        office.state +
+                        ", " +
+                        office.zip
+                      }
+                    />
                   </div>
-                ))}
+                  <div className="py-2 px-2 flex items-center justify-center">
+                    <div>
+                      {sortOfficeSchedule(office.schedule).map(
+                        (schedule, index) => (
+                          <div>
+                            <Schedule
+                              index={index}
+                              day={schedule.day}
+                              beginTime={schedule.beginTime}
+                              endTime={schedule.endTime}
+                            />
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       ))}
-      <div className="grid grid-flow-rows grid-cols-2">
-        <p>
-          You may always visit our office, located on Holland’s north side at:
-        </p>
-        <p>12723 N Bellwood Dr., Suite 10 Holland, MI 49424</p>
-        <p>Phone:</p>
-        <p>616.796.9391</p>
-        <p>Fax:</p>
-        <p>888.714.4474</p>
-        <p>Email:</p>
-        <address>info@nephewpt.com</address>
-        Please fax referral forms to the number above. Click here to download
-        referral form. Thank you! NEED REFERRAL FORM
-      </div>
-      <div>
-        <button
-          type="button"
-          className="inline-flex items-center px-8 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-10 hover:text-black first-line:transition ease-in-out duration-150 cursor-pointer"
-          disabled=""
-        >
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="mailto: info@nephewpt.com"
-          >
-            Email Us
-          </a>
-        </button>
-        <button
-          type="button"
-          className="inline-flex items-center px-8 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-10 hover:text-black first-line:transition ease-in-out duration-150 cursor-pointer"
-          disabled=""
-        >
-          <a target="_blank" rel="noopener noreferrer" href="tel: 6167969391">
-            Call Us
-          </a>
-        </button>
-        <button
-          type="button"
-          className="inline-flex items-center px-8 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-10 hover:text-black first-line:transition ease-in-out duration-150 cursor-pointer"
-          disabled=""
-        >
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="http://maps.google.com/?q= 12723 N Bellwood Dr., Suite 10 Holland, MI 49424"
-          >
-            Google Map Us
-          </a>
-        </button>
-      </div>
+      <div className="text-center">V2</div>
+      {offices.map((office, index) => (
+        <div key={index} className="flex justify-around flex-row pt-2">
+          <div>
+            <div className="bg-npt_colors-350 text-white rounded-t-xl px-2 pt-2 text-center">
+              {office.introduction}
+            </div>
+            <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-b-xl">
+              <div className="py-2 flex justify-center">
+                <div>
+                  <WalkIns acceptingWalkIns={false} />
+                </div>
+              </div>
+              <div className="flex flex-row gap-4 justify-center">
+                <NptPhoneButton label="Call Us" phone={office.phone} />
+                <NptEmailButton label="Email Us" email={office.email} />
+                <NptGoogleMapsButton
+                  label="Google Map Us"
+                  mapUrl={office.mapUrl}
+                />
+              </div>
+              <div>
+                <div className="grid grid-cols-2">
+                  <div className="px-2 py-2 w-56">
+                    <div>
+                      <div className="text-sm">Email</div>
+                      <div className="text-md">{office.email}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm">Fax</div>
+                      <div className="text-md">{office.fax}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm">Phone</div>
+                      <div className="text-md">{office.phone}</div>
+                    </div>
+                    <div>
+                      <div className="text-sm">Address</div>
+                      <div className="text-md">
+                        {office.street +
+                          "., " +
+                          office.unit +
+                          ", " +
+                          office.city +
+                          ", " +
+                          office.state +
+                          ", " +
+                          office.zip}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="py-2 px-2 flex items-center justify-center">
+                    <div>
+                      {sortOfficeSchedule(office.schedule).map(
+                        (schedule, index) => (
+                          <div>
+                            <Schedule
+                              index={index}
+                              day={schedule.day}
+                              beginTime={schedule.beginTime}
+                              endTime={schedule.endTime}
+                            />
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

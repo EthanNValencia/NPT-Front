@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function NavigationBar() {
@@ -7,7 +7,7 @@ function NavigationBar() {
   const onClick = () => {
     setSelected(!selected);
     console.log(selected);
-  }
+  };
 
   return (
     <header>
@@ -21,7 +21,7 @@ function NavigationBar() {
         <NavLink className="hover:text-npt_colors-300" to="/faqs">
           FAQ
         </NavLink>
-        <NavLink className="hover:text-npt_colors-300" to="/">
+        <NavLink className="hover:text-npt_colors-300" to="/services">
           Services
         </NavLink>
         <NavLink className="hover:text-npt_colors-300" to="/contact">
@@ -37,7 +37,6 @@ function NavigationBar() {
           Dev
         </NavLink>
       </nav>
-      
     </header>
   );
 }

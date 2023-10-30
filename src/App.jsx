@@ -1,7 +1,13 @@
 // import "./App.css";
 import "./Calendar.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
+import { useContext, useEffect } from "react";
 import Everything from "./dev-components/Everything";
 import AboutUs from "./routes/AboutUs";
 import Home from "./routes/Home";
@@ -19,6 +25,22 @@ import ContactInformation from "./routes/appointment-process/4_ContactInformatio
 import Notes from "./routes/appointment-process/5_Notes";
 import Login from "./routes/Login";
 import Options from "./routes/Options";
+import { AuthContext } from "./contexts/context";
+import Services from "./routes/Services";
+
+const PrivateRoute = ({ children }) => {
+  const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
+  const isAuthenticated = authContext.auth;
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
+
+  return children;
+};
 
 function App() {
   return (
@@ -27,116 +49,155 @@ function App() {
         <AuthProvider>
           <UserProvider>
             <Routes>
+              {/* <Route path="*" element={<Navigate to="login" replace />} /> */}
               <Route
-                index
+                path="/"
                 element={
-                  <WSW>
-                    <Home />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <Home />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="about"
                 element={
-                  <WSW>
-                    <AboutUs />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <AboutUs />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="contact"
                 element={
-                  <WSW>
-                    <ContactUs />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <ContactUs />
+                    </WSW>
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="services"
+                element={
+                  <PrivateRoute>
+                    <WSW>
+                      <Services />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="faqs"
                 element={
-                  <WSW>
-                    <FrequentlyAskedQuestions />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <FrequentlyAskedQuestions />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="reviews"
                 element={
-                  <WSW>
-                    <Reviews />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <Reviews />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="request-name"
                 element={
-                  <WSW>
-                    <RequestName />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <RequestName />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="category"
                 element={
-                  <WSW>
-                    <SelectCategory />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <SelectCategory />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="pairing"
                 element={
-                  <WSW>
-                    <TherapistPairing />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <TherapistPairing />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="contact-information"
                 element={
-                  <WSW>
-                    <ContactInformation />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <ContactInformation />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="notes"
                 element={
-                  <WSW>
-                    <Notes />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <Notes />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="dev"
                 element={
-                  <WSW>
-                    <Everything />
-                  </WSW>
+                  <PrivateRoute>
+                    <WSW>
+                      <Everything />
+                    </WSW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="admin"
                 element={
-                  <APW>
-                    <Admin />
-                  </APW>
+                  <PrivateRoute>
+                    <APW>
+                      <Admin />
+                    </APW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="login"
                 element={
-                  <LW>
-                    <Login />
-                  </LW>
+                  <PrivateRoute>
+                    <LW>
+                      <Login />
+                    </LW>
+                  </PrivateRoute>
                 }
               />
               <Route
                 path="options"
                 element={
-                  <LW>
-                    <Options />
-                  </LW>
+                  <PrivateRoute>
+                    <LW>
+                      <Options />
+                    </LW>
+                  </PrivateRoute>
                 }
               />
             </Routes>
@@ -154,7 +215,7 @@ function WSW({ children }) {
     <div className="p-1 min-h-screen h-screen w-screen">
       <div className="mx-auto border rounded-lg shadow-md">
         <Header />
-        <div className="p-4 ">{children}</div>
+        <div className="p-4">{children}</div>
         <Footer />
       </div>
     </div>

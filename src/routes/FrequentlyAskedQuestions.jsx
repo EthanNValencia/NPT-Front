@@ -12,20 +12,20 @@ function FrequentlyAskedQuestions() {
   async function onClick() {
     try {
       const response = await postFaq(message);
-      console.log('FAQ submitted:', response);
+      // console.log('FAQ submitted:', response);
     } catch (error) {
-      console.error('Error submitting FAQ:', error);
+      console.error("Error submitting FAQ:", error);
     }
   }
-  
+
   useEffect(() => {
     async function fetchFaqs() {
       try {
         const data = await getAnsweredFAQs();
-        console.log(data);
+        // console.log(data);
         setFAQs(data);
       } catch (error) {
-        console.error('Error loading FAQ:', error);
+        console.error("Error loading FAQ:", error);
       }
     }
     fetchFaqs();

@@ -10,16 +10,20 @@ function TimePicker(props) {
   const beginTimes = generateAvailableBeginTimes(selectedDateSchedule);
   let beginTimeIndex = init(beginTimes);
   const [beginTime, setBeginTime] = useState(beginTimes[beginTimeIndex]);
-  const [indexBeginMin, setIndexBeginMin] = useState(() => initIndexBeginMinute());
+  const [indexBeginMin, setIndexBeginMin] = useState(() =>
+    initIndexBeginMinute()
+  );
   const [indexBeginTime, setIndexBeginTime] = useState(0);
 
-  const [beginMin, setBeginMin] = useState(beginTimes[indexBeginTime].mins[indexBeginMin].min);
+  const [beginMin, setBeginMin] = useState(
+    beginTimes[indexBeginTime].mins[indexBeginMin].min
+  );
 
   const [endTimes, setEndTimes] = useState(generateAvailableEndTimes());
   const [indexEndTime, setIndexEndTime] = useState(initIndexEndTime());
   const [indexEndMinute, setIndexEndMinute] = useState(initIndexEndMinute());
   const [endMin, setEndMin] = useState(initEndMin());
-  
+
   useEffect(() => {
     beginTimeIndex = init(beginTimes);
     setBeginTime(beginTimes[beginTimeIndex]);
@@ -36,13 +40,14 @@ function TimePicker(props) {
   }, [beginTime, indexBeginMin]);
 
   function init(times) {
-    if(times.length > 0) {
-      for(let i = 0; i < times.length; i++) {
-        if(times[i].disabled == false) {
+    if (times.length > 0) {
+      for (let i = 0; i < times.length; i++) {
+        if (times[i].disabled == false) {
           return i;
         }
-      }}
-      return 0;
+      }
+    }
+    return 0;
   }
 
   function initEndMin() {
@@ -50,45 +55,45 @@ function TimePicker(props) {
   }
 
   function initIndexBeginMinute() {
-    for(var i = 0; i < beginTime.mins.length; i++) {
-      if(beginTime.mins[i].disabled == false) {
+    for (var i = 0; i < beginTime.mins.length; i++) {
+      if (beginTime.mins[i].disabled == false) {
         return i;
       }
     }
   }
 
   function initIndexEndMinute() {
-    for(var i = 0; i < endTimes[indexEndTime].mins.length; i++) {
-      if(endTimes[indexEndTime].mins[i].disabled == false) {
+    for (var i = 0; i < endTimes[indexEndTime].mins.length; i++) {
+      if (endTimes[indexEndTime].mins[i].disabled == false) {
         return i;
       }
     }
   }
 
   function initIndexEndTime() {
-    for(var i = 0; i < endTimes.length; i++) {
-      if(endTimes[0].disabled == false) {
+    for (var i = 0; i < endTimes.length; i++) {
+      if (endTimes[0].disabled == false) {
         return i;
       }
     }
   }
 
   function setBeginAndEndHours(date) {
-    if(date == undefined) {
+    if (date == undefined) {
       beginHour = 7;
       endHour = 8;
       return;
     }
-    const options = { weekday: 'short' };
-    const dayName = date.toLocaleDateString('en-US', options);
-    selectedEmployee.schedule.forEach(element => {
-      if(element.day == dayName) {
+    const options = { weekday: "short" };
+    const dayName = date.toLocaleDateString("en-US", options);
+    selectedEmployee.schedule.forEach((element) => {
+      if (element.day == dayName) {
         beginHour = parseInt(element.beginTime.split(":")[0]);
         endHour = parseInt(element.endTime.split(":")[0]);
         return;
       }
     });
-    if(!beginHour && !endHour) {
+    if (!beginHour && !endHour) {
       beginHour = 7;
       endHour = 17;
       return;
@@ -96,11 +101,11 @@ function TimePicker(props) {
   }
 
   function setSchedule(date) {
-    if(date == undefined) {
+    if (date == undefined) {
       return [];
     }
     const key = formatDate(date);
-    if(selectedEmployee.appointments) {
+    if (selectedEmployee.appointments) {
       // setSelectedDateSchedule(props.selectedEmployee.appointments[key]);
       return selectedEmployee.appointments[key];
     }
@@ -108,8 +113,8 @@ function TimePicker(props) {
 
   function formatDate(date) {
     const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
@@ -118,8 +123,13 @@ function TimePicker(props) {
   }
 
   function generateAvailableEndTimes() {
-    if(props.minimumAppointmentDuration == undefined || props.maxAppointmentDuration == undefined) {
-      return [{ beginHour: 7, mins: [{min:30, disabled:false}], disabled: false }]; // Make this default render? 
+    if (
+      props.minimumAppointmentDuration == undefined ||
+      props.maxAppointmentDuration == undefined
+    ) {
+      return [
+        { beginHour: 7, mins: [{ min: 30, disabled: false }], disabled: false },
+      ]; // Make this default render?
     }
     console.log("minuteIndex: " + indexBeginMin);
     console.log("timeIndex: " + indexBeginTime);
@@ -132,16 +142,28 @@ function TimePicker(props) {
     // let counter = props.minimumAppointmentDuration + props.maxAppointmentDuration;
     var obj;
     const minuteArray = beginTimes[indexBeginTime].mins;
-    obj = { endHour: beginTimes[indexBeginTime].beginHour, mins: minuteArray, disabled: false };
+    obj = {
+      endHour: beginTimes[indexBeginTime].beginHour,
+      mins: minuteArray,
+      disabled: false,
+    };
     endTimesArray.push(obj);
-    if(indexBeginTime < beginTimes.length) {
-      obj = { endHour: beginTimes[indexBeginTime + 1].beginHour, mins: beginTimes[indexBeginTime + 1].mins, disabled: false };
+    if (indexBeginTime < beginTimes.length) {
+      obj = {
+        endHour: beginTimes[indexBeginTime + 1].beginHour,
+        mins: beginTimes[indexBeginTime + 1].mins,
+        disabled: false,
+      };
     } else {
       let mins = beginTimes[indexBeginTime].mins;
-      obj = { endHour: beginTimes[indexBeginTime].beginHour + 1, mins: mins, disabled: false };
+      obj = {
+        endHour: beginTimes[indexBeginTime].beginHour + 1,
+        mins: mins,
+        disabled: false,
+      };
     }
     // [{ endHour: 8, mins: [{min:0, disabled:false},{min:15, disabled:false},{min:30, disabled:false},{min:45, disabled:false}], disabled: false }]
-    
+
     endTimesArray.push(obj);
     modifyEndTimes(endTimesArray);
     console.log(endTimesArray);
@@ -153,22 +175,22 @@ function TimePicker(props) {
     let max = 3;
     // 0 1 2 3 0 1 2 3
     let counter = 0;
-    for(let i = 0; i < endTimesArray.length; i++) {
-      for(let j = 0; j < endTimesArray[i].mins.length; j++) {
-        if(i == 0) {
-          if(j < indexBeginMin) {
+    for (let i = 0; i < endTimesArray.length; i++) {
+      for (let j = 0; j < endTimesArray[i].mins.length; j++) {
+        if (i == 0) {
+          if (j < indexBeginMin) {
             endTimesArray[i].mins[j].disabled = true;
           }
-          if(j >= indexBeginMin && counter <= min) {
+          if (j >= indexBeginMin && counter <= min) {
             endTimesArray[i].mins[j].disabled = true;
             counter = counter + 1;
           }
         } else if (i == 1) {
-            if(counter <= max) {
-              counter = counter + 1;
-            } else {
-              endTimesArray[i].mins[j].disabled = true;
-            }
+          if (counter <= max) {
+            counter = counter + 1;
+          } else {
+            endTimesArray[i].mins[j].disabled = true;
+          }
         }
       }
     }
@@ -177,25 +199,61 @@ function TimePicker(props) {
 
   function generateAvailableBeginTimes(selectedDateSchedule) {
     var array = [];
-    // First it builds the time array. 
-    for(var i = beginHour; i < endHour; i++) {
+    // First it builds the time array.
+    for (var i = beginHour; i < endHour; i++) {
       var obj;
-      if(i === 12) {
-        obj = { beginHour: i, mins: [{min:0, disabled:false},{min:15, disabled:false},{min:30, disabled:false},{min:45, disabled:false}], meredian: ["AM", "PM"], disabled: false };
+      if (i === 12) {
+        obj = {
+          beginHour: i,
+          mins: [
+            { min: 0, disabled: false },
+            { min: 15, disabled: false },
+            { min: 30, disabled: false },
+            { min: 45, disabled: false },
+          ],
+          meredian: ["AM", "PM"],
+          disabled: false,
+        };
       } else if (i > 12) {
-         obj = { beginHour: i, mins: [{min:0, disabled:false},{min:15, disabled:false},{min:30, disabled:false},{min:45, disabled:false}], meredian: ["PM", "PM"], disabled: false };
+        obj = {
+          beginHour: i,
+          mins: [
+            { min: 0, disabled: false },
+            { min: 15, disabled: false },
+            { min: 30, disabled: false },
+            { min: 45, disabled: false },
+          ],
+          meredian: ["PM", "PM"],
+          disabled: false,
+        };
       } else {
-         obj = { beginHour: i, mins: [{min:0, disabled:false},{min:15, disabled:false},{min:30, disabled:false},{min:45, disabled:false}], meredian: ["AM", "AM"], disabled: false };
+        obj = {
+          beginHour: i,
+          mins: [
+            { min: 0, disabled: false },
+            { min: 15, disabled: false },
+            { min: 30, disabled: false },
+            { min: 45, disabled: false },
+          ],
+          meredian: ["AM", "AM"],
+          disabled: false,
+        };
       }
       array.push(obj);
     }
-    // Second it removes the matched elements. 
-    if(selectedDateSchedule) {
-      for(var i = 0; i < selectedDateSchedule.length; i++) {
-        const beginHour =  new Date(selectedDateSchedule[i].beginTime).getHours();
-        const beginMinute =  new Date(selectedDateSchedule[i].beginTime).getMinutes();
-        const endHour = new Date(selectedDateSchedule[i].endTime).getHours(); 
-        const endMinute = new Date(selectedDateSchedule[i].endTime).getMinutes();
+    // Second it removes the matched elements.
+    if (selectedDateSchedule) {
+      for (var i = 0; i < selectedDateSchedule.length; i++) {
+        const beginHour = new Date(
+          selectedDateSchedule[i].beginTime
+        ).getHours();
+        const beginMinute = new Date(
+          selectedDateSchedule[i].beginTime
+        ).getMinutes();
+        const endHour = new Date(selectedDateSchedule[i].endTime).getHours();
+        const endMinute = new Date(
+          selectedDateSchedule[i].endTime
+        ).getMinutes();
         modifyTimes(array, beginHour, beginMinute, endHour, endMinute);
       }
     }
@@ -203,19 +261,22 @@ function TimePicker(props) {
   }
 
   function modifyTimes(array, beginHour, beginMinute, endHour, endMinute) {
-    for(var i = 0; i < array.length; i++) {
+    for (var i = 0; i < array.length; i++) {
       // if(array[i].endHour == endHour) {
-        // array[i].mins = adjustNextTimeMinsForEndOfDaySchedule(array[i].mins); // this isn't working.
+      // array[i].mins = adjustNextTimeMinsForEndOfDaySchedule(array[i].mins); // this isn't working.
       // }
-      if(array[i].beginHour == beginHour) {
-        if(1+i < array.length && beginMinute !== 0) {
-          array[1+i].mins = correctNextTimeMins(endMinute, array[1+i].mins);
-        } 
-        if(i-1 > 0 && endMinute !== 0) {
-          array[i-1].mins = correctPreviousTimeMins(beginMinute, array[i-1].mins);
+      if (array[i].beginHour == beginHour) {
+        if (1 + i < array.length && beginMinute !== 0) {
+          array[1 + i].mins = correctNextTimeMins(endMinute, array[1 + i].mins);
         }
-        for(var j = 0; j < array[i].mins.length; j++) {
-          array[i].mins[j].disabled = true; // is this necessary? 
+        if (i - 1 > 0 && endMinute !== 0) {
+          array[i - 1].mins = correctPreviousTimeMins(
+            beginMinute,
+            array[i - 1].mins
+          );
+        }
+        for (var j = 0; j < array[i].mins.length; j++) {
+          array[i].mins[j].disabled = true; // is this necessary?
         }
         array[i].disabled = true;
       }
@@ -223,7 +284,7 @@ function TimePicker(props) {
   }
 
   function adjustNextTimeMinsForEndOfDaySchedule(minArray) {
-    for(var i = 1; i < minArray.length; i++) {
+    for (var i = 1; i < minArray.length; i++) {
       minArray[i].disabled = true;
     }
     //console.log(minArray);
@@ -231,8 +292,8 @@ function TimePicker(props) {
   }
 
   function correctNextTimeMins(endMinute, minArray) {
-    for(var i = 0; i < minArray.length; i++) {
-      if(minArray[i].min < endMinute) {
+    for (var i = 0; i < minArray.length; i++) {
+      if (minArray[i].min < endMinute) {
         minArray[i].disabled = true;
       }
     }
@@ -240,8 +301,8 @@ function TimePicker(props) {
   }
 
   function correctPreviousTimeMins(beginMinute, minArray) {
-    for(var i = 0; i < minArray.length; i++) {
-      if(minArray[i].min > beginMinute) {
+    for (var i = 0; i < minArray.length; i++) {
+      if (minArray[i].min > beginMinute) {
         minArray[i].disabled = true;
       }
     }
@@ -249,20 +310,21 @@ function TimePicker(props) {
   }
 
   function findIndexTimeByBeginHour(e) {
-    if(beginTimes.length > 0) {
-      for(let i = 0; i < beginTimes.length; i++) {
-        if(beginTimes[i].beginHour == e) {
+    if (beginTimes.length > 0) {
+      for (let i = 0; i < beginTimes.length; i++) {
+        if (beginTimes[i].beginHour == e) {
           return i;
         }
-      }}
-      return 0;
+      }
+    }
+    return 0;
   }
 
   function onChangeBeginHour(e) {
     // console.log("e: " + e);
-    const timeFilter = beginTimes.filter(time => time.beginHour == e);
+    const timeFilter = beginTimes.filter((time) => time.beginHour == e);
     const time = timeFilter[0];
-    const minuteFilter = time.mins.filter(min => min.disabled == false);
+    const minuteFilter = time.mins.filter((min) => min.disabled == false);
     const minute = minuteFilter[0];
     // console.log("onChangeBeginHour.time: " + JSON.stringify(time));
     setBeginTime(time);
@@ -274,8 +336,8 @@ function TimePicker(props) {
 
   function onChangeBeginMinute(e) {
     setBeginMin(e);
-    for(var i = 0; i < beginTimes[indexBeginTime].mins.length; i++) {
-      if(beginTimes[indexBeginTime].mins[i].min == e) {
+    for (var i = 0; i < beginTimes[indexBeginTime].mins.length; i++) {
+      if (beginTimes[indexBeginTime].mins[i].min == e) {
         setIndexBeginMin(i);
       }
     }
@@ -283,33 +345,31 @@ function TimePicker(props) {
     console.log(e);
   }
 
-  function onChangeEndHour(e) {
-    
-  }
+  function onChangeEndHour(e) {}
 
   function onChangeEndMinute(e) {
     console.log(e);
   }
 
   function checkMinuteForZero(min) {
-    if(min == 0) {
+    if (min == 0) {
       return "00";
-    } 
+    }
     return min;
   }
 
   function maskBeginHour(time) {
-    return time.beginHour;
-    if(time.beginHour > 12) {
-      return (time.beginHour % 12);
+    // return time.beginHour;
+    if (time.beginHour > 12) {
+      return time.beginHour % 12;
     }
     return time.beginHour;
   }
 
   function maskEndHour(time) {
     // return time.beginHour;
-    if(time.endHour > 12) {
-      return (time.endHour % 12);
+    if (time.endHour > 12) {
+      return time.endHour % 12;
     }
     return time.endHour;
   }
@@ -326,7 +386,12 @@ function TimePicker(props) {
             disabled={props.disabled}
           >
             {beginTimes.map((time) => (
-              <option key={time.beginHour} className="" value={time.beginHour} disabled={time.disabled}>
+              <option
+                key={time.beginHour}
+                className=""
+                value={time.beginHour}
+                disabled={time.disabled}
+              >
                 {maskBeginHour(time)}
               </option>
             ))}
@@ -339,15 +404,20 @@ function TimePicker(props) {
             disabled={props.disabled}
           >
             {beginTimes[indexBeginTime].mins.map((min) => (
-              <option key={min.min} className="" value={min.min} disabled={min.disabled}>
+              <option
+                key={min.min}
+                className=""
+                value={min.min}
+                disabled={min.disabled}
+              >
                 {checkMinuteForZero(min.min)}
               </option>
             ))}
           </select>
 
           <label className="pr-6">{beginTime.meredian[0]}</label>
-            {/* <><p>Time index: {timeIndex}</p> <p>useState index: {index}</p></> */}
-            
+          {/* <><p>Time index: {timeIndex}</p> <p>useState index: {index}</p></> */}
+
           <label className="">End Time:</label>
           <select
             className="h-10 w-10 text-center"
@@ -359,7 +429,7 @@ function TimePicker(props) {
               <option key={time.endHour} className="" value={time.endHour}>
                 {time.endHour}
               </option>
-            )) }
+            ))}
           </select>
           <select
             className="h-10 w-10 text-center select-none"
@@ -368,9 +438,14 @@ function TimePicker(props) {
             disabled={false}
           >
             {endTimes[indexBeginTime].mins.map((min) => (
-              <option key={min.min} className="" value={min.min} disabled={min.disabled}>
-              {checkMinuteForZero(min.min)}
-            </option>
+              <option
+                key={min.min}
+                className=""
+                value={min.min}
+                disabled={min.disabled}
+              >
+                {checkMinuteForZero(min.min)}
+              </option>
             ))}
           </select>
           <label className="">{beginTime.meredian[1]}</label>
@@ -381,8 +456,8 @@ function TimePicker(props) {
 
   return (
     <>
-    {/* oldTimePicker() */}
-    {newTimePicker()}
+      {/* oldTimePicker() */}
+      {newTimePicker()}
     </>
   );
 }

@@ -11,7 +11,7 @@ function SelectCategory() {
   const [continueIsEnabled, setContinueIsEnabled] = useState(false);
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
-  const [selected, setSelected] = useState({"id": 1, "name": undefined});
+  const [selected, setSelected] = useState({ id: 1, name: undefined });
 
   useEffect(() => {
     userContext.navigateAppointment(navigate);
@@ -23,7 +23,7 @@ function SelectCategory() {
         const response = await getServices();
         setServices(response);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     }
     fetchServices();
@@ -35,7 +35,7 @@ function SelectCategory() {
     } else {
       setContinueIsEnabled(true);
     }
-  }, [selected])
+  }, [selected]);
 
   function goBack() {
     navigate("/request-name");
@@ -55,21 +55,31 @@ function SelectCategory() {
 
   return (
     <div>
-    <div>
-      <h1 className="text-xl text-center">
-        {userContext.user.firstName} what are you interested in?
-      </h1>
-      {!serviceSelected ? (
-        <h1 className="text-xl text-center text-red-500">
-          Please select a category.
+      <div>
+        <h1 className="text-xl text-center">
+          Hello, {userContext.user.firstName}. We are happy that you are taking
+          your first steps to get your life back on track! What are you
+          interested in?
         </h1>
-      ) : (
-        <></>
-      )}
-      <ServicesRadioButtons services={services} selected={selected} setSelected={setSelected} />
-    </div>
+        {!serviceSelected ? (
+          <h1 className="text-xl text-center text-red-500">
+            Please select a category.
+          </h1>
+        ) : (
+          <></>
+        )}
+        <ServicesRadioButtons
+          services={services}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      </div>
 
-    <ContinueBack goBack={goBack} onContinue={onContinue} continueIsEnabled={continueIsEnabled}/>
+      <ContinueBack
+        goBack={goBack}
+        onContinue={onContinue}
+        continueIsEnabled={continueIsEnabled}
+      />
     </div>
   );
 }
@@ -81,7 +91,6 @@ export default SelectCategory;
 
 // Head & Neck | Shoulders | Elbows | Wrists | Mid-Back | Lower-Back
 // Hip | Knees | Foot & Ankle | Balance | Vestibular Rehab | Massage Therapy
-
 
 /*
 

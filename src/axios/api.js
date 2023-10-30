@@ -3,7 +3,7 @@ import axios from "axios";
 const publicUrl = "http://localhost:8765/npt-service/api/v1/public";
 const authUrl = "http://localhost:8765/security-service/api/v1/auth";
 const faqsUrl = publicUrl + "/faqs/";
-let token = null;
+let apiToken = null;
 
 export async function postFaq(message) {
   const requestBody = {
@@ -57,11 +57,11 @@ export async function findMyMatch(services) {
   }
 }
 
-const specialtyApiUrl = publicUrl + "/problem-area";
+const specialtyApiUrl = publicUrl + "/services";
 
 export async function getServices() {
   try {
-    const response = await axios.get(specialtyApiUrl + "/get-categories");
+    const response = await axios.get(specialtyApiUrl);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -98,14 +98,12 @@ export async function getOffices() {
 
 export async function register(user, type) {
   const registerUrl = authUrl + "/register/" + type;
-
   const requestBody = {
     ...user,
   };
-
   try {
     const response = await axios.post(registerUrl, requestBody);
-    token = response.data.token;
+    apiToken = response.data.token;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -114,14 +112,13 @@ export async function register(user, type) {
 
 export async function authenticate(user) {
   const registerUrl = authUrl + "/authenticate";
-
   const requestBody = {
     ...user,
   };
-
   try {
     const response = await axios.post(registerUrl, requestBody);
-    token = response.data.token;
+    apiToken = response.data.token;
+    return response.data.token;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -129,12 +126,24 @@ export async function authenticate(user) {
 }
 
 export async function validate(action) {
-  const registerUrl = authUrl + "/validate/" + token;
-
+  const registerUrl = authUrl + "/validate/" + apiToken;
   const requestBody = {
     ...action,
   };
+  try {
+    const response = await axios.post(registerUrl, requestBody);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
 
+export async function validateAction(token, action) {
+  const registerUrl = authUrl + "/validate/" + token;
+  const requestBody = {
+    ...action,
+  };
   try {
     const response = await axios.post(registerUrl, requestBody);
     return response.data;

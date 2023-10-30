@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { createContext } from "react";
+import { validateAction, authenticate } from "../axios/api";
 
 export const UserContext = createContext();
 
@@ -34,7 +35,7 @@ export function UserProvider({ children }) {
   });
 
   const navigateAppointment = (navigate) => {
-    console.log("appointment: " + JSON.stringify(appointment));
+    // console.log("appointment: " + JSON.stringify(appointment));
     if (
       appointment.appointmentFirstName == null ||
       appointment.appointmentLastName == null
@@ -161,9 +162,71 @@ export function UserProvider({ children }) {
 
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(false);
+  const [token, setToken] = useState("");
+
+  const authenticateCredentials = async ({ email, password }) => {
+    const userCred = { email: email, password: password };
+    try {
+      const authToken = await authenticate(userCred);
+      setToken(authToken);
+      setAuth(true);
+      return true;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setAuth(false);
+      throw error;
+    }
+  };
+
+  const registerNewAccount = async (newUser, type) => {
+    try {
+      await register(newUser, type);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  };
+
+  const validateUserRoute = async () => {
+    const userAction = { role: "USER" };
+    try {
+      const validated = await validateAction(token, userAction);
+      if (validated) {
+        setAuth(true);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setAuth(false);
+      throw error;
+    }
+  };
+
+  const validateAdminRoute = async () => {
+    const adminAction = { role: "ADMIN" };
+    try {
+      const validated = await validateAction(token, adminAction);
+      if (validated) {
+        setAuth(true);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setAuth(false);
+      throw error;
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ auth }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{
+        auth,
+        validateUserRoute,
+        validateAdminRoute,
+        authenticateCredentials,
+        registerNewAccount,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }
 

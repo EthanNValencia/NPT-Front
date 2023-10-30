@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { validate } from "../axios/api";
+import { AuthContext } from "../contexts/context";
 import NssButton from "../nss/NssButton";
 
 function Options() {
+  const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
   const onClickAdmin = async () => {
     try {
-      const validated = await validate({ role: "ADMIN" });
-      if (validated) {
+      await authContext.validateAdminRoute();
+      if (authContext.auth) {
         navigate("/admin");
       }
     } catch (error) {
@@ -20,8 +21,8 @@ function Options() {
 
   const onClickNpt = async () => {
     try {
-      const validated = await validate({ role: "USER" });
-      if (validated) {
+      await authContext.validateUserRoute();
+      if (authContext.auth) {
         navigate("/");
       }
     } catch (error) {
@@ -30,10 +31,15 @@ function Options() {
     }
   };
 
+  const onLogout = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="flex justify-center gap-2 py-2">
       <NssButton onClick={onClickAdmin} label="Admin" />
       <NssButton onClick={onClickNpt} label="NPT" />
+      <NssButton onClick={onLogout} label="Logout" />
     </div>
   );
 }
