@@ -36,8 +36,8 @@ function Home() {
           </h1>
         </div>
 
-        <div className="flex justify-center items-center p-4 font-semibold">
-          <ul className="list-disc grid grid-flow-row grid-cols-2 gap-2">
+        <div className="flex justify-center items-center p-4">
+          <ul className="list-disc grid grid-flow-row grid-cols-2 gap-x-4 tracking-tighter font-light">
             <li>Do you want to avoid having joint replacement surgery?</li>
             <li>
               Has your Doctor told you there is nothing you can do for your pain
@@ -59,21 +59,29 @@ function Home() {
           </ul>
         </div>
 
-        <div className="mx-auto max-w-4xl text-xl">
-          <p className="font-semibold">
-            Your body is your
-            <b className="font-extrabold"> most valuable possession </b>
-            and
-            <b className="font-extrabold"> your greatest asset</b>. Yet, we
-            often spend more of our budget on our cars, homes and “stuff.”
-            Spending money on health care is an
-            <b className="font-extrabold"> investment</b>, not an expense. Don’t
-            put off to tomorrow what you can do today.
+        <div className="mx-auto max-w-4xl text-md tracking-tighter">
+          <p className="font-light">
+            Your body is your{" "}
+            <b className="font-normal underline decoration-npt_colors-350 text-npt_colors-350">
+              most valuable possession
+            </b>{" "}
+            and{" "}
+            <b className="font-normal underline decoration-npt_colors-350 text-npt_colors-350">
+              your greatest asset
+            </b>
+            . Yet, we often spend more of our budget on our cars, homes, and
+            “stuff.” Spending money on health care is an{" "}
+            <b className="font-normal underline decoration-npt_colors-350 text-npt_colors-350">
+              investment
+            </b>
+            , not an expense. Don’t put off to tomorrow what you can do today.
           </p>
         </div>
 
         <div className="text-4xl text-center p-4">
-          <h1>Are you ready to ask for help?</h1>
+          <h1>
+            Are you ready to ask for help? You do not need a referral to start.
+          </h1>
         </div>
 
         <div className="flex gap-20 justify-center items-center">

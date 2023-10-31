@@ -33,7 +33,7 @@ function FrequentlyAskedQuestions() {
 
   return (
     <div className="p-4">
-      <div className="grid grid-flow-row grid-cols-2 border-b-4 text-2xl">
+      <div className="grid grid-flow-row grid-cols-2 border-b-4 text-2xl tracking-tighter">
         <h1>Questions</h1>
         <h1>Answers</h1>
       </div>

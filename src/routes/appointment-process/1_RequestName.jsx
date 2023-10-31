@@ -61,35 +61,40 @@ function RequestName() {
 
   return (
     <div className="">
-      <div className="bg-white px-2 pt-2 pb-2 mb-4 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-lg">
-        <div className="text-center text-md mb-4 text-xl">
-          You hurt, and you just don’t know what to do?
+      <div className="bg-white px-2 pt-2 pb-2 mb-4 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-lg tracking-tighter">
+        <div className="grid grid-flow-col gap-2 xl:grid-rows-2 md:grid-rows-4 ">
+          <div className="text-center text-md mb-4 text-xl">
+            You hurt, and you just don’t know what to do?
+          </div>
+          <div className="text-center text-md mb-4 text-xl">
+            Everyone’s giving you advice and you don’t know who to listen to?
+          </div>
+          <div className="text-center text-md mb-4 text-xl">
+            Tried Physical Therapy before and think it doesn’t work for you?
+          </div>
+          <div className="text-center text-md mb-4 text-xl">
+            We don’t know what we don’t know. That’s why we ask questions.
+          </div>
         </div>
-        <div className="text-center text-md mb-4 text-xl">
-          Everyone’s giving you advice and you don’t know who to listen to?
+        <div className="grid grid-flow-col grid-cols-2">
+          <div className="text-center text-md mb-4 flex max-w-max">
+            Have a cup of coffee on us and let’s talk about what’s stopping you.
+            We want to hear about your limitations, your aches and pains, and
+            your goals. We want to answer your questions about PT. What an
+            evaluation would look like? What treatments we might use for you?
+            And get a feel for who we are. Ultimately, It’s our job to work
+            ourselves out of a job, so our Therapy will focus on your personal
+            accountability and long term success.
+          </div>
+          <div>
+            <div className="text-center text-md mb-4 text-xl">
+              Don’t stop doing what you love, no matter what your age!
+            </div>
+            <div className="text-center text-md mb-4 text-xl">
+              We’ll have about 20 minutes set aside for you.
+            </div>
+          </div>
         </div>
-        <div className="text-center text-md mb-4 text-xl">
-          Tried Physical Therapy before and think it doesn’t work for you?
-        </div>
-        <div className="text-center text-md mb-4 text-xl">
-          We don’t know what we don’t know. That’s why we ask questions.
-        </div>
-        <div className="text-center text-md mb-4 flex max-w-max">
-          Have a cup of coffee on us and let’s talk about what’s stopping you.
-          We want to hear about your limitations, your aches and pains, and your
-          goals. We want to answer your questions about PT. What an evaluation
-          would look like? What treatments we might use for you? And get a feel
-          for who we are. Ultimately, It’s our job to work ourselves out of a
-          job, so our Therapy will focus on your personal accountability and
-          long term success.
-        </div>
-        <div className="text-center text-md mb-4">
-          Don’t stop doing what you love, no matter what your age!
-        </div>
-        <div className="text-center text-md mb-4">
-          We’ll have about 20 minutes set aside for you.
-        </div>
-
         <div className="text-center text-md mb-4 flex max-w-max">
           Welcome to Nephew Physical Therapy. This process will walk you through
           creating a tentative appointment. After your appointment is submitted

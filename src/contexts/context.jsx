@@ -169,6 +169,7 @@ export function AuthProvider({ children }) {
     try {
       const authToken = await authenticate(userCred);
       setToken(authToken);
+      console.log("authToken: " + authToken);
       setAuth(true);
       return true;
     } catch (error) {
@@ -218,6 +219,7 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
+        token,
         auth,
         validateUserRoute,
         validateAdminRoute,

@@ -1,12 +1,6 @@
 // import "./App.css";
 import "./Calendar.css";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import Everything from "./dev-components/Everything";
 import AboutUs from "./routes/AboutUs";
@@ -226,7 +220,7 @@ function APW({ children }) {
   // Admin Panel Wrap
   return (
     <div className="pt-2 pb-2 flex items-center">
-      <div className="mx-auto border rounded-lg shadow-md w-fit">
+      <div className="border rounded-lg shadow-md w-screen px-2 mx-2">
         <div className="p-4">{children}</div>
       </div>
     </div>

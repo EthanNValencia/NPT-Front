@@ -14,7 +14,7 @@ export default function ServicesRadioButtons({
       <div className="mx-auto w-full max-w-md">
         <RadioGroup value={selected} onChange={handleOnChange}>
           <RadioGroup.Label className="sr-only">Service</RadioGroup.Label>
-          <div className="space-y-2 grid grid-flow-row grid-cols-2 gap-2">
+          <div className="grid grid-flow-row grid-cols-2 gap-2">
             {services.map((service) => (
               <RadioGroup.Option
                 key={service.id}

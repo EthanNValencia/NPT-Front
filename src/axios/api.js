@@ -2,6 +2,7 @@ import axios from "axios";
 
 const publicUrl = "http://localhost:8765/npt-service/api/v1/public";
 const authUrl = "http://localhost:8765/security-service/api/v1/auth";
+const privateUrl = "http://localhost:8765/npt-service/api/v1/auth";
 const faqsUrl = publicUrl + "/faqs/";
 let apiToken = null;
 
@@ -30,10 +31,10 @@ export async function getAnsweredFAQs() {
   }
 }
 
-const employeeApiUrl = publicUrl + "/employees/";
-
 // This is the endpoint used to get the employees in the about us.
 export async function getEmployees() {
+  const employeeApiUrl = publicUrl + "/employees/";
+
   try {
     const response = await axios.get(employeeApiUrl);
     return response.data;
@@ -57,9 +58,8 @@ export async function findMyMatch(services) {
   }
 }
 
-const specialtyApiUrl = publicUrl + "/services";
-
 export async function getServices() {
+  const specialtyApiUrl = publicUrl + "/services";
   try {
     const response = await axios.get(specialtyApiUrl);
     return response.data;
@@ -69,9 +69,9 @@ export async function getServices() {
   }
 }
 
-const appointmentApiUrl = publicUrl + "/appointment/";
-
 export async function postAppointment(appointment) {
+  const appointmentApiUrl = publicUrl + "/appointment/";
+
   const requestBody = {
     ...appointment,
   };
@@ -84,9 +84,9 @@ export async function postAppointment(appointment) {
   }
 }
 
-const officeApiUrl = publicUrl + "/office/";
-
 export async function getOffices() {
+  const officeApiUrl = publicUrl + "/office/";
+
   try {
     const response = await axios.get(officeApiUrl);
     return response.data;
@@ -146,6 +146,28 @@ export async function validateAction(token, action) {
   };
   try {
     const response = await axios.post(registerUrl, requestBody);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function adminGetEmployees(token) {
+  const adminEmployeeUrl = privateUrl + "/employees/";
+  try {
+    const response = await axios.get(adminEmployeeUrl, token);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function adminGetUnansweredQuestions(token) {
+  const adminFaqUrl = privateUrl + "/faqs/get-unanswered-questions";
+  try {
+    const response = await axios.get(adminFaqUrl, token);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
