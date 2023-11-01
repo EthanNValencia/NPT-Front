@@ -203,7 +203,7 @@ function App() {
 }
 
 function WSW({ children }) {
-  // WSW stands for WebSiteWrap, it is meant to wrap all the routes in the website.
+  // WSW stands for WebSiteWrap, it is meant to wrap all the routes in the NPT website.
   // I will make a different wrapper for the admin panel.
   return (
     <div className="p-1 min-h-screen h-screen w-screen">
@@ -219,8 +219,8 @@ function WSW({ children }) {
 function APW({ children }) {
   // Admin Panel Wrap
   return (
-    <div className="pt-2 pb-2 flex items-center">
-      <div className="border rounded-lg shadow-md w-screen px-2 mx-2">
+    <div className="bg-nss-20 pt-2 pb-2 flex items-center">
+      <div className="bg-nss-21 border rounded-lg shadow-md w-screen px-2 mx-2 border-nss-1">
         <div className="p-4">{children}</div>
       </div>
     </div>
@@ -231,7 +231,7 @@ function LW({ children }) {
   // Login Wrap
   return (
     <div className="bg-nss-20 h-screen w-screen flex items-center justify-center">
-      <div className="bg-nss-21 mx-auto border rounded-lg shadow-md w-fit border-nss-1 ">
+      <div className="bg-nss-21 mx-auto border rounded-lg shadow-md w-fit border-nss-1">
         <div className="p-4">{children}</div>
       </div>
     </div>

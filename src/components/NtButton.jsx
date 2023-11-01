@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { UserContext } from "../contexts/context";
+import React from "react";
 
 function NtButton(props) {
   function onClick() {
@@ -12,6 +11,8 @@ function NtButton(props) {
   function renderButton() {
     if (props.loading) {
       return <ActiveButton />;
+    } else if (props.disabled) {
+      return <DisabledButton label={props.label} />;
     } else {
       return <InactiveButton label={props.label} />;
     }
@@ -48,6 +49,20 @@ function ActiveButton() {
           ></path>
         </svg>
         Processing...
+      </button>
+    </div>
+  );
+}
+
+function DisabledButton(props) {
+  return (
+    <div className="flex">
+      <button
+        type="button"
+        className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-black bg-npt_colors-1 transition ease-in-out duration-150 cursor-pointer"
+        disabled="disabled"
+      >
+        {props.label}
       </button>
     </div>
   );

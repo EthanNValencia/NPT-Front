@@ -3,6 +3,7 @@ import { UserContext } from "../../contexts/context";
 import { useNavigate } from "react-router-dom";
 import ContinueBack from "../../components/ContinueBack";
 import { postAppointment } from "../../axios/api";
+import NtButton from "../../components/NtButton";
 
 function Notes() {
   const [openNote, setOpenNote] = useState(false);
@@ -67,6 +68,24 @@ function Notes() {
     setOpenNote(!openNote);
   };
 
+  const getEmployeeName = () => {
+    if (userContext.appointment.employeeMiddleName == null) {
+      return (
+        userContext.appointment.employeeFirstName +
+        " " +
+        userContext.appointment.employeeLastName
+      );
+    } else {
+      return (
+        userContext.appointment.employeeFirstName +
+        " " +
+        userContext.appointment.employeeMiddleName +
+        " " +
+        userContext.appointment.employeeLastName
+      );
+    }
+  };
+
   return (
     <div>
       <h1 className="flex justify-around mb-4 text-xl">
@@ -77,7 +96,7 @@ function Notes() {
           {error ? (
             <div className="flex">
               <svg
-                className="w-16 h-16"
+                className="w-16 h-16 px-2 py-2"
                 viewBox="0 0 16 16"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -150,13 +169,7 @@ function Notes() {
                     <p className="text-right pe-2 ">Reason:</p>
                     <p>{userContext.appointment.serviceName}</p>
                     <p className="text-right pe-2 ">With:</p>
-                    <p>
-                      {userContext.appointment.employeeFirstName +
-                        " " +
-                        userContext.appointment.employeeMiddleName +
-                        " " +
-                        userContext.appointment.employeeLastName}
-                    </p>
+                    <p>{getEmployeeName()}</p>
                     <p className="text-right pe-2 ">Requested Date:</p>
                     <p>
                       {dateToReadableDateString(
@@ -242,6 +255,12 @@ function Notes() {
                   >
                     Submit
                   </button>
+                  <NtButton
+                    label={submitted ? "Thank you" : "Submit"}
+                    onClick={submitAppointment}
+                    loading={loading}
+                    disabled={submitted}
+                  />
                 </div>
               ) : (
                 <></>

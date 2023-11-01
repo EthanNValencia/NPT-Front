@@ -365,20 +365,26 @@ function ContactUs() {
                 <div className="grid grid-cols-2">
                   <div className="px-2 py-2 w-56">
                     <div>
-                      <div className="text-sm">Email</div>
-                      <div className="text-md">{office.email}</div>
+                      <div className="text-xs font-semibold">Email</div>
+                      <div className="text-sm text-npt_colors-1">
+                        {office.email}
+                      </div>
                     </div>
                     <div>
-                      <div className="text-sm">Fax</div>
-                      <div className="text-md">{office.fax}</div>
+                      <div className="text-xs font-semibold">Fax</div>
+                      <div className="text-sm text-npt_colors-1">
+                        {office.fax}
+                      </div>
                     </div>
                     <div>
-                      <div className="text-sm">Phone</div>
-                      <div className="text-md">{office.phone}</div>
+                      <div className="text-xs font-semibold">Phone</div>
+                      <div className="text-sm text-npt_colors-1">
+                        {office.phone}
+                      </div>
                     </div>
                     <div>
-                      <div className="text-sm">Address</div>
-                      <div className="text-md">
+                      <div className="text-xs font-semibold">Address</div>
+                      <div className="text-sm text-npt_colors-1">
                         {office.street +
                           "., " +
                           office.unit +

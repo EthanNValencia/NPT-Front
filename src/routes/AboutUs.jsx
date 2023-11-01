@@ -39,7 +39,7 @@ function AboutUs() {
         person, but for now, thank you for taking a moment to get to know us
         electronically!
       </p>
-      <div className="flex flex-wrap gap-24 gap-x-32 content-center pl-52 pb-12 pt-12">
+      <div className="flex flex-wrap gap-24 gap-x-32 content-center pl-40 pb-12 pt-12">
         {employees.map((employee) => (
           <EmployeeCard
             therapist={selectedTherapist}

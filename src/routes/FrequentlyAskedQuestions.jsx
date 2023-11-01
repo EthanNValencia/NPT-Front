@@ -3,16 +3,22 @@ import NtButton from "../components/NtButton";
 import FAQsDiv from "../components/FAQsDiv";
 import { postFaq, getAnsweredFAQs } from "../axios/api";
 import FAQsLoading from "../components/loading/FAQsLoading";
+import RenderFor from "../animations/RenderFor";
 
 function FrequentlyAskedQuestions() {
   const [faqs, setFAQs] = useState([]);
   const [message, setMessage] = useState();
   const [loading, setLoading] = useState(false);
+  const [questionSubmitted, setQuestionSubmitted] = useState(false);
+  const [questionWasSubmitted, setQuestionWasSubmitted] = useState(false);
+  const [animatePingFinished, setAnimatePingFinished] = useState(false);
 
   async function onClick() {
     try {
+      setLoading(true);
       const response = await postFaq(message);
-      // console.log('FAQ submitted:', response);
+      setLoading(false);
+      setQuestionSubmitted(true);
     } catch (error) {
       console.error("Error submitting FAQ:", error);
     }
@@ -54,17 +60,33 @@ function FrequentlyAskedQuestions() {
         <label className="block mb-2 text-xl font-medium text-gray-900">
           Was your question not answered? Please ask your question here.
         </label>
+
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           id="message"
-          rows="4"
+          rows="3"
           className="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-npt_colors-30 focus:border-npt_colors-30 "
           placeholder="Write your question here..."
+          disabled={loading || questionSubmitted ? "disabled" : ""}
         ></textarea>
       </div>
-      <div className="flex">
-        <NtButton label="Submit Question" onClick={onClick} loading={loading} />
+
+      <div className="flex justify-between">
+        <NtButton
+          label={questionSubmitted ? "Thank you" : "Submit Question"}
+          onClick={onClick}
+          loading={loading}
+          disabled={questionSubmitted}
+        />
+        {questionSubmitted ? (
+          <div className="pt-2 text-center text-npt_colors-350">
+            Thank you for submitting your question. We will respond in a timely
+            manner.
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
