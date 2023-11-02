@@ -4,14 +4,14 @@ import FAQsDiv from "../components/FAQsDiv";
 import { postFaq, getAnsweredFAQs } from "../axios/api";
 import FAQsLoading from "../components/loading/FAQsLoading";
 import RenderFor from "../animations/RenderFor";
+import ApiError from "../components/ApiError";
 
 function FrequentlyAskedQuestions() {
   const [faqs, setFAQs] = useState([]);
   const [message, setMessage] = useState();
   const [loading, setLoading] = useState(false);
   const [questionSubmitted, setQuestionSubmitted] = useState(false);
-  const [questionWasSubmitted, setQuestionWasSubmitted] = useState(false);
-  const [animatePingFinished, setAnimatePingFinished] = useState(false);
+  const [hasApiError, setHasApiError] = useState(false);
 
   async function onClick() {
     try {
@@ -19,8 +19,10 @@ function FrequentlyAskedQuestions() {
       const response = await postFaq(message);
       setLoading(false);
       setQuestionSubmitted(true);
+      setHasApiError(false);
     } catch (error) {
-      console.error("Error submitting FAQ:", error);
+      // console.error("Error submitting FAQ:", error);
+      setHasApiError(true);
     }
   }
 
@@ -30,8 +32,10 @@ function FrequentlyAskedQuestions() {
         const data = await getAnsweredFAQs();
         // console.log(data);
         setFAQs(data);
+        setHasApiError(false);
       } catch (error) {
-        console.error("Error loading FAQ:", error);
+        // console.error("Error loading FAQ:", error);
+        setHasApiError(true);
       }
     }
     fetchFaqs();
@@ -87,6 +91,9 @@ function FrequentlyAskedQuestions() {
         ) : (
           <></>
         )}
+      </div>
+      <div className="flex justify-center">
+        {hasApiError ? <ApiError /> : <></>}
       </div>
     </div>
   );

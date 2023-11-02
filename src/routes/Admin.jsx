@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import NssButton from "../nss/NssButton";
 import { adminGetEmployees, adminGetUnansweredQuestions } from "../axios/api";
 import { AuthContext } from "../contexts/context";
+import ApiError from "../components/ApiError";
+import FaqAdminDiv from "../admin/FaqAdminDiv";
 
 // eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlam5lcGhld0B5YWhvby5jb20iLCJpYXQiOjE2OTg3NjQ3MDUsImV4cCI6MTY5ODc2NTQyNX0.-QKYmy_q2c31JQDve49YVD6dg3qbd3S4HXOyUBCTE-wIzkL7P4ZJOppAgYL7shcQpsJjmeX_04c9xMMuJoxLPA
 
@@ -16,6 +18,7 @@ function Admin() {
   const counterRef = useRef(0);
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
+  const [hasApiError, setHasApiError] = useState(false);
 
   useEffect(() => {
     async function fetchUnansweredQuestions() {
@@ -23,16 +26,20 @@ function Admin() {
         const data = await adminGetUnansweredQuestions(authContext.token);
         console.log(JSON.stringify(data));
         setUnansweredFaqs(data);
+        setHasApiError(false);
       } catch (error) {
-        console.error("Error loading unanswered questions:", error);
+        setHasApiError(true);
+        // console.error("Error loading unanswered questions:", error);
       }
     }
     async function fetchEmployees() {
       try {
         const data = await adminGetEmployees(authContext.token);
         setEmployees(data);
+        setHasApiError(false);
       } catch (error) {
-        console.error("Error loading employees:", error);
+        setHasApiError(true);
+        // console.error("Error loading employees:", error);
       }
     }
     fetchEmployees();
@@ -104,69 +111,30 @@ function Admin() {
     ));
   };
 
-  const editFAQ = () => {};
-
-  const saveFAQ = () => {};
-
   const FAQs = () => {
     return unansweredFaqs.map((faq, index) => (
-      <div
-        className={`border rounded-lg shadow-xl py-2 px-2 my-2 ${
-          faq.answer == null
-            ? "border-r-8 border-red-600"
-            : "border-r-8 border-green-600"
-        }`}
-      >
-        <div key={faq.id} className="grid grid-flow-col grid-cols-2">
-          <div>
-            <div>Question:</div>
-            <div>{faq.question}</div>
-          </div>
-          <div>
-            <div>Answer:</div>
-            {faq.answer == null ? (
-              <AnswerTextArea faq={faq} />
-            ) : (
-              <div>{faq.answer}</div>
-            )}
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <NssButton onClick={editFAQ} label="Edit" />
-          <NssButton onClick={saveFAQ} label="Save" />
-        </div>
+      <div key={index}>
+        <FaqAdminDiv faq={faq} />
       </div>
     ));
   };
 
-  const AnswerTextArea = (props) => {
-    const { faq } = props;
-    const [message, setMessage] = useState("");
-    return (
-      <textarea
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        id="message"
-        rows="2"
-        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-200 rounded-lg border border-gray-300 focus:ring-npt_colors-30 focus:border-npt_colors-30 "
-        placeholder="Write your answer here..."
-      ></textarea>
-    );
-  };
-
   return (
     <div>
-      <div className="gap-2 flex">
-        <NssButton onClick={editFaqs} label="Edit FAQ"></NssButton>
-        <NssButton onClick={employeeDump} label="Employee Dump"></NssButton>
-        <NssButton onClick={editOffices} label="Edit Offices"></NssButton>
-        <NssButton onClick={editEmployees} label="Edit Employees"></NssButton>
-        <NssButton onClick={onGoBack} label="Back" />
+      <div>
+        <div className="gap-2 flex">
+          <NssButton onClick={editFaqs} label="Edit FAQ"></NssButton>
+          <NssButton onClick={employeeDump} label="Employee Dump"></NssButton>
+          <NssButton onClick={editOffices} label="Edit Offices"></NssButton>
+          <NssButton onClick={editEmployees} label="Edit Employees"></NssButton>
+          <NssButton onClick={onGoBack} label="Back" />
+        </div>
+        {showEmployeeDump ? <div>{getEmployeesAsDiv()}</div> : <></>}
+        {showEditEmployees ? <div>Edit Employees</div> : <></>}
+        {showFAQs ? <div>{<FAQs />}</div> : <></>}
+        {showOffices ? <div>Edit Office</div> : <></>}
       </div>
-      {showEmployeeDump ? <div>{getEmployeesAsDiv()}</div> : <></>}
-      {showEditEmployees ? <div>Edit Employees</div> : <></>}
-      {showFAQs ? <div>{<FAQs />}</div> : <></>}
-      {showOffices ? <div>Edit Office</div> : <></>}
+      <div>{hasApiError ? <ApiError /> : <></>}</div>
     </div>
   );
 }

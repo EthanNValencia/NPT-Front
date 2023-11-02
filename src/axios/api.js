@@ -22,7 +22,7 @@ export async function postFaq(message) {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error creating post:", error);
+    // console.error("Error creating post:", error);
     throw error;
   }
 }
@@ -33,7 +33,7 @@ export async function getAnsweredFAQs() {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error creating post:", error);
+    // console.error("Error creating post:", error);
     throw error;
   }
 }
@@ -45,7 +45,7 @@ export async function getEmployees() {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error creating post:", error);
+    // console.error("Error creating post:", error);
     throw error;
   }
 }
@@ -60,7 +60,7 @@ export async function findMyMatch(services) {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error fetching therapist matches:", error);
+    // console.error("Error fetching therapist matches:", error);
     throw error;
   }
 }
@@ -71,7 +71,7 @@ export async function getServices() {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
     throw error;
   }
 }
@@ -85,7 +85,7 @@ export async function postAppointment(appointment) {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error creating post:", error);
+    // console.error("Error creating post:", error);
     throw error;
   }
 }
@@ -96,7 +96,7 @@ export async function getOffices() {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
     throw error;
   }
 }
@@ -111,7 +111,7 @@ export async function register(user, type) {
     return response.data.token;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
     throw error;
   }
 }
@@ -126,7 +126,7 @@ export async function authenticate(user) {
     return response.data.token;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
     throw error;
   }
 }
@@ -141,7 +141,7 @@ export async function validate(token, action) {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
     throw error;
   }
 }
@@ -156,7 +156,7 @@ export async function validateAction(token, action) {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
     throw error;
   }
 }
@@ -168,7 +168,7 @@ export async function adminGetEmployees(token) {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
     throw error;
   }
 }
@@ -180,7 +180,7 @@ export async function adminGetUnansweredQuestions(token) {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
     throw error;
   }
 }
@@ -203,7 +203,7 @@ export async function reportError(error) {
   try {
     await axios.post(errorReportingUrl, requestBody);
   } catch (error) {
-    console.error("Error reporting error:", error);
+    // console.error("Error reporting error:", error);
     throw error;
   }
 }

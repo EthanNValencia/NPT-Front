@@ -2,17 +2,21 @@ import React, { useEffect, useState } from "react";
 import { getOffices } from "../axios/api";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
+import ApiError from "../components/ApiError";
 
 function ContactUs() {
-  const [offices, setOffices] = useState([]); // TODO: Implement this data below.
+  const [offices, setOffices] = useState([]);
+  const [hasApiError, setHasApiError] = useState(true);
 
   useEffect(() => {
     async function fetchOffices() {
       try {
         const data = await getOffices();
         setOffices(data);
+        setHasApiError(false);
       } catch (error) {
-        console.error("Error loading offices:", error);
+        // console.error("Error loading offices:", error);
+        setHasApiError(true);
       }
     }
     fetchOffices();
@@ -31,8 +35,6 @@ function ContactUs() {
     };
     return schedule.sort((a, b) => newSchedule[a.day] - newSchedule[b.day]);
   };
-
-  const swap = () => {};
 
   const DisclosureComponent = (props) => {
     const { title, contents } = props;
@@ -335,6 +337,9 @@ function ContactUs() {
                     </div>
                   </div>
                 </div>
+                <div className="flex justify-center">
+                  {hasApiError ? <ApiError /> : <></>}
+                </div>
               </div>
             </div>
           </div>
@@ -413,6 +418,9 @@ function ContactUs() {
                       )}
                     </div>
                   </div>
+                </div>
+                <div className="flex justify-center">
+                  {hasApiError ? <ApiError /> : <></>}
                 </div>
               </div>
             </div>

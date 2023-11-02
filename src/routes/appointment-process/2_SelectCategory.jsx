@@ -12,6 +12,7 @@ function SelectCategory() {
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
   const [selected, setSelected] = useState({ id: 1, name: undefined });
+  const [hasApiError, setHasApiError] = useState(false);
 
   useEffect(() => {
     userContext.navigateAppointment(navigate);
@@ -22,8 +23,10 @@ function SelectCategory() {
       try {
         const response = await getServices();
         setServices(response);
+        setHasApiError(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        setHasApiError(true);
+        // console.error("Error fetching data:", error);
       }
     }
     fetchServices();

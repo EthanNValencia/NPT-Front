@@ -1,10 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/context";
 import NssButton from "../nss/NssButton";
+import ApiError from "../components/ApiError";
 
 function Options() {
   const authContext = useContext(AuthContext);
+  const [hasApiError, setHasApiError] = useState(false);
+
   const navigate = useNavigate();
 
   const onClickAdmin = async () => {
@@ -14,8 +17,9 @@ function Options() {
         navigate("/admin");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
-      throw error;
+      setHasApiError(true);
+      //console.error("Error fetching data:", error);
+      //throw error;
     }
   };
 
@@ -26,8 +30,9 @@ function Options() {
         navigate("/");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
-      throw error;
+      setHasApiError(true);
+      //console.error("Error fetching data:", error);
+      //throw error;
     }
   };
 
@@ -36,10 +41,19 @@ function Options() {
   };
 
   return (
-    <div className="flex justify-center gap-2 py-2">
-      <NssButton onClick={onClickAdmin} label="Admin" />
-      <NssButton onClick={onClickNpt} label="NPT" />
-      <NssButton onClick={onLogout} label="Logout" />
+    <div>
+      <div className="flex justify-center gap-2 py-2">
+        <NssButton
+          onClick={onClickAdmin}
+          label="Office-Employee-Service-Appointment Admin"
+        />
+        <NssButton
+          onClick={onClickNpt}
+          label="Office-Employee-Service-Appointment Website"
+        />
+        <NssButton onClick={onLogout} label="Logout" />
+      </div>
+      {hasApiError ? <ApiError /> : <></>}
     </div>
   );
 }

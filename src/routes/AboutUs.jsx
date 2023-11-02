@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getEmployees } from "../axios/api";
 import EmployeeCard from "../components/EmployeeCard";
+import ApiError from "../components/ApiError";
 
 function AboutUs() {
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [selectedTherapist, setSelectedTherapist] = useState({});
+  const [hasApiError, setHasApiError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -20,8 +22,10 @@ function AboutUs() {
       try {
         const data = await getEmployees();
         setEmployees(data);
+        setHasApiError(false);
       } catch (error) {
-        console.error("Error loading FAQ:", error);
+        // console.error("Error loading FAQ:", error);
+        setHasApiError(true);
       }
     }
     fetchEmployees();
@@ -50,6 +54,9 @@ function AboutUs() {
             fullRender={true}
           />
         ))}
+      </div>
+      <div className="flex justify-center">
+        {hasApiError ? <ApiError /> : <></>}
       </div>
     </div>
   );

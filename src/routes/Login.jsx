@@ -3,6 +3,7 @@ import NssButton from "../nss/NssButton";
 import NssInputText from "../nss/NssInputText";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/context";
+import ApiError from "../components/ApiError";
 
 const Checkbox = ({ label, value, onChange }) => {
   return (
@@ -25,6 +26,7 @@ function Login() {
   const [admin, setAdmin] = useState(false);
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
+  const [hasApiError, setHasApiError] = useState(false);
 
   const handleUserChange = () => {
     setUser(!user);
@@ -35,11 +37,16 @@ function Login() {
   };
 
   const onLogin = async () => {
-    const userCred = { email: username, password: password };
-    const authenticated = await authContext.authenticateCredentials(userCred);
-    setAuth(authenticated);
-    if (authenticated) {
-      navigate("/options");
+    try {
+      const userCred = { email: username, password: password };
+      const authenticated = await authContext.authenticateCredentials(userCred);
+      setAuth(authenticated);
+      setHasApiError(false);
+      if (authenticated) {
+        navigate("/options");
+      }
+    } catch (error) {
+      setHasApiError(true);
     }
   };
 
@@ -57,9 +64,9 @@ function Login() {
         serviceName: serviceName,
       };
       await authContext.registerNewAccount(newUser, "admin");
+      setHasApiError(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      throw error;
+      setHasApiError(true);
     }
   };
 
@@ -90,7 +97,7 @@ function Login() {
           <div className="flex justify-center">Login</div>
           <div>
             <div className="px-4 py-1">
-              <div className="text-xs font-extrabold">User name</div>
+              <div className="text-xs font-extrabold">Username</div>
               <NssInputText
                 value={username}
                 onChange={onChangeUsername}
@@ -113,7 +120,7 @@ function Login() {
           <div className="flex justify-center gap-4 pt-2">
             <NssButton onClick={onLogin} label="Login" />
           </div>
-          <div className="flex">
+          <div className="flex py-2 justify-center">
             <div className="flex justify-center gap-4 pt-2 pr-2">
               No account? Sign up here:
             </div>
@@ -190,6 +197,7 @@ function Login() {
           </div>
         </div>
       )}
+      <div>{hasApiError ? <ApiError /> : <></>}</div>
     </div>
   );
 }

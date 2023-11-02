@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { getServices } from "../axios/api";
 import ServicesRadioButtons from "../components/ServicesRadioButtons";
+import ApiError from "../components/ApiError";
 
 function Services() {
   const [services, setServices] = useState([]);
   const [selected, setSelected] = useState({ id: 1, name: undefined });
+  const [hasApiError, setHasApiError] = useState(false);
 
   useEffect(() => {
     async function fetchServices() {
       try {
         const response = await getServices();
         setServices(response);
+        setHasApiError(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
+        setHasApiError(true);
       }
     }
     fetchServices();
@@ -62,12 +66,18 @@ function Services() {
           <></>
         )}
 
-        <ServicesRadioButtons
-          servicesPage={true}
-          services={services}
-          selected={selected}
-          setSelected={setSelected}
-        />
+        <div className="flex justify-center">
+          {hasApiError ? (
+            <ApiError />
+          ) : (
+            <ServicesRadioButtons
+              servicesPage={true}
+              services={services}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
