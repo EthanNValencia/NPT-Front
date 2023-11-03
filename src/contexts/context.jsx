@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { createContext } from "react";
-import { validateAction, authenticate } from "../axios/api";
+import { authenticate, validate, validateAction } from "../axios/api";
 
 export const UserContext = createContext();
 
@@ -206,6 +206,19 @@ export function AuthProvider({ children }) {
     const adminAction = { role: "ADMIN" };
     try {
       const validated = await validateAction(token, adminAction);
+      if (validated) {
+        setAuth(true);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setAuth(false);
+      throw error;
+    }
+  };
+
+  const validateToken = async () => {
+    try {
+      const validated = await validate(token);
       if (validated) {
         setAuth(true);
       }

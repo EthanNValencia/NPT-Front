@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const publicUrl = "http://localhost:8765/npt-service/api/v1/public";
-const authUrl = "http://localhost:8765/security-service/api/v1/auth";
+const authUrl = "http://localhost:8765/security-service/api/v1/public";
 const privateUrl = "http://localhost:8765/npt-service/api/v1/auth";
 const errorReportingUrl =
   "http://localhost:8765/error-service/api/v1/public/error/";
@@ -117,6 +117,7 @@ export async function register(user, type) {
 }
 
 export async function authenticate(user) {
+  // http://localhost:8765/security-service/api/v1/public/authenticate
   const authenticationUrl = authUrl + "/authenticate";
   const requestBody = {
     ...user,
@@ -131,13 +132,10 @@ export async function authenticate(user) {
   }
 }
 
-export async function validate(token, action) {
+export async function validate(token) {
   const validationUrl = authUrl + "/validate/" + token;
-  const requestBody = {
-    ...action,
-  };
   try {
-    const response = await axios.post(validationUrl, requestBody);
+    const response = await axios.get(validationUrl);
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
@@ -147,7 +145,7 @@ export async function validate(token, action) {
 }
 
 export async function validateAction(token, action) {
-  const registerUrl = authUrl + "/validate/" + token;
+  const registerUrl = authUrl + "/validate-action/" + token;
   const requestBody = {
     ...action,
   };
@@ -163,8 +161,12 @@ export async function validateAction(token, action) {
 
 export async function adminGetEmployees(token) {
   const adminEmployeeUrl = privateUrl + "/employees/";
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
   try {
-    const response = await axios.get(adminEmployeeUrl, token);
+    const response = await axios.get(adminEmployeeUrl, { headers });
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
@@ -175,8 +177,15 @@ export async function adminGetEmployees(token) {
 
 export async function adminGetUnansweredQuestions(token) {
   const adminFaqUrl = privateUrl + "/faqs/get-all";
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
   try {
-    const response = await axios.get(adminFaqUrl, token);
+    console.log("Token: " + token);
+    const response = await axios.get(adminFaqUrl, { headers });
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
@@ -203,7 +212,42 @@ export async function reportError(error) {
   try {
     await axios.post(errorReportingUrl, requestBody);
   } catch (error) {
-    // console.error("Error reporting error:", error);
+    console.log("An error occured while trying to report the error: " + error);
+    throw error;
+  }
+}
+
+export async function deleteFaqApi(faq, token) {
+  // http://localhost:8765/npt-service/api/v1/auth/faqs/60
+  const deleteFaqUrl = privateUrl + "/faqs/" + faq.id;
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    const response = await axios.delete(deleteFaqUrl, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    throw error;
+  }
+}
+
+export async function updateFaqApi(faq, token) {
+  const updateFaqUrl = privateUrl + "/faqs/";
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    const response = await axios.put(updateFaqUrl, faq, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
     throw error;
   }
 }

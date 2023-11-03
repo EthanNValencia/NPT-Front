@@ -97,7 +97,7 @@ function Admin() {
     return <div>{`${key}: ${employee[key]}`}</div>;
   };
 
-  const getEmployeesAsDiv = () => {
+  const EmployeesAsDiv = () => {
     return employees.map((employee, index) => (
       <div key={index}>
         {Object.keys(employee).map((key) => (
@@ -129,7 +129,7 @@ function Admin() {
           <NssButton onClick={editEmployees} label="Edit Employees"></NssButton>
           <NssButton onClick={onGoBack} label="Back" />
         </div>
-        {showEmployeeDump ? <div>{getEmployeesAsDiv()}</div> : <></>}
+        {showEmployeeDump ? <div>{<EmployeesAsDiv />}</div> : <></>}
         {showEditEmployees ? <div>Edit Employees</div> : <></>}
         {showFAQs ? <div>{<FAQs />}</div> : <></>}
         {showOffices ? <div>Edit Office</div> : <></>}
