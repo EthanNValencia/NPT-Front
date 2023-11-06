@@ -219,7 +219,7 @@ function WSW({ children }) {
 function APW({ children }) {
   // Admin Panel Wrap
   return (
-    <div className="bg-nss-20 pt-2 pb-2 flex items-center">
+    <div className="bg-nss-20 pt-2 pb-2 flex">
       <div className="bg-nss-21 border rounded-lg shadow-md w-screen px-2 mx-2 border-nss-1">
         <div className="p-4">{children}</div>
       </div>

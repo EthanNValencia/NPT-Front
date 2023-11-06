@@ -217,9 +217,9 @@ export async function reportError(error) {
   }
 }
 
-export async function deleteFaqApi(faq, token) {
+export async function deleteFaqApi(id, token) {
   // http://localhost:8765/npt-service/api/v1/auth/faqs/60
-  const deleteFaqUrl = privateUrl + "/faqs/" + faq.id;
+  const deleteFaqUrl = privateUrl + "/faqs/" + id;
 
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -248,6 +248,38 @@ export async function updateFaqApi(faq, token) {
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
+    throw error;
+  }
+}
+
+export async function adminGetWebsite(token) {
+  const adminWebsiteUrl = privateUrl + "/website/";
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.get(adminWebsiteUrl, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    // console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function adminUpdateWebsite(token, website) {
+  const adminWebsiteUrl = privateUrl + "/website/";
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.put(adminWebsiteUrl, website, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    // console.error("Error fetching data:", error);
     throw error;
   }
 }

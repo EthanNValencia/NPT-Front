@@ -15,8 +15,8 @@ const Checkbox = ({ label, value, onChange }) => {
 };
 
 function Login() {
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("password");
+  const [username, setUsername] = useState("ejnephew@yahoo.com");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [serviceName, setServiceName] = useState("");

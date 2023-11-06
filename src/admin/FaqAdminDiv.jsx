@@ -5,53 +5,76 @@ import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
 
 function FaqAdminDiv(props) {
-  const { faq } = props;
-  const [loading, setLoading] = useState(false);
+  const { faq, removeFaq, index, updateFaqObjects } = props;
+  const [id, setId] = useState(faq.id);
   const [question, setQuestion] = useState(faq.question);
   const [answer, setAnswer] = useState(faq.answer);
   const [questionAnswered, setQuestionAnswered] = useState(
     faq.questionIsAnswered
   );
-  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [editMode, setEditMode] = useState(id == null);
   const [changeDetected, setChangeDetected] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
+  // const [isDeleted, setIsDeleted] = useState(false);
   const authContext = useContext(AuthContext);
+
+  const removeThisFaq = () => {
+    const thisFaq = {
+      id: faq.id,
+      questionIsAnswered: questionAnswered,
+      question: question,
+      answer: answer,
+    };
+    removeFaq(thisFaq);
+  };
 
   const editFaq = () => {
     setEditMode(!editMode);
   };
+
   const saveFaq = async () => {
-    try {
-      setLoading(true);
-      // id":21,"questionIsAnswered":true,"question":"When is my payment due? ","answer":"When appointment is made."}
-      const updatedFaq = await updateFaqApi(
-        {
-          id: faq.id,
-          questionIsAnswered: questionAnswered,
-          question: question,
-          answer: answer,
-        },
-        authContext.token
-      );
-      // Id should remain the same.
-      setAnswer(updatedFaq.answer);
-      setQuestion(updatedFaq.question);
-      setQuestionAnswered(updatedFaq.questionIsAnswered);
-      setHasApiError(false);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      setHasApiError(true);
+    if (questionAnswered || !editMode) {
+      try {
+        setLoading(true);
+        // id":21,"questionIsAnswered":true,"question":"When is my payment due? ","answer":"When appointment is made."}
+        const updatedFaq = await updateFaqApi(
+          {
+            id: faq.id,
+            questionIsAnswered: questionAnswered,
+            question: question,
+            answer: answer,
+          },
+          authContext.token
+        );
+        // Id should remain the same.
+        setId(updatedFaq.id);
+        setAnswer(updatedFaq.answer);
+        setQuestion(updatedFaq.question);
+        setQuestionAnswered(updatedFaq.questionIsAnswered);
+        updateFaqObjects(updatedFaq, index);
+        setHasApiError(false);
+        setLoading(false);
+        setChangeDetected(false);
+      } catch (error) {
+        setLoading(false);
+        setHasApiError(true);
+      }
     }
   };
 
   const deleteFaq = async () => {
+    if (id == null) {
+      // faq was not yet persisted
+      removeThisFaq();
+      return;
+    }
     try {
       setLoading(true);
-      await deleteFaqApi(faq, authContext.token);
+      await deleteFaqApi(id, authContext.token);
+      removeThisFaq();
       setLoading(false);
-      setIsDeleted(true);
+      // setIsDeleted(true);
       setHasApiError(false);
     } catch (error) {
       setLoading(false);
@@ -60,11 +83,55 @@ function FaqAdminDiv(props) {
   };
 
   const markAnswered = () => {
-    setQuestionAnswered(true);
+    if (answer != null && answer != "") {
+      setQuestionAnswered(true);
+    }
   };
 
   const testLoading = () => {
     setLoading(!loading);
+  };
+
+  const textFieldChangeDetected = (value) => {
+    if (value == null || value == "") {
+      setChangeDetected(false);
+      return;
+    }
+    setChangeDetected(true);
+  };
+
+  const ReturnDisplayMessage = () => {
+    if (loading) {
+      return <div>Your changes are being submitted...</div>;
+    }
+    if (editMode) {
+      return (
+        <div className="text-yellow-400 font-bold pt-2 animate-pulse">
+          Edit mode is on.
+        </div>
+      );
+    }
+    if (changeDetected && questionAnswered) {
+      return (
+        <div className="text-yellow-400 font-bold pt-2">
+          A change was detected. Do not forget to save.
+        </div>
+      );
+    }
+    if (!questionAnswered) {
+      return (
+        <div className="text-red-700 font-bold pt-2">
+          This question needs to be answered.
+        </div>
+      );
+    }
+    if (answer != null && answer != "" && question != null && question != "") {
+      return (
+        <div className="text-green-700 font-bold pt-2">
+          No changes detected.
+        </div>
+      );
+    }
   };
 
   const pickDivColor = () => {
@@ -74,95 +141,116 @@ function FaqAdminDiv(props) {
     if (editMode) {
       return "border-r-8 border-yellow-600";
     }
+    if (changeDetected && questionAnswered) {
+      return "border-r-8 border-yellow-600 animate-pulse";
+    }
     if (!questionAnswered) {
       return "border-r-8 border-red-600";
     }
-    if (answer != null) {
+    if (answer != null && answer != "") {
       return "border-r-8 border-green-600";
     }
   };
 
+  const disableButton = () => {
+    if (loading) {
+      return true;
+    }
+    if (editMode) {
+      return true;
+    }
+    if (changeDetected && questionAnswered) {
+      return false;
+    }
+    if (questionAnswered) {
+      return false;
+    }
+    if (answer != null || answer != "" || question != null || question != "") {
+      return false;
+    }
+  };
+
   return (
-    <div>
-      {isDeleted ? (
-        <></>
-      ) : (
-        <div
-          className={`border rounded-lg shadow-xl py-2 px-2 my-2 ${pickDivColor()}`}
-        >
-          <div key={faq.id} className="grid grid-flow-col grid-cols-2 gap-x-2">
-            <div>
-              <div>Question:</div>
-              {editMode ? (
-                <TextArea
-                  text={question}
-                  change={setQuestion}
-                  changeDetected={setChangeDetected}
-                />
-              ) : (
-                <div>{question}</div>
-              )}
-            </div>
-            <div>
-              <div>Answer:</div>
-              {!questionAnswered || editMode ? (
-                <TextArea
-                  text={answer}
-                  change={setAnswer}
-                  changeDetected={setChangeDetected}
-                />
-              ) : (
-                <div>{answer}</div>
-              )}
+    <div className="h-full">
+      <div
+        className={`h-full bg-nss-21 border rounded-lg shadow-xl py-2 px-2 my-2 ${pickDivColor()}`}
+      >
+        <div className="h-full flex flex-col justify-between">
+          <div>
+            <div key={id} className="grid grid-flow-col grid-cols-2 gap-x-2">
+              <div>
+                <div className="text-xs font-bold">Question:</div>
+                {editMode ? (
+                  <TextArea
+                    text={question}
+                    onTextChange={setQuestion}
+                    changeDetected={textFieldChangeDetected}
+                  />
+                ) : (
+                  <div>{question}</div>
+                )}
+              </div>
+              <div>
+                <div className="text-xs font-bold">Answer:</div>
+                {!questionAnswered || editMode ? (
+                  <TextArea
+                    text={answer}
+                    onTextChange={setAnswer}
+                    changeDetected={textFieldChangeDetected}
+                  />
+                ) : (
+                  <div>{answer}</div>
+                )}
+              </div>
             </div>
           </div>
-          <div className="flex justify-between">
-            <div className="flex gap-2 pt-2">
-              <NssButton onClick={editFaq} disabled={loading} label="Edit" />
-              <NssButton onClick={saveFaq} disabled={loading} label="Save" />
-              <NssButton
-                onClick={deleteFaq}
-                disabled={loading}
-                label="Delete"
-              />
-              <NssButton
-                onClick={testLoading}
-                disabled={false}
-                label="Test Loading"
-              />
-              {!questionAnswered ? (
+          <div>
+            <div className="flex justify-between">
+              <div className="flex gap-2 pt-2">
+                <NssButton onClick={editFaq} disabled={loading} label="Edit" />
                 <NssButton
-                  onClick={markAnswered}
-                  disabled={loading}
-                  label="Mark Answered"
+                  onClick={saveFaq}
+                  disabled={disableButton()}
+                  label="Save"
                 />
-              ) : (
-                <></>
-              )}
-            </div>
-            {changeDetected ? (
-              <div className="text-yellow-400 font-bold pt-2 animate-pulse">
-                A change was detected. Do not forget to save.
+                <NssButton
+                  onClick={deleteFaq}
+                  disabled={loading || id == null}
+                  label="Delete"
+                />
+                <NssButton
+                  onClick={testLoading}
+                  disabled={false}
+                  label="Test Loading"
+                />
+                {!questionAnswered ? (
+                  <NssButton
+                    onClick={markAnswered}
+                    disabled={loading}
+                    label="Mark Answered"
+                  />
+                ) : (
+                  <></>
+                )}
               </div>
-            ) : (
-              <></>
-            )}
+              <ReturnDisplayMessage />
+            </div>
           </div>
           <div>{hasApiError ? <ApiError /> : <></>}</div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
 const TextArea = (props) => {
-  const { text, change, changeDetected } = props;
+  const { text, onTextChange, changeDetected } = props;
   return (
     <textarea
       value={text}
       onChange={(e) => {
-        change(e.target.value);
-        changeDetected(true);
+        onTextChange(e.target.value);
+        changeDetected(e.target.value);
       }}
       id="message"
       rows="2"
