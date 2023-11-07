@@ -1,44 +1,80 @@
 import React, { useState, useEffect, useContext } from "react";
-import { adminGetWebsite } from "../axios/api";
+import { adminGetWebsite, adminUpdateWebsite } from "../axios/api";
 import DataField from "./DataField";
-import SocialMediaProfile from "./SocialMediaProfile";
+import SocialMediaProfileAdmin from "./SocialMediaProfileAdmin";
 import NssButton from "../nss/NssButton";
 import ApiError from "../components/ApiError";
 import { AuthContext } from "../contexts/context";
 
-function WebsiteAdmin(props) {
+function WebsiteAdmin() {
   const [showEditWebsite, setShowEditWebsite] = useState(false);
   const [websiteObject, setWebsiteObject] = useState({});
   const [hasApiError, setHasApiError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const authContext = useContext(AuthContext);
 
-  useEffect(() => {
-    async function fetchWebsite() {
-      try {
-        setLoading(true);
-        const data = await adminGetWebsite(authContext.token);
-        setWebsiteObject(data);
-        console.log(JSON.stringify(data));
-        setHasApiError(false);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        setHasApiError(true);
-        // console.error("Error loading employees:", error);
-      }
+  async function fetchWebsite() {
+    try {
+      setLoading(true);
+      const data = await adminGetWebsite(authContext.token);
+      setWebsiteObject(data);
+      // console.log(JSON.stringify(data));
+      setHasApiError(false);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setHasApiError(true);
+      // console.error("Error loading employees:", error);
     }
+  }
+
+  async function updateWebsite() {
+    try {
+      setLoading(true);
+      const data = await adminUpdateWebsite(websiteObject, authContext.token);
+      setWebsiteObject(data);
+      // console.log(JSON.stringify(data));
+      setHasApiError(false);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setHasApiError(true);
+      // console.error("Error loading employees:", error);
+    }
+  }
+
+  const copyProfile = (profile) => {
+    // Create a copy of the current websiteObject
+    const updatedWebsiteObject = { ...websiteObject };
+    // Update the profile property with the new profile object
+    updatedWebsiteObject.profile = profile;
+    // Set the state with the updated websiteObject
+    setWebsiteObject(updatedWebsiteObject);
+  };
+
+  useEffect(() => {
     fetchWebsite();
   }, []);
 
-  const onSaveWebsite = () => {};
+  const onShowProfile = () => {
+    setShowProfile(!showProfile);
+  };
+
+  const onSaveWebsite = () => {
+    updateWebsite();
+  };
+
+  const onReloadWebsite = () => {
+    fetchWebsite();
+  };
 
   const onEditWebsite = () => {
     setShowEditWebsite(!showEditWebsite);
   };
 
   return (
-    <div>
+    <div className="bg-nss-21 border-2 rounded-lg shadow-xl py-2 px-2 mt-2">
       <div className="text-xl text-center py-2">Website Data</div>
       <div className="grid grid-cols-2 gap-2">
         <div>
@@ -88,14 +124,24 @@ function WebsiteAdmin(props) {
         <div className="flex gap-2 pt-2">
           <NssButton onClick={onSaveWebsite} label="Save Website"></NssButton>
           <NssButton onClick={onEditWebsite} label="Edit Website"></NssButton>
+          <NssButton
+            onClick={onReloadWebsite}
+            label="Reload Website"
+          ></NssButton>
+          <NssButton onClick={onShowProfile} label="Show Profile"></NssButton>
         </div>
       </div>
       <div>
-        <SocialMediaProfile
-          socialMediaProfile={websiteObject.profile}
-          parentId={websiteObject.id}
-          loading={loading}
-        />
+        {showProfile ? (
+          <SocialMediaProfileAdmin
+            socialMediaProfile={websiteObject.profile}
+            parentId={websiteObject.id}
+            loading={loading}
+            copyProfileToParent={copyProfile}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <div>{hasApiError ? <ApiError /> : <></>}</div>
     </div>

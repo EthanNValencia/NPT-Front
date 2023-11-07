@@ -4,7 +4,7 @@ import { updateFaqApi, deleteFaqApi } from "../axios/api";
 import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
 
-function FaqAdminDiv(props) {
+function FaqAdmin(props) {
   const { faq, removeFaq, index, updateFaqObjects } = props;
   const [id, setId] = useState(faq.id);
   const [question, setQuestion] = useState(faq.question);
@@ -260,4 +260,4 @@ const TextArea = (props) => {
   );
 };
 
-export default FaqAdminDiv;
+export default FaqAdmin;

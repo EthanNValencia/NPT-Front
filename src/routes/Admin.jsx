@@ -4,8 +4,8 @@ import NssButton from "../nss/NssButton";
 import { adminGetEmployees, adminGetUnansweredQuestions } from "../axios/api";
 import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
-import FaqAdminDiv from "../admin/FaqAdminDiv";
-import EmployeeAdminDiv from "../admin/EmployeeAdminDiv";
+import FaqAdmin from "../admin/FaqAdmin";
+import EmployeeAdmin from "../admin/EmployeeAdmin";
 import WebsiteAdmin from "../admin/WebsiteAdmin";
 
 // eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlam5lcGhld0B5YWhvby5jb20iLCJpYXQiOjE2OTg3NjQ3MDUsImV4cCI6MTY5ODc2NTQyNX0.-QKYmy_q2c31JQDve49YVD6dg3qbd3S4HXOyUBCTE-wIzkL7P4ZJOppAgYL7shcQpsJjmeX_04c9xMMuJoxLPA
@@ -105,15 +105,12 @@ function Admin() {
     setShowOffices(false);
   };
 
-  // NEED TO FIX THIS, IT NEEDS TO DELETE FIRST
   const updateFaqObjects = (faq, index) => {
-    for (let i = 0; i < faqObjects.length; i++) {
-      if (i == index) {
-        // What to do here?
-      }
+    const updatedFaqObjects = [...faqObjects];
+    if (index >= 0 && index < updatedFaqObjects.length) {
+      updatedFaqObjects[index] = faq;
+      setFaqObjects(updatedFaqObjects);
     }
-    const newFaqs = [...faqObjects, faq];
-    setFaqObjects(newFaqs);
   };
 
   function traverseObject(obj) {
@@ -213,7 +210,7 @@ function Admin() {
   const FAQs = () => {
     return faqObjects.map((faq, index) => (
       <div key={index} className="">
-        <FaqAdminDiv
+        <FaqAdmin
           faq={faq}
           removeFaq={removeFaq}
           updateFaqObjects={updateFaqObjects}
@@ -226,7 +223,7 @@ function Admin() {
   const Employees = () => {
     return employeeObjects.map((employee, index) => (
       <div key={index}>
-        <EmployeeAdminDiv employee={employee} removeEmployee={removeEmployee} />
+        <EmployeeAdmin employee={employee} removeEmployee={removeEmployee} />
       </div>
     ));
   };

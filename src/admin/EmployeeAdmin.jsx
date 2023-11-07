@@ -2,10 +2,11 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
 import NssButton from "../nss/NssButton";
-import SocialMediaProfile from "./SocialMediaProfile";
+import SocialMediaProfileAdmin from "./SocialMediaProfileAdmin";
 import DataField from "./DataField";
+import AppointmentsAdmin from "./AppointmentsAdmin";
 
-function EmployeeAdminDiv(props) {
+function EmployeeAdmin(props) {
   const { employee, removeEmployee, index } = props;
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState(employee.id);
@@ -14,24 +15,35 @@ function EmployeeAdminDiv(props) {
   const [showSchedule, setShowSchedule] = useState(false);
   const [showOffice, setShowOffice] = useState(false);
   const [showEditEmployee, setShowEditEmployee] = useState(false);
+  const [showAppointments, setShowAppointments] = useState(false);
   const authContext = useContext(AuthContext);
 
   const openSocialMediaProfile = () => {
     setShowSocialMedia(!showSocialMedia);
     setShowSchedule(false);
     setShowOffice(false);
+    setShowAppointments(false);
   };
 
   const openSchedule = () => {
     setShowSocialMedia(false);
     setShowSchedule(!showSchedule);
     setShowOffice(false);
+    setShowAppointments(false);
   };
 
   const openOffice = () => {
     setShowSocialMedia(false);
     setShowSchedule(false);
     setShowOffice(!showOffice);
+    setShowAppointments(false);
+  };
+
+  const openAppointments = () => {
+    setShowSocialMedia(false);
+    setShowSchedule(false);
+    setShowOffice(false);
+    setShowAppointments(!showAppointments);
   };
 
   const onEditEmployee = () => {
@@ -44,6 +56,10 @@ function EmployeeAdminDiv(props) {
 
   const onDeleteEmployee = () => {
     console.log("Delete!");
+  };
+
+  const updateAppointments = () => {
+    console.log("Update appointments!");
   };
 
   const DailyScheduleCard = (props) => {
@@ -245,10 +261,14 @@ function EmployeeAdminDiv(props) {
         <div className="flex gap-2">
           <NssButton
             onClick={openSocialMediaProfile}
-            label="Social Media Profile"
+            label="Profile"
           ></NssButton>
           <NssButton onClick={openSchedule} label="Daily Schedule"></NssButton>
           <NssButton onClick={openOffice} label="Office"></NssButton>
+          <NssButton
+            onClick={openAppointments}
+            label="Appointments"
+          ></NssButton>
         </div>
 
         <div className="flex gap-2">
@@ -262,7 +282,7 @@ function EmployeeAdminDiv(props) {
       </div>
       <div>
         {showSocialMedia ? (
-          <SocialMediaProfile
+          <SocialMediaProfileAdmin
             socialMediaProfile={employee.employeeSocialMedialProfile}
             parentId={employee.id}
           />
@@ -280,9 +300,17 @@ function EmployeeAdminDiv(props) {
       ) : (
         <></>
       )}
+      {showAppointments ? (
+        <AppointmentsAdmin
+          appointments={employee.appointments}
+          updateParentAppointments={updateAppointments}
+        />
+      ) : (
+        <></>
+      )}
       <div>{hasApiError ? <ApiError /> : <></>}</div>
     </div>
   );
 }
 
-export default EmployeeAdminDiv;
+export default EmployeeAdmin;

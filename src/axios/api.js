@@ -268,7 +268,7 @@ export async function adminGetWebsite(token) {
   }
 }
 
-export async function adminUpdateWebsite(token, website) {
+export async function adminUpdateWebsite(website, token) {
   const adminWebsiteUrl = privateUrl + "/website/";
   const headers = {
     Authorization: `Bearer ${token}`,
