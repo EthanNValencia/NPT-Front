@@ -182,6 +182,7 @@ function Notes() {
                     <div className="shrink-0 text-white">
                       <CheckIcon className="h-6 w-6" />
                     </div>
+                    Approved
                   </button>
                 )}
                 <svg
@@ -223,13 +224,6 @@ function Notes() {
               </div>
               {looksGood ? (
                 <div className="flex justify-around pt-2">
-                  <button
-                    onClick={submitAppointment}
-                    type="button"
-                    className="inline-flex items-center px-8 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-npt_colors-350 hover:bg-npt_colors-10 hover:text-black first-line:transition ease-in-out duration-150 cursor-pointer"
-                  >
-                    Submit
-                  </button>
                   <NtButton
                     label={submitted ? "Thank you" : "Submit"}
                     onClick={submitAppointment}

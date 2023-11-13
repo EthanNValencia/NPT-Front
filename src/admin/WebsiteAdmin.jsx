@@ -7,12 +7,55 @@ import ApiError from "../components/ApiError";
 import { AuthContext } from "../contexts/context";
 
 function WebsiteAdmin() {
-  const [showEditWebsite, setShowEditWebsite] = useState(false);
+  const [editMode, setShowEditMode] = useState(false);
   const [websiteObject, setWebsiteObject] = useState({});
   const [hasApiError, setHasApiError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [changeDetected, setChangeDetected] = useState(false);
   const authContext = useContext(AuthContext);
+
+  const ReturnDisplayMessage = () => {
+    if (loading) {
+      return <div>Your changes are being submitted...</div>;
+    }
+    if (editMode) {
+      return (
+        <div className="text-yellow-400 font-bold pt-2 animate-pulse text-sm">
+          Edit mode is on.
+        </div>
+      );
+    }
+    if (changeDetected) {
+      return (
+        <div className="text-yellow-400 font-bold pt-2 text-sm">
+          A change was detected. Do not forget to save.
+        </div>
+      );
+    }
+    if (!changeDetected) {
+      return (
+        <div className="text-green-700 font-bold pt-2 text-sm">
+          No changes detected.
+        </div>
+      );
+    }
+  };
+
+  const pickDivColor = () => {
+    if (loading) {
+      return "border-r-8 border-red-400 animate-pulse";
+    }
+    if (editMode) {
+      return "border-r-8 border-yellow-600";
+    }
+    if (changeDetected) {
+      return "border-r-8 border-yellow-600";
+    }
+    if (!changeDetected) {
+      return "border-r-8 border-green-600";
+    }
+  };
 
   async function fetchWebsite() {
     try {
@@ -22,9 +65,12 @@ function WebsiteAdmin() {
       // console.log(JSON.stringify(data));
       setHasApiError(false);
       setLoading(false);
+      setChangeDetected(false);
     } catch (error) {
       setLoading(false);
       setHasApiError(true);
+      setChangeDetected(false);
+      console.log("There was an error fetching the website data.");
       // console.error("Error loading employees:", error);
     }
   }
@@ -37,19 +83,19 @@ function WebsiteAdmin() {
       // console.log(JSON.stringify(data));
       setHasApiError(false);
       setLoading(false);
+      setChangeDetected(false);
     } catch (error) {
       setLoading(false);
       setHasApiError(true);
+      setChangeDetected(false);
+      console.log("There was an error updating the website data.");
       // console.error("Error loading employees:", error);
     }
   }
 
   const copyProfile = (profile) => {
-    // Create a copy of the current websiteObject
     const updatedWebsiteObject = { ...websiteObject };
-    // Update the profile property with the new profile object
     updatedWebsiteObject.profile = profile;
-    // Set the state with the updated websiteObject
     setWebsiteObject(updatedWebsiteObject);
   };
 
@@ -70,17 +116,19 @@ function WebsiteAdmin() {
   };
 
   const onEditWebsite = () => {
-    setShowEditWebsite(!showEditWebsite);
+    setShowEditMode(!editMode);
   };
 
   return (
-    <div className="bg-nss-21 border-2 rounded-lg shadow-xl py-2 px-2 mt-2">
+    <div
+      className={`bg-nss-21 border ${pickDivColor()} rounded-lg shadow-xl py-2 px-2 mt-2`}
+    >
       <div className="text-xl text-center py-2">Website Data</div>
       <div className="grid grid-cols-2 gap-2">
         <div>
           <div className="text-xs font-bold">Name:</div>
           <div className="text-sm">
-            {showEditWebsite ? (
+            {editMode ? (
               <input
                 className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
                 id="name"
@@ -91,6 +139,7 @@ function WebsiteAdmin() {
                   const updatedWebsiteObject = { ...websiteObject };
                   updatedWebsiteObject.name = e.target.value;
                   setWebsiteObject(updatedWebsiteObject);
+                  setChangeDetected(true);
                 }}
               />
             ) : (
@@ -101,7 +150,7 @@ function WebsiteAdmin() {
         <div>
           <div className="text-xs font-bold">Home Url:</div>
           <div className="text-sm">
-            {showEditWebsite ? (
+            {editMode ? (
               <input
                 className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
                 id="homeUrl"
@@ -112,6 +161,7 @@ function WebsiteAdmin() {
                   const updatedWebsiteObject = { ...websiteObject };
                   updatedWebsiteObject.homeUrl = e.target.value;
                   setWebsiteObject(updatedWebsiteObject);
+                  setChangeDetected(true);
                 }}
               />
             ) : (
@@ -120,7 +170,7 @@ function WebsiteAdmin() {
           </div>
         </div>
       </div>
-      <div className="flex">
+      <div className="flex justify-between">
         <div className="flex gap-2 pt-2">
           <NssButton onClick={onSaveWebsite} label="Save Website"></NssButton>
           <NssButton onClick={onEditWebsite} label="Edit Website"></NssButton>
@@ -130,6 +180,9 @@ function WebsiteAdmin() {
           ></NssButton>
           <NssButton onClick={onShowProfile} label="Show Profile"></NssButton>
         </div>
+        <div>
+          <ReturnDisplayMessage />
+        </div>
       </div>
       <div>
         {showProfile ? (
@@ -138,6 +191,7 @@ function WebsiteAdmin() {
             parentId={websiteObject.id}
             loading={loading}
             copyProfileToParent={copyProfile}
+            setChangeDetected={setChangeDetected}
           />
         ) : (
           <></>

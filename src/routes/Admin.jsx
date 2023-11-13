@@ -113,6 +113,14 @@ function Admin() {
     }
   };
 
+  const updateEmployees = (employee, index) => {
+    const updatedEmployeeObjects = [...employeeObjects];
+    if (index >= 0 && index < updatedEmployeeObjects.length) {
+      updatedEmployeeObjects[index] = employee;
+      setEmployeeObjects(updatedEmployeeObjects);
+    }
+  };
+
   function traverseObject(obj) {
     const elements = [];
     counterRef.current += 1;
@@ -223,7 +231,12 @@ function Admin() {
   const Employees = () => {
     return employeeObjects.map((employee, index) => (
       <div key={index}>
-        <EmployeeAdmin employee={employee} removeEmployee={removeEmployee} />
+        <EmployeeAdmin
+          employee={employee}
+          removeEmployee={removeEmployee}
+          createEmployee={createEmployee}
+          updateEmployees={updateEmployees}
+        />
       </div>
     ));
   };

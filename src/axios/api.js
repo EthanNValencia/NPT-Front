@@ -283,3 +283,107 @@ export async function adminUpdateWebsite(website, token) {
     throw error;
   }
 }
+
+export async function adminNotifyAppointment(appointment, token) {
+  const adminNotifyUrl = privateUrl + "/notify/";
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.put(adminNotifyUrl, appointment, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    // console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+// /notify/email
+
+export async function adminNotifyByEmailAppointment(
+  appointment,
+  emailHtml,
+  token
+) {
+  const adminNotifyUrl = privateUrl + "/notify/email/";
+
+  console.log(emailHtml);
+
+  const emailDto = {
+    to: appointment.email,
+    from: null,
+    subject: "This is an email test.",
+    html: emailHtml,
+  };
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.post(adminNotifyUrl, emailDto, {
+      headers,
+    });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    throw error;
+  }
+}
+
+export async function deleteEmployeeApi(id, token) {
+  // http://localhost:8765/npt-service/api/v1/auth/faqs/60
+  const deleteEmployeeUrl = privateUrl + "/employees/" + id;
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    const response = await axios.delete(deleteEmployeeUrl, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    throw error;
+  }
+}
+
+export async function updateEmployeeApi(employee, token) {
+  const updateEmployeeUrl = privateUrl + "/employees/";
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    const response = await axios.put(updateEmployeeUrl, employee, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    throw error;
+  }
+}
+
+// /services/
+
+export async function adminGetServices(token) {
+  const servicesUrl = privateUrl + "/services/";
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    console.log("Token: " + token);
+    const response = await axios.get(servicesUrl, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    // console.error("Error fetching data:", error);
+    throw error;
+  }
+}

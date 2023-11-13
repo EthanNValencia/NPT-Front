@@ -3,15 +3,17 @@ import DataField from "./DataField";
 import NssButton from "../nss/NssButton";
 
 const SocialMediaProfileAdmin = (props) => {
-  const { socialMediaProfile, parentId, loading, copyProfileToParent } = props;
+  const {
+    socialMediaProfile,
+    parentIndex,
+    loading,
+    copyProfileToParent,
+    setChangeDetected,
+  } = props;
   const [newSocialMediaProfile, setNewSocialMediaProfile] = useState({
     ...socialMediaProfile,
   });
   const [showEdit, setShowEdit] = useState(false);
-
-  useEffect(() => {
-    copyProfileToParent(newSocialMediaProfile);
-  }, [newSocialMediaProfile]);
 
   if (loading || socialMediaProfile == undefined) {
     return <div>The data is being loaded...</div>;
@@ -29,7 +31,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="linkedin"
               type="text"
               placeholder="Enter linkedin url..."
@@ -38,6 +40,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.linkedin = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -49,7 +53,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="youtube"
               type="text"
               placeholder="Enter youtube url..."
@@ -58,6 +62,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.youtube = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -69,7 +75,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="facebook"
               type="text"
               placeholder="Enter facebook url..."
@@ -78,6 +84,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.facebook = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -89,7 +97,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="myspace"
               type="text"
               placeholder="Enter myspace url..."
@@ -98,6 +106,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.myspace = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -108,7 +118,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="instagram"
               type="text"
               placeholder="Enter instagram url..."
@@ -117,6 +127,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.instagram = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -127,7 +139,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="yelp"
               type="text"
               placeholder="Enter yelp url..."
@@ -136,6 +148,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.yelp = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -146,7 +160,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="tiktok"
               type="text"
               placeholder="Enter tiktok url..."
@@ -155,6 +169,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.tiktok = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -165,7 +181,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="x"
               type="text"
               placeholder="Enter x (twitter) url..."
@@ -174,6 +190,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.x = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -184,7 +202,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="pinterest"
               type="text"
               placeholder="Enter pinterest url..."
@@ -193,6 +211,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.pinterest = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -203,7 +223,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="snapchat"
               type="text"
               placeholder="Enter snapchat url..."
@@ -212,6 +232,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.snapchat = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -222,7 +244,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="whatsapp"
               type="text"
               placeholder="Enter whatsapp url..."
@@ -231,6 +253,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.whatsapp = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -241,7 +265,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="tumblr"
               type="text"
               placeholder="Enter tumblr url..."
@@ -250,6 +274,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.tumblr = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
@@ -260,7 +286,7 @@ const SocialMediaProfileAdmin = (props) => {
         <div className="text-xs font-bold col-span-9">
           {showEdit ? (
             <input
-              className="bg-nss-21 text-xs placeholder-nss-300 shadow appearance-none border rounded w-full py-1 px-3 text-nss-300 leading-tight focus:outline-none focus:shadow-outline"
+              className="bg-nss-21 text-xs placeholder-red-600 text-green-700  shadow appearance-none border rounded w-full py-1 px-3  leading-tight focus:outline-none focus:shadow-outline"
               id="google"
               type="text"
               placeholder="Enter google url..."
@@ -269,6 +295,8 @@ const SocialMediaProfileAdmin = (props) => {
                 const updatedSocialMediaProfile = { ...newSocialMediaProfile };
                 updatedSocialMediaProfile.google = e.target.value;
                 setNewSocialMediaProfile(updatedSocialMediaProfile);
+                copyProfileToParent(updatedSocialMediaProfile);
+                setChangeDetected(true);
               }}
             />
           ) : (
