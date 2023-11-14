@@ -18,7 +18,6 @@ function EmployeeAdmin(props) {
     props;
   const [localEmployee, setLocalEmployee] = useState({ ...employee });
   const [loading, setLoading] = useState(false);
-  const [id, setId] = useState(employee.id);
   const [hasApiError, setHasApiError] = useState(false);
   const [showSocialMedia, setShowSocialMedia] = useState(false);
   const [showSchedule, setShowSchedule] = useState(false);

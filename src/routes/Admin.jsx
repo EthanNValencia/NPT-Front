@@ -13,7 +13,6 @@ import WebsiteAdmin from "../admin/WebsiteAdmin";
 function Admin() {
   const [employeeObjects, setEmployeeObjects] = useState([]);
   const [faqObjects, setFaqObjects] = useState([]);
-  const [websiteObject, setWebsiteObject] = useState({});
   const [showEmployeeDump, setShowEmployeeDump] = useState(false);
   const [showEmployees, setShowEmployees] = useState(false);
   const [showFAQs, setShowFAQs] = useState(false);
@@ -40,7 +39,7 @@ function Admin() {
     try {
       const data = await adminGetEmployees(authContext.token);
       setEmployeeObjects(data);
-      console.log(JSON.stringify(data[0]));
+      // console.log(JSON.stringify(data[0]));
       setHasApiError(false);
     } catch (error) {
       setHasApiError(true);
