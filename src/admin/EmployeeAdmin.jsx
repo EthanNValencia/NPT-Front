@@ -13,6 +13,7 @@ import {
 } from "../axios/api";
 import EmployeeServices from "./EmployeeServices";
 import NssButtonChevron from "../nss/NssButtonChevron";
+import EmployeeDump from "./EmployeeDump";
 
 function EmployeeAdmin(props) {
   const { employee, removeEmployee, index, updateEmployees, createEmployee } =
@@ -22,6 +23,7 @@ function EmployeeAdmin(props) {
   const [hasApiError, setHasApiError] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showSchedule, setShowSchedule] = useState(false);
+  const [showDump, setShowDump] = useState(false);
   const [showOffice, setShowOffice] = useState(false);
   const [showServices, setShowServices] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -74,6 +76,7 @@ function EmployeeAdmin(props) {
     setShowOffice(false);
     setShowAppointments(false);
     setShowServices(false);
+    setShowDump(false);
   };
 
   const openSchedule = () => {
@@ -82,6 +85,7 @@ function EmployeeAdmin(props) {
     setShowOffice(false);
     setShowAppointments(false);
     setShowServices(false);
+    setShowDump(false);
   };
 
   const openOffice = () => {
@@ -90,6 +94,7 @@ function EmployeeAdmin(props) {
     setShowOffice(!showOffice);
     setShowAppointments(false);
     setShowServices(false);
+    setShowDump(false);
   };
 
   const openAppointments = () => {
@@ -98,6 +103,7 @@ function EmployeeAdmin(props) {
     setShowOffice(false);
     setShowAppointments(!showAppointments);
     setShowServices(false);
+    setShowDump(false);
   };
 
   const openServices = () => {
@@ -106,6 +112,16 @@ function EmployeeAdmin(props) {
     setShowOffice(false);
     setShowAppointments(false);
     setShowServices(!showServices);
+    setShowDump(false);
+  };
+
+  const openDump = () => {
+    setShowProfile(false);
+    setShowSchedule(false);
+    setShowOffice(false);
+    setShowAppointments(false);
+    setShowServices(false);
+    setShowDump(!showDump);
   };
 
   const onEditEmployee = () => {
@@ -679,6 +695,11 @@ function EmployeeAdmin(props) {
               label="Services"
               selected={showServices}
             ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={openDump}
+              label="Dump"
+              selected={showDump}
+            ></NssButtonChevron>
           </div>
         </div>
         <div className="pr-2">
@@ -686,9 +707,10 @@ function EmployeeAdmin(props) {
         </div>
       </div>
       <div>
+        {showDump ? <EmployeeDump employee={localEmployee} /> : <></>}
         {showProfile ? (
           <SocialMediaProfileAdmin
-            socialMediaProfile={localEmployee.employeeSocialMediaProfile}
+            socialMediaProfile={localEmployee.profile}
             parentIndex={index}
             loading={loading}
             setChangeDetected={setChangeDetected}
