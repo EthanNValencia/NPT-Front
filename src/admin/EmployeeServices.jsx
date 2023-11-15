@@ -4,9 +4,9 @@ import { adminGetServices } from "../axios/api";
 import NssButton from "../nss/NssButton";
 import ApiError from "../components/ApiError";
 
-function Services(props) {
+function EmployeeServices(props) {
   const authContext = useContext(AuthContext);
-  const { services, setChangeDetected } = props;
+  const { services, setChangeDetected, updateParentServices } = props;
   const [localEmployeeServices, setLocalEmployeeServices] = useState([
     ...services,
   ]);
@@ -42,12 +42,14 @@ function Services(props) {
     );
     setLocalEmployeeServices(newServices);
     setChangeDetected(true);
+    updateParentServices(newServices);
   };
 
   const addService = (service) => {
     const newServices = [...localEmployeeServices, service];
     setLocalEmployeeServices(newServices);
     setChangeDetected(true);
+    updateParentServices(newServices);
   };
 
   const doesEmployeeHaveServiceName = (service) => {
@@ -107,4 +109,4 @@ function Service(props) {
   );
 }
 
-export default Services;
+export default EmployeeServices;

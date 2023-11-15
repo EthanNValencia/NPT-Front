@@ -218,7 +218,6 @@ export async function reportError(error) {
 }
 
 export async function deleteFaqApi(id, token) {
-  // http://localhost:8765/npt-service/api/v1/auth/faqs/60
   const deleteFaqUrl = privateUrl + "/faqs/" + id;
 
   const headers = {
@@ -352,7 +351,7 @@ export async function deleteEmployeeApi(id, token) {
 
 export async function updateEmployeeApi(employee, token) {
   const updateEmployeeUrl = privateUrl + "/employees/";
-
+  console.log("Updating: " + JSON.stringify(employee));
   const headers = {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
@@ -380,6 +379,44 @@ export async function adminGetServices(token) {
   try {
     console.log("Token: " + token);
     const response = await axios.get(servicesUrl, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    // console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+// adminPutServices
+
+export async function adminPutServices(services, token) {
+  const servicesUrl = privateUrl + "/services/";
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    const response = await axios.put(servicesUrl, services, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    // console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function adminDeleteService(id, token) {
+  const servicesUrl = privateUrl + "/services/" + id;
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    const response = await axios.delete(servicesUrl, { headers });
     return response.data;
   } catch (error) {
     handleErrorReporting(error);

@@ -1,15 +1,15 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function NssButton(props) {
+function NssButtonChevron(props) {
   const { onClick, label, disabled, selected } = props;
 
   const pickDivColor = () => {
     if (disabled) {
       return "bg-nss-10 text-nss-20";
     }
-    if (!selected && selected != undefined) {
+    if (selected && selected != undefined) {
       return "text-nss-10 bg-nss-305 hover:bg-nss-300 hover:text-white";
     }
     if (!disabled) {
@@ -29,11 +29,11 @@ function NssButton(props) {
         {selected != undefined ? (
           selected ? (
             <div>
-              <FontAwesomeIcon icon={faCheck} />
+              <FontAwesomeIcon icon={faChevronDown} />
             </div>
           ) : (
             <div>
-              <FontAwesomeIcon icon={faMinus} />
+              <FontAwesomeIcon icon={faChevronUp} />
             </div>
           )
         ) : (
@@ -44,4 +44,4 @@ function NssButton(props) {
   );
 }
 
-export default NssButton;
+export default NssButtonChevron;

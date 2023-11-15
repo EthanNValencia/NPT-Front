@@ -14,7 +14,8 @@ const SocialMediaProfileAdmin = (props) => {
     ...socialMediaProfile,
   });
   const [showEdit, setShowEdit] = useState(false);
-
+  console.log(loading);
+  console.log(JSON.stringify(socialMediaProfile));
   if (loading || socialMediaProfile == undefined) {
     return <div>The data is being loaded...</div>;
   }
@@ -304,7 +305,7 @@ const SocialMediaProfileAdmin = (props) => {
           )}
         </div>
       </div>
-      <div className="pt-2">
+      <div className="pt-2 flex justify-start">
         <NssButton
           onClick={onEditSocialMediaProfile}
           label="Edit Social Media Profile"

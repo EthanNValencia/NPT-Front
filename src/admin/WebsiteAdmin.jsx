@@ -5,6 +5,7 @@ import SocialMediaProfileAdmin from "./SocialMediaProfileAdmin";
 import NssButton from "../nss/NssButton";
 import ApiError from "../components/ApiError";
 import { AuthContext } from "../contexts/context";
+import NssButtonChevron from "../nss/NssButtonChevron";
 
 function WebsiteAdmin() {
   const [editMode, setShowEditMode] = useState(false);
@@ -170,15 +171,20 @@ function WebsiteAdmin() {
           </div>
         </div>
       </div>
+      <div className="flex gap-2 pt-2"></div>
       <div className="flex justify-between">
-        <div className="flex gap-2 pt-2">
+        <div className="grid grid-cols-3 gap-2">
           <NssButton onClick={onSaveWebsite} label="Save Website"></NssButton>
           <NssButton onClick={onEditWebsite} label="Edit Website"></NssButton>
           <NssButton
             onClick={onReloadWebsite}
             label="Reload Website"
           ></NssButton>
-          <NssButton onClick={onShowProfile} label="Show Profile"></NssButton>
+          <NssButtonChevron
+            onClick={onShowProfile}
+            label="Show Profile"
+            selected={showProfile}
+          ></NssButtonChevron>
         </div>
         <div>
           <ReturnDisplayMessage />

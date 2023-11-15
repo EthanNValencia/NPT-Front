@@ -7,6 +7,8 @@ import ApiError from "../components/ApiError";
 import FaqAdmin from "../admin/FaqAdmin";
 import EmployeeAdmin from "../admin/EmployeeAdmin";
 import WebsiteAdmin from "../admin/WebsiteAdmin";
+import ServicesAdmin from "../admin/ServicesAdmin";
+import NssButtonChevron from "../nss/NssButtonChevron";
 
 // eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlam5lcGhld0B5YWhvby5jb20iLCJpYXQiOjE2OTg3NjQ3MDUsImV4cCI6MTY5ODc2NTQyNX0.-QKYmy_q2c31JQDve49YVD6dg3qbd3S4HXOyUBCTE-wIzkL7P4ZJOppAgYL7shcQpsJjmeX_04c9xMMuJoxLPA
 
@@ -18,6 +20,7 @@ function Admin() {
   const [showFAQs, setShowFAQs] = useState(false);
   const [showOffices, setShowOffices] = useState(false);
   const [showWebsite, setShowWebsite] = useState(false);
+  const [showServices, setShowServices] = useState(false);
   const counterRef = useRef(0);
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
@@ -70,6 +73,7 @@ function Admin() {
     setShowEmployeeDump(false);
     setShowEmployees(false);
     setShowWebsite(false);
+    setShowServices(false);
   };
 
   const employeeDump = () => {
@@ -78,6 +82,7 @@ function Admin() {
     setShowEmployees(false);
     setShowOffices(false);
     setShowWebsite(false);
+    setShowServices(false);
   };
 
   const editFaqs = () => {
@@ -86,6 +91,7 @@ function Admin() {
     setShowEmployees(false);
     setShowOffices(false);
     setShowWebsite(false);
+    setShowServices(false);
   };
 
   const editEmployees = () => {
@@ -94,14 +100,25 @@ function Admin() {
     setShowEmployeeDump(false);
     setShowOffices(false);
     setShowWebsite(false);
+    setShowServices(false);
   };
 
   const editWebsite = () => {
-    setShowWebsite(true);
+    setShowWebsite(!showWebsite);
     setShowEmployees(false);
     setShowFAQs(false);
     setShowEmployeeDump(false);
     setShowOffices(false);
+    setShowServices(false);
+  };
+
+  const editServices = () => {
+    setShowWebsite(false);
+    setShowEmployees(false);
+    setShowFAQs(false);
+    setShowEmployeeDump(false);
+    setShowOffices(false);
+    setShowServices(!showServices);
   };
 
   const updateFaqObjects = (faq, index) => {
@@ -245,11 +262,36 @@ function Admin() {
       <div>
         <div className="flex justify-between">
           <div className="flex gap-2">
-            <NssButton onClick={editFaqs} label="FAQs"></NssButton>
-            <NssButton onClick={employeeDump} label="Employee Dump"></NssButton>
-            <NssButton onClick={editOffices} label="Offices"></NssButton>
-            <NssButton onClick={editEmployees} label="Employees"></NssButton>
-            <NssButton onClick={editWebsite} label="Website"></NssButton>
+            <NssButtonChevron
+              onClick={editFaqs}
+              label="FAQs"
+              selected={showFAQs}
+            ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={employeeDump}
+              label="Employee Dump"
+              selected={showEmployeeDump}
+            ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={editOffices}
+              label="Offices"
+              selected={showOffices}
+            ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={editEmployees}
+              label="Employees"
+              selected={showEmployees}
+            ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={editWebsite}
+              label="Website"
+              selected={showWebsite}
+            ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={editServices}
+              label="Services"
+              selected={showServices}
+            ></NssButtonChevron>
           </div>
           <div>
             <NssButton onClick={onGoBack} label="Back" />
@@ -274,6 +316,7 @@ function Admin() {
           ) : (
             <></>
           )}
+          {showServices ? <ServicesAdmin /> : <></>}
           {showOffices ? <div>Edit Office</div> : <></>}
           {showWebsite ? <WebsiteAdmin /> : <></>}
         </div>
