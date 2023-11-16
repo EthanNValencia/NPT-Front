@@ -9,6 +9,8 @@ import EmployeeAdmin from "../admin/EmployeeAdmin";
 import WebsiteAdmin from "../admin/WebsiteAdmin";
 import ServicesAdmin from "../admin/ServicesAdmin";
 import NssButtonChevron from "../nss/NssButtonChevron";
+import NssButtonAdd from "../nss/NssButtonAdd";
+import NssButtonReload from "../nss/NssButtonReload";
 
 // eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlam5lcGhld0B5YWhvby5jb20iLCJpYXQiOjE2OTg3NjQ3MDUsImV4cCI6MTY5ODc2NTQyNX0.-QKYmy_q2c31JQDve49YVD6dg3qbd3S4HXOyUBCTE-wIzkL7P4ZJOppAgYL7shcQpsJjmeX_04c9xMMuJoxLPA
 
@@ -203,29 +205,35 @@ function Admin() {
     if (showEmployees) {
       return (
         <div className="flex gap-2 py-2">
-          <NssButton
+          <NssButtonAdd
             onClick={createEmployee}
             label="Create Employee"
-          ></NssButton>
-          <NssButton
+          ></NssButtonAdd>
+          <NssButtonReload
             onClick={loadEmployees}
             label="Reload Employees"
-          ></NssButton>
+          ></NssButtonReload>
         </div>
       );
     }
     if (showFAQs) {
       return (
         <div className="flex gap-2 py-2">
-          <NssButton onClick={createFaq} label="Create FAQ"></NssButton>
-          <NssButton onClick={loadFaqs} label="Reload FAQs"></NssButton>
+          <NssButtonAdd onClick={createFaq} label="Create FAQ"></NssButtonAdd>
+          <NssButtonReload
+            onClick={loadFaqs}
+            label="Reload FAQs"
+          ></NssButtonReload>
         </div>
       );
     }
     if (showOffices) {
       return (
         <div className="flex gap-2 py-2">
-          <NssButton onClick={createOffice} label="Create Office"></NssButton>
+          <NssButtonAdd
+            onClick={createOffice}
+            label="Create Office"
+          ></NssButtonAdd>
         </div>
       );
     }

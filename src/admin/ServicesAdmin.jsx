@@ -5,9 +5,14 @@ import {
   adminPutServices,
   adminDeleteService,
 } from "../axios/api";
-import NssButton from "../nss/NssButton";
 import ApiError from "../components/ApiError";
 import DataField from "./DataField";
+import ToolTipAdmin from "./ToolTipAdmin";
+import NssButtonAdd from "../nss/NssButtonAdd";
+import NssButtonSubtract from "../nss/NssButtonSubtract";
+import NssButtonEdit from "../nss/NssButtonEdit";
+import NssButtonReload from "../nss/NssButtonReload";
+import NssButtonSave from "../nss/NssButtonSave";
 
 function ServicesAdmin() {
   const [services, setServices] = useState([]);
@@ -20,6 +25,7 @@ function ServicesAdmin() {
   const newService = () => {
     const newService = {
       name: "",
+      employees: [],
     };
     const updatedServices = [...services, { ...newService }];
     setServices(updatedServices);
@@ -72,7 +78,7 @@ function ServicesAdmin() {
     }
   }
 
-  async function updateServices() {
+  async function putServices() {
     try {
       setLoading(true);
       const data = await adminPutServices(services, authContext.token);
@@ -133,11 +139,17 @@ function ServicesAdmin() {
   };
 
   const saveServices = () => {
-    updateServices();
+    putServices();
   };
 
   const reloadServices = () => {
     fetchServices();
+  };
+
+  const updateServices = (service, index) => {
+    const newServices = [...services];
+    newServices[index] = { ...service };
+    setServices(newServices);
   };
 
   return (
@@ -145,12 +157,15 @@ function ServicesAdmin() {
       className={`${pickDivColor()} border rounded-lg shadow-xl py-2 px-2 my-2`}
     >
       <div className="flex gap-2 py-2">
-        <NssButton onClick={newService} label="New Service"></NssButton>
-        <NssButton onClick={reloadServices} label="Reload Services"></NssButton>
+        <NssButtonAdd onClick={newService} label="New Service"></NssButtonAdd>
+        <NssButtonReload
+          onClick={reloadServices}
+          label="Reload Services"
+        ></NssButtonReload>
       </div>
       Services
       <div>
-        <div className="grid grid-cols-6 gap-2">
+        <div className="grid 2xl:grid-cols-6 xl:grid-cols-4 md:grid-cols-2 gap-2">
           {services.map((service, index) => (
             <Service
               key={index}
@@ -159,13 +174,18 @@ function ServicesAdmin() {
               setChangeDetected={setChangeDetected}
               deleteService={deleteService}
               undefined={!service.id || !service.name}
+              updateServices={updateServices}
             />
           ))}
         </div>
         <div>{hasApiError ? <ApiError /> : <></>}</div>
         <div className="flex gap-2 pt-2 justify-between">
           <div>
-            <NssButton onClick={saveServices} label="Save Services"></NssButton>
+            <NssButtonSave
+              animateBounce={changeDetected}
+              onClick={saveServices}
+              label="Save Services"
+            ></NssButtonSave>
           </div>
           <div>
             <ReturnDisplayMessage />
@@ -177,11 +197,23 @@ function ServicesAdmin() {
 }
 
 function Service(props) {
-  const { service, index, setChangeDetected, deleteService, undefined } = props;
+  const {
+    service,
+    index,
+    setChangeDetected,
+    deleteService,
+    undefined,
+    updateServices,
+  } = props;
   const [newService, setNewService] = useState({ ...service });
   const [editMode, setEditMode] = useState(undefined);
 
   const editService = () => {
+    if (editMode) {
+      updateServices(newService, index);
+      setChangeDetected(true);
+    }
+
     setEditMode(!editMode);
   };
 
@@ -195,6 +227,16 @@ function Service(props) {
     deleteService(newService);
   };
 
+  const generateText = () => {
+    if (newService.employees.length == 0) {
+      return "You have no employees assigned to this service. Please assign an employee to this service.";
+    } else if (newService.employees.length == 1) {
+      return "You only have one employee assigned to this service. Does this service need more employees?";
+    } else {
+      return "This service has multiple employees providing it.";
+    }
+  };
+
   return (
     <div>
       <div
@@ -202,32 +244,44 @@ function Service(props) {
         className={`${pickDivColor()} border rounded-lg shadow-xl py-2 px-2`}
       >
         <div>
-          <div className="text-xs pr-2">Service Name:</div>
-          {editMode ? (
-            <input
-              className="bg-nss-21 text-xs placeholder-red-600 shadow appearance-none border rounded w-full py-1 px-3 text-green-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="servicename"
-              type="text"
-              placeholder="Enter service name..."
-              value={newService.name}
-              onChange={(e) => {
-                const updatedService = { ...newService };
-                updatedService.name = e.target.value;
-                setNewService(updatedService);
-                setChangeDetected(true);
-              }}
-            />
-          ) : (
-            <DataField value={newService.name} />
-          )}
+          <div className="flex justify-between">
+            <div>
+              <div className="text-xs pr-2">Service Name:</div>
+              {editMode ? (
+                <input
+                  className="bg-nss-21 text-xs placeholder-red-600 shadow appearance-none border rounded w-full py-1 px-3 text-green-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="servicename"
+                  type="text"
+                  placeholder="Enter service name..."
+                  value={newService.name}
+                  onChange={(e) => {
+                    const updatedService = { ...newService };
+                    updatedService.name = e.target.value;
+                    setNewService(updatedService);
+                  }}
+                />
+              ) : (
+                <DataField value={newService.name} />
+              )}
+            </div>
+            <div>
+              <div className="text-xs font-bold pr-2 inline-flex">
+                Employees
+                <ToolTipAdmin text={generateText()} />
+              </div>
+              <div className="text-xs pr-2 text-center font-bold">
+                {newService.employees.length}
+              </div>
+            </div>
+          </div>
         </div>
         <div className="flex gap-2 justify-between pt-2">
-          <NssButton onClick={editService} label="Edit"></NssButton>
-          <NssButton
+          <NssButtonEdit onClick={editService} label="Edit"></NssButtonEdit>
+          <NssButtonSubtract
             onClick={deleteThisService}
             label="Delete"
-            disabled={service.id == null}
-          ></NssButton>
+            disabled={service.id == null || newService.employees.length >= 1}
+          ></NssButtonSubtract>
         </div>
       </div>
     </div>
@@ -235,3 +289,13 @@ function Service(props) {
 }
 
 export default ServicesAdmin;
+
+/*
+
+<div className="flex justify-end">
+                <div>
+                  <ToolTipAdmin />
+                </div>
+              </div>
+
+*/

@@ -14,6 +14,10 @@ import {
 import EmployeeServices from "./EmployeeServices";
 import NssButtonChevron from "../nss/NssButtonChevron";
 import EmployeeDump from "./EmployeeDump";
+import NssButtonSave from "../nss/NssButtonSave";
+import NssButtonEdit from "../nss/NssButtonEdit";
+import NssButtonSubtract from "../nss/NssButtonSubtract";
+import Biography from "./Biography";
 
 function EmployeeAdmin(props) {
   const { employee, removeEmployee, index, updateEmployees, createEmployee } =
@@ -26,6 +30,7 @@ function EmployeeAdmin(props) {
   const [showDump, setShowDump] = useState(false);
   const [showOffice, setShowOffice] = useState(false);
   const [showServices, setShowServices] = useState(false);
+  const [showBiography, setShowBiography] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [showAppointments, setShowAppointments] = useState(false);
   const [changeDetected, setChangeDetected] = useState(false);
@@ -77,6 +82,7 @@ function EmployeeAdmin(props) {
     setShowAppointments(false);
     setShowServices(false);
     setShowDump(false);
+    setShowBiography(false);
   };
 
   const openSchedule = () => {
@@ -86,6 +92,7 @@ function EmployeeAdmin(props) {
     setShowAppointments(false);
     setShowServices(false);
     setShowDump(false);
+    setShowBiography(false);
   };
 
   const openOffice = () => {
@@ -95,6 +102,7 @@ function EmployeeAdmin(props) {
     setShowAppointments(false);
     setShowServices(false);
     setShowDump(false);
+    setShowBiography(false);
   };
 
   const openAppointments = () => {
@@ -104,6 +112,7 @@ function EmployeeAdmin(props) {
     setShowAppointments(!showAppointments);
     setShowServices(false);
     setShowDump(false);
+    setShowBiography(false);
   };
 
   const openServices = () => {
@@ -113,6 +122,7 @@ function EmployeeAdmin(props) {
     setShowAppointments(false);
     setShowServices(!showServices);
     setShowDump(false);
+    setShowBiography(false);
   };
 
   const openDump = () => {
@@ -122,6 +132,17 @@ function EmployeeAdmin(props) {
     setShowAppointments(false);
     setShowServices(false);
     setShowDump(!showDump);
+    setShowBiography(false);
+  };
+
+  const openBiography = () => {
+    setShowProfile(false);
+    setShowSchedule(false);
+    setShowOffice(false);
+    setShowAppointments(false);
+    setShowServices(false);
+    setShowDump(false);
+    setShowBiography(!showBiography);
   };
 
   const onEditEmployee = () => {
@@ -152,6 +173,12 @@ function EmployeeAdmin(props) {
     updatedEmployee.services = services;
     setLocalEmployee(updatedEmployee);
     updateEmployees(updatedEmployee, index);
+  };
+
+  const updateBiographicalTexts = (biographicalTexts) => {
+    const updatedEmployee = { ...localEmployee };
+    updatedEmployee.biographicalTexts = biographicalTexts;
+    setLocalEmployee(updatedEmployee);
   };
 
   const DailyScheduleCard = (props) => {
@@ -650,24 +677,24 @@ function EmployeeAdmin(props) {
           </div>
         </div>
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between ">
         <div className="flex flex-col">
           <div className="flex gap-2 mb-2">
-            <NssButton
+            <NssButtonSubtract
               onClick={onDeleteEmployee}
               disabled={false}
               label="Delete Employee"
-            ></NssButton>
-            <NssButton
+            ></NssButtonSubtract>
+            <NssButtonEdit
               onClick={onEditEmployee}
               label="Edit Employee"
               disabled={false}
-            ></NssButton>
-            <NssButton
+            ></NssButtonEdit>
+            <NssButtonSave
               onClick={onSaveEmployee}
               disabled={disableButton()}
               label="Save Employee"
-            ></NssButton>
+            ></NssButtonSave>
           </div>
           <div className="flex gap-2">
             <NssButtonChevron
@@ -700,6 +727,11 @@ function EmployeeAdmin(props) {
               label="Dump"
               selected={showDump}
             ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={openBiography}
+              label="Biography"
+              selected={showBiography}
+            ></NssButtonChevron>
           </div>
         </div>
         <div className="pr-2">
@@ -720,6 +752,7 @@ function EmployeeAdmin(props) {
           <></>
         )}
       </div>
+
       {showSchedule ? (
         <Schedule
           schedule={localEmployee.schedule}
@@ -747,6 +780,16 @@ function EmployeeAdmin(props) {
           services={localEmployee.services}
           setChangeDetected={setChangeDetected}
           updateParentServices={updateServices}
+        />
+      ) : (
+        <></>
+      )}
+      {showBiography ? (
+        <Biography
+          employeeId={localEmployee.id}
+          biographicalTexts={localEmployee.biographicalTexts}
+          setChangeDetected={setChangeDetected}
+          updateParentBiographicalTexts={updateBiographicalTexts}
         />
       ) : (
         <></>

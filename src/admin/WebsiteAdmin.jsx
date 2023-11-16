@@ -6,6 +6,9 @@ import NssButton from "../nss/NssButton";
 import ApiError from "../components/ApiError";
 import { AuthContext } from "../contexts/context";
 import NssButtonChevron from "../nss/NssButtonChevron";
+import NssButtonSave from "../nss/NssButtonSave";
+import NssButtonEdit from "../nss/NssButtonEdit";
+import NssButtonReload from "../nss/NssButtonReload";
 
 function WebsiteAdmin() {
   const [editMode, setShowEditMode] = useState(false);
@@ -174,12 +177,18 @@ function WebsiteAdmin() {
       <div className="flex gap-2 pt-2"></div>
       <div className="flex justify-between">
         <div className="grid grid-cols-3 gap-2">
-          <NssButton onClick={onSaveWebsite} label="Save Website"></NssButton>
-          <NssButton onClick={onEditWebsite} label="Edit Website"></NssButton>
-          <NssButton
+          <NssButtonSave
+            onClick={onSaveWebsite}
+            label="Save Website"
+          ></NssButtonSave>
+          <NssButtonEdit
+            onClick={onEditWebsite}
+            label="Edit Website"
+          ></NssButtonEdit>
+          <NssButtonReload
             onClick={onReloadWebsite}
             label="Reload Website"
-          ></NssButton>
+          ></NssButtonReload>
           <NssButtonChevron
             onClick={onShowProfile}
             label="Show Profile"

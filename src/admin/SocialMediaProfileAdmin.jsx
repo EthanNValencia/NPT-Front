@@ -14,8 +14,8 @@ const SocialMediaProfileAdmin = (props) => {
     ...socialMediaProfile,
   });
   const [showEdit, setShowEdit] = useState(false);
-  console.log(loading);
-  console.log(JSON.stringify(socialMediaProfile));
+  // console.log(loading);
+  // console.log(JSON.stringify(socialMediaProfile));
   if (loading || socialMediaProfile == undefined) {
     return <div>The data is being loaded...</div>;
   }
