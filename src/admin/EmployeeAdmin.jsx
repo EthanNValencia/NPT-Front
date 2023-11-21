@@ -17,7 +17,7 @@ import EmployeeDump from "./EmployeeDump";
 import NssButtonSave from "../nss/NssButtonSave";
 import NssButtonEdit from "../nss/NssButtonEdit";
 import NssButtonSubtract from "../nss/NssButtonSubtract";
-import Biography from "./Biography";
+import Texts from "./Texts";
 
 function EmployeeAdmin(props) {
   const { employee, removeEmployee, index, updateEmployees, createEmployee } =
@@ -785,11 +785,11 @@ function EmployeeAdmin(props) {
         <></>
       )}
       {showBiography ? (
-        <Biography
+        <Texts
           employeeId={localEmployee.id}
-          biographicalTexts={localEmployee.biographicalTexts}
+          texts={localEmployee.biographicalTexts}
           setChangeDetected={setChangeDetected}
-          updateParentBiographicalTexts={updateBiographicalTexts}
+          updateTexts={updateBiographicalTexts}
         />
       ) : (
         <></>
