@@ -17,7 +17,7 @@ import NssButtonReload from "../nss/NssButtonReload";
 function Admin() {
   const [employeeObjects, setEmployeeObjects] = useState([]);
   const [faqObjects, setFaqObjects] = useState([]);
-  const [showEmployeeDump, setShowEmployeeDump] = useState(false);
+  // const [showEmployeeDump, setShowEmployeeDump] = useState(false);
   const [showEmployees, setShowEmployees] = useState(false);
   const [showFAQs, setShowFAQs] = useState(false);
   const [showOffices, setShowOffices] = useState(false);
@@ -72,14 +72,14 @@ function Admin() {
   const editOffices = () => {
     setShowOffices(!showOffices);
     setShowFAQs(false);
-    setShowEmployeeDump(false);
+    // setShowEmployeeDump(false);
     setShowEmployees(false);
     setShowWebsite(false);
     setShowServices(false);
   };
 
   const employeeDump = () => {
-    setShowEmployeeDump(!showEmployeeDump);
+    //setShowEmployeeDump(!showEmployeeDump);
     setShowFAQs(false);
     setShowEmployees(false);
     setShowOffices(false);
@@ -89,7 +89,7 @@ function Admin() {
 
   const editFaqs = () => {
     setShowFAQs(!showFAQs);
-    setShowEmployeeDump(false);
+    //setShowEmployeeDump(false);
     setShowEmployees(false);
     setShowOffices(false);
     setShowWebsite(false);
@@ -99,7 +99,7 @@ function Admin() {
   const editEmployees = () => {
     setShowEmployees(!showEmployees);
     setShowFAQs(false);
-    setShowEmployeeDump(false);
+    //setShowEmployeeDump(false);
     setShowOffices(false);
     setShowWebsite(false);
     setShowServices(false);
@@ -109,7 +109,7 @@ function Admin() {
     setShowWebsite(!showWebsite);
     setShowEmployees(false);
     setShowFAQs(false);
-    setShowEmployeeDump(false);
+    //setShowEmployeeDump(false);
     setShowOffices(false);
     setShowServices(false);
   };
@@ -118,7 +118,7 @@ function Admin() {
     setShowWebsite(false);
     setShowEmployees(false);
     setShowFAQs(false);
-    setShowEmployeeDump(false);
+    //setShowEmployeeDump(false);
     setShowOffices(false);
     setShowServices(!showServices);
   };
@@ -276,11 +276,6 @@ function Admin() {
               selected={showFAQs}
             ></NssButtonChevron>
             <NssButtonChevron
-              onClick={employeeDump}
-              label="Employee Dump"
-              selected={showEmployeeDump}
-            ></NssButtonChevron>
-            <NssButtonChevron
               onClick={editOffices}
               label="Offices"
               selected={showOffices}
@@ -309,7 +304,6 @@ function Admin() {
           <ReturnCategoryControls />
         </div>
         <div className="">
-          {showEmployeeDump ? <div>{<EmployeesAsDiv />}</div> : <></>}
           {showEmployees ? (
             <div>
               <Employees />

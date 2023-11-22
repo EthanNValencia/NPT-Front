@@ -161,7 +161,7 @@ function EmployeeAdmin(props) {
     setShowServices(false);
     setShowDump(false);
     setShowBiography(false);
-    setShowInformation(!showBiography);
+    setShowInformation(!showInformation);
   };
 
   const onEditEmployee = () => {
@@ -721,47 +721,51 @@ function EmployeeAdmin(props) {
               label="Save Employee"
             ></NssButtonSave>
           </div>
-          <div className="flex gap-2">
-            <NssButtonChevron
-              onClick={openProfile}
-              label="Profile"
-              selected={showProfile}
-            ></NssButtonChevron>
-            <NssButtonChevron
-              onClick={openSchedule}
-              label="Daily Schedule"
-              selected={showSchedule}
-            ></NssButtonChevron>
-            <NssButtonChevron
-              onClick={openOffice}
-              label="Office"
-              selected={showOffice}
-            ></NssButtonChevron>
-            <NssButtonChevron
-              onClick={openAppointments}
-              label="Appointments"
-              selected={showAppointments}
-            ></NssButtonChevron>
-            <NssButtonChevron
-              onClick={openServices}
-              label="Services"
-              selected={showServices}
-            ></NssButtonChevron>
-            <NssButtonChevron
-              onClick={openDump}
-              label="Dump"
-              selected={showDump}
-            ></NssButtonChevron>
-            <NssButtonChevron
-              onClick={openBiography}
-              label="Biography"
-              selected={showBiography}
-            ></NssButtonChevron>
-            <NssButtonChevron
-              onClick={openInformation}
-              label="Information"
-              selected={showInformation}
-            ></NssButtonChevron>
+          <div className="flex gap-2 md:flex-col xl:flex-row">
+            <div className="flex gap-2">
+              <NssButtonChevron
+                onClick={openProfile}
+                label="Profile"
+                selected={showProfile}
+              ></NssButtonChevron>
+              <NssButtonChevron
+                onClick={openSchedule}
+                label="Schedule"
+                selected={showSchedule}
+              ></NssButtonChevron>
+              <NssButtonChevron
+                onClick={openOffice}
+                label="Office"
+                selected={showOffice}
+              ></NssButtonChevron>
+              <NssButtonChevron
+                onClick={openAppointments}
+                label="Appointments"
+                selected={showAppointments}
+              ></NssButtonChevron>
+            </div>
+            <div className="flex gap-2">
+              <NssButtonChevron
+                onClick={openServices}
+                label="Services"
+                selected={showServices}
+              ></NssButtonChevron>
+              <NssButtonChevron
+                onClick={openDump}
+                label="Dump"
+                selected={showDump}
+              ></NssButtonChevron>
+              <NssButtonChevron
+                onClick={openBiography}
+                label="Biography"
+                selected={showBiography}
+              ></NssButtonChevron>
+              <NssButtonChevron
+                onClick={openInformation}
+                label="Information"
+                selected={showInformation}
+              ></NssButtonChevron>
+            </div>
           </div>
         </div>
         <div className="pr-2">
