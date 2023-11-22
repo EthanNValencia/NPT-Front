@@ -4,28 +4,36 @@ import TextArea from "./TextArea";
 import NssButtonEdit from "../nss/NssButtonEdit";
 import NssButtonSubtract from "../nss/NssButtonSubtract";
 import NssButtonMoveUpMoveDown from "../nss/NssButtonMoveUpMoveDown";
+import NssButtonChevron from "../nss/NssButtonChevron";
 
 function Texts(props) {
-  const { employeeId, texts, setChangeDetected, updateTexts } = props;
-  const [biography, setBiography] = useState(
-    [...texts].sort((a, b) => a.position - b.position)
+  const { employeeId, parentTexts, setChangeDetected, updateTexts, name } =
+    props;
+  const [texts, setTexts] = useState(
+    [...parentTexts].sort((a, b) => a.position - b.position)
   );
   const [largestId, setLargestId] = useState(0);
+  const [showPreview, setShowPreview] = useState(false);
 
-  const addParagraph = () => {
-    const newParagraph = {
+  const updateAllTextsArrays = (updatedTexts) => {
+    setTexts(updatedTexts);
+    updateTexts(updatedTexts);
+    setChangeDetected(true);
+  };
+
+  const addText = () => {
+    const newText = {
       id: getId(),
       paragraph: true,
       quote: false,
       text: "This is sample text.",
-      position: biography.length + 1,
+      position: texts.length + 1,
       employee: {
         id: employeeId,
       },
     };
-    const updatedBiographicalTexts = [...biography, { ...newParagraph }];
-    setBiography(updatedBiographicalTexts);
-    updateTexts(updatedBiographicalTexts);
+    const updatedTexts = [...texts, { ...newText }];
+    updateAllTextsArrays(updatedTexts);
     setChangeDetected(true);
   };
 
@@ -44,80 +52,83 @@ function Texts(props) {
   };
 
   const updateText = (text, index) => {
-    const updatedBiographicalTexts = [...biography];
-    updatedBiographicalTexts[index] = text;
-    setBiography(updatedBiographicalTexts);
-    updateTexts(updatedBiographicalTexts);
+    const updatedTexts = [...texts];
+    updatedTexts[index] = text;
+    updateAllTextsArrays(updatedTexts);
   };
 
   const deleteText = (paragraph) => {
-    const filteredTexts = biography.filter((p) => p.id !== paragraph.id);
+    const filteredTexts = texts.filter((p) => p.id !== paragraph.id);
     const updatedTexts = filteredTexts.map((paragraph, index) => ({
       ...paragraph,
       position: index + 1,
     }));
-    setBiography(updatedTexts);
-    updateTexts(updatedTexts);
-
-    setChangeDetected(true);
+    updateAllTextsArrays(updatedTexts);
   };
 
   const moveUp = (paragraph, index) => {
     if (index > 0) {
-      const updatedBiographicalTexts = [...biography];
-      const temp = updatedBiographicalTexts[index - 1];
+      const updatedTexts = [...texts];
+      const temp = updatedTexts[index - 1];
 
-      // Swap positions
       temp.position = index + 1;
       paragraph.position = index;
 
-      updatedBiographicalTexts[index - 1] = paragraph;
-      updatedBiographicalTexts[index] = temp;
-
-      setBiography(updatedBiographicalTexts);
-      updateTexts(updatedBiographicalTexts);
+      updatedTexts[index - 1] = paragraph;
+      updatedTexts[index] = temp;
+      updateAllTextsArrays(updatedTexts);
     }
   };
 
   const moveDown = (paragraph, index) => {
-    if (index < biography.length - 1) {
-      const updatedBiographicalTexts = [...biography];
-      const temp = updatedBiographicalTexts[index + 1];
+    if (index < texts.length - 1) {
+      const updatedTexts = [...texts];
+      const temp = updatedTexts[index + 1];
 
       // Swap positions
       temp.position = index + 1;
       paragraph.position = index + 2;
 
-      updatedBiographicalTexts[index + 1] = paragraph;
-      updatedBiographicalTexts[index] = temp;
-
-      setBiography(updatedBiographicalTexts);
-      updateTexts(updatedBiographicalTexts);
+      updatedTexts[index + 1] = paragraph;
+      updatedTexts[index] = temp;
+      updateAllTextsArrays(updatedTexts);
     }
+  };
+
+  const openPreview = () => {
+    setShowPreview(!showPreview);
   };
 
   return (
     <div className="bg-nss-21 border-2 rounded-lg shadow-xl py-2 px-2 mt-2">
-      <div className="flex">
-        <NssButtonAdd
-          onClick={addParagraph}
-          label="Add Paragraph"
-        ></NssButtonAdd>
+      <div className="flex gap-2">
+        <NssButtonAdd onClick={addText} label="Add Paragraph"></NssButtonAdd>
+        <NssButtonChevron
+          onClick={openPreview}
+          label="Preview"
+          selected={showPreview}
+        ></NssButtonChevron>
       </div>
-      <div>Biography: This needs work</div>
-      {JSON.stringify(biography)}
+      <div>{name}</div>
       <div>
-        {biography.map((paragraph, index) => (
+        {showPreview ? (
+          texts.map((text, index) => <TextPreview text={text} key={text.id} />)
+        ) : (
+          <></>
+        )}
+      </div>
+      <div>
+        {texts.map((text, index) => (
           <Text
-            paragraph={paragraph}
-            key={paragraph.id}
+            textObject={text}
+            key={text.id}
             setChangeDetected={setChangeDetected}
             deleteText={deleteText}
             moveUp={moveUp}
             moveDown={moveDown}
             employeeId={employeeId}
             index={index}
-            length={biography.length}
+            length={texts.length}
             updateText={updateText}
             findLargestId={findLargestId}
           />
@@ -127,9 +138,25 @@ function Texts(props) {
   );
 }
 
+const TextPreview = (props) => {
+  const { text } = props;
+  // {"id":1,"position":1,"text":"This is test biographical paragraph 1 for Melissa.","quote":false,"paragraph":true}
+
+  const renderText = () => {
+    if (text.quote) {
+      return <div className="text-md italic">{text.text}</div>;
+    }
+    if (text.paragraph) {
+      return <div className="text-md font-bold">{text.text}</div>;
+    }
+  };
+
+  return <div>{renderText()}</div>;
+};
+
 const Text = (props) => {
   const {
-    paragraph,
+    textObject,
     setChangeDetected,
     deleteText,
     updateText,
@@ -140,23 +167,19 @@ const Text = (props) => {
     length,
     findLargestId,
   } = props;
-  findLargestId(paragraph.id);
-  const [isParagraph, setIsParagraph] = useState(paragraph.paragraph);
-  const [isQuote, setIsQuote] = useState(paragraph.quote);
-  const [text, setText] = useState(paragraph.text);
+  findLargestId(textObject.id);
+  const [isParagraph, setIsParagraph] = useState(textObject.paragraph);
+  const [isQuote, setIsQuote] = useState(textObject.quote);
+  const [text, setText] = useState(textObject.text);
   const [editMode, setEditMode] = useState(false);
-
-  useEffect(() => {
-    updateText(returnTextObject(), index);
-  }, [isParagraph, isQuote, text]);
 
   const returnTextObject = () => {
     const newText = {
-      id: paragraph.id,
+      id: textObject.id,
       paragraph: isParagraph,
       quote: isQuote,
       text: text,
-      position: paragraph.position,
+      position: textObject.position,
       employee: {
         id: employeeId,
       },
@@ -173,7 +196,7 @@ const Text = (props) => {
   };
 
   const ondeleteText = () => {
-    deleteText(paragraph);
+    deleteText(textObject);
   };
 
   const onChangeIsQuote = (e) => {
@@ -182,6 +205,7 @@ const Text = (props) => {
     if (newValue) {
       setIsParagraph(false);
     }
+    updateText(returnTextObject(), index);
   };
 
   const onChangeIsParagraph = (e) => {
@@ -190,6 +214,7 @@ const Text = (props) => {
     if (newValue) {
       setIsQuote(false);
     }
+    updateText(returnTextObject(), index);
   };
 
   const onMoveUp = () => {
@@ -200,7 +225,6 @@ const Text = (props) => {
     moveDown(returnTextObject(), index);
   };
 
-  console.log(paragraph.id);
   return (
     <div className="bg-nss-21 border rounded-lg shadow-xl py-2 px-2 mt-2">
       <div className="flex justify-between">
@@ -214,7 +238,7 @@ const Text = (props) => {
             <NssButtonSubtract
               onClick={ondeleteText}
               label="Delete"
-              disabled={paragraph.id == null}
+              disabled={textObject.id == null}
             ></NssButtonSubtract>
           </div>
         </div>
@@ -255,7 +279,7 @@ const Text = (props) => {
         <div className="flex gap-2">
           <div>
             <div className="text-xs font-bold">Position:</div>
-            <div className="text-xs text-center">{paragraph.position}</div>
+            <div className="text-xs text-center">{textObject.position}</div>
           </div>
           <div>
             <NssButtonMoveUpMoveDown

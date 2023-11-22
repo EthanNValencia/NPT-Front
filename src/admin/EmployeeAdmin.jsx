@@ -31,6 +31,7 @@ function EmployeeAdmin(props) {
   const [showOffice, setShowOffice] = useState(false);
   const [showServices, setShowServices] = useState(false);
   const [showBiography, setShowBiography] = useState(false);
+  const [showInformation, setShowInformation] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [showAppointments, setShowAppointments] = useState(false);
   const [changeDetected, setChangeDetected] = useState(false);
@@ -83,6 +84,7 @@ function EmployeeAdmin(props) {
     setShowServices(false);
     setShowDump(false);
     setShowBiography(false);
+    setShowInformation(false);
   };
 
   const openSchedule = () => {
@@ -93,6 +95,7 @@ function EmployeeAdmin(props) {
     setShowServices(false);
     setShowDump(false);
     setShowBiography(false);
+    setShowInformation(false);
   };
 
   const openOffice = () => {
@@ -103,6 +106,7 @@ function EmployeeAdmin(props) {
     setShowServices(false);
     setShowDump(false);
     setShowBiography(false);
+    setShowInformation(false);
   };
 
   const openAppointments = () => {
@@ -113,6 +117,7 @@ function EmployeeAdmin(props) {
     setShowServices(false);
     setShowDump(false);
     setShowBiography(false);
+    setShowInformation(false);
   };
 
   const openServices = () => {
@@ -123,6 +128,7 @@ function EmployeeAdmin(props) {
     setShowServices(!showServices);
     setShowDump(false);
     setShowBiography(false);
+    setShowInformation(false);
   };
 
   const openDump = () => {
@@ -133,6 +139,7 @@ function EmployeeAdmin(props) {
     setShowServices(false);
     setShowDump(!showDump);
     setShowBiography(false);
+    setShowInformation(false);
   };
 
   const openBiography = () => {
@@ -143,6 +150,18 @@ function EmployeeAdmin(props) {
     setShowServices(false);
     setShowDump(false);
     setShowBiography(!showBiography);
+    setShowInformation(false);
+  };
+
+  const openInformation = () => {
+    setShowProfile(false);
+    setShowSchedule(false);
+    setShowOffice(false);
+    setShowAppointments(false);
+    setShowServices(false);
+    setShowDump(false);
+    setShowBiography(false);
+    setShowInformation(!showBiography);
   };
 
   const onEditEmployee = () => {
@@ -178,6 +197,12 @@ function EmployeeAdmin(props) {
   const updateBiographicalTexts = (biographicalTexts) => {
     const updatedEmployee = { ...localEmployee };
     updatedEmployee.biographicalTexts = biographicalTexts;
+    setLocalEmployee(updatedEmployee);
+  };
+
+  const updateInformationalTexts = (informationalTexts) => {
+    const updatedEmployee = { ...localEmployee };
+    updatedEmployee.informationalTexts = informationalTexts;
     setLocalEmployee(updatedEmployee);
   };
 
@@ -732,6 +757,11 @@ function EmployeeAdmin(props) {
               label="Biography"
               selected={showBiography}
             ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={openInformation}
+              label="Information"
+              selected={showInformation}
+            ></NssButtonChevron>
           </div>
         </div>
         <div className="pr-2">
@@ -787,9 +817,21 @@ function EmployeeAdmin(props) {
       {showBiography ? (
         <Texts
           employeeId={localEmployee.id}
-          texts={localEmployee.biographicalTexts}
+          parentTexts={localEmployee.biographicalTexts}
           setChangeDetected={setChangeDetected}
           updateTexts={updateBiographicalTexts}
+          name={"Biography"}
+        />
+      ) : (
+        <></>
+      )}
+      {showInformation ? (
+        <Texts
+          employeeId={localEmployee.id}
+          parentTexts={localEmployee.informationalTexts}
+          setChangeDetected={setChangeDetected}
+          updateTexts={updateInformationalTexts}
+          name={"Information"}
         />
       ) : (
         <></>
