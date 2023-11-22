@@ -21,7 +21,7 @@ function NssButtonAdd(props) {
     <div className="flex flex-col items-center justify-center">
       <button
         type="button"
-        className={`${pickDivColor()} inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded transition ease-in-out duration-500 cursor-pointer`}
+        className={`${pickDivColor()} inline-flex items-center px-4 py-1 text-xs font-semibold leading-6 shadow rounded transition ease-in-out duration-500 cursor-pointer`}
         onClick={onClick}
         disabled={disabled}
       >

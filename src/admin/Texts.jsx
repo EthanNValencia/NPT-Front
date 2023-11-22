@@ -24,8 +24,7 @@ function Texts(props) {
   const addText = () => {
     const newText = {
       id: getId(),
-      paragraph: true,
-      quote: false,
+      type: "PARAGRAPH",
       text: "This is sample text.",
       position: texts.length + 1,
       employee: {
@@ -101,18 +100,27 @@ function Texts(props) {
 
   return (
     <div className="bg-nss-21 border-2 rounded-lg shadow-xl py-2 px-2 mt-2">
-      <div className="flex gap-2">
-        <NssButtonAdd onClick={addText} label="Add Paragraph"></NssButtonAdd>
-        <NssButtonChevron
-          onClick={openPreview}
-          label="Preview"
-          selected={showPreview}
-        ></NssButtonChevron>
-      </div>
-      <div>{name}</div>
-      <div>
+      <div className="flex gap-2 justify-between">
+        <div>
+          <div className="flex gap-2">
+            <NssButtonAdd
+              onClick={addText}
+              label="Add Paragraph"
+            ></NssButtonAdd>
+            <NssButtonChevron
+              onClick={openPreview}
+              label="Preview"
+              selected={showPreview}
+            ></NssButtonChevron>
+          </div>
+          <div>{name}</div>
+        </div>
         {showPreview ? (
-          texts.map((text, index) => <TextPreview text={text} key={text.id} />)
+          <div className="bg-nss-20 border-1 rounded-lg shadow-xl py-2 px-2 mt-2 break-words">
+            {texts.map((text, index) => (
+              <TextPreview text={text} key={text.id} />
+            ))}
+          </div>
         ) : (
           <></>
         )}
@@ -140,14 +148,17 @@ function Texts(props) {
 
 const TextPreview = (props) => {
   const { text } = props;
-  // {"id":1,"position":1,"text":"This is test biographical paragraph 1 for Melissa.","quote":false,"paragraph":true}
 
+  const QUOTE = "QUOTE";
+  const PARAGRAPH = "PARAGRAPH";
   const renderText = () => {
-    if (text.quote) {
-      return <div className="text-md italic">{text.text}</div>;
+    if (text.type == QUOTE) {
+      return <div className="text-md italic text-sm">"{text.text}"</div>;
     }
-    if (text.paragraph) {
-      return <div className="text-md font-bold">{text.text}</div>;
+    if (text.type == PARAGRAPH) {
+      return (
+        <div className="text-md font-bold indent-7 text-xs">{text.text}</div>
+      );
     }
   };
 
@@ -167,17 +178,23 @@ const Text = (props) => {
     length,
     findLargestId,
   } = props;
+
   findLargestId(textObject.id);
-  const [isParagraph, setIsParagraph] = useState(textObject.paragraph);
-  const [isQuote, setIsQuote] = useState(textObject.quote);
+  const QUOTE = "QUOTE";
+  const PARAGRAPH = "PARAGRAPH";
+
+  const [type, setType] = useState(textObject.type);
   const [text, setText] = useState(textObject.text);
   const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => {
+    updateText(returnTextObject(), index);
+  }, [type, index, text]);
 
   const returnTextObject = () => {
     const newText = {
       id: textObject.id,
-      paragraph: isParagraph,
-      quote: isQuote,
+      type: type,
       text: text,
       position: textObject.position,
       employee: {
@@ -199,22 +216,12 @@ const Text = (props) => {
     deleteText(textObject);
   };
 
-  const onChangeIsQuote = (e) => {
-    const newValue = e.target.checked;
-    setIsQuote(newValue);
-    if (newValue) {
-      setIsParagraph(false);
-    }
-    updateText(returnTextObject(), index);
+  const onChangeIsQuote = () => {
+    setType(QUOTE);
   };
 
-  const onChangeIsParagraph = (e) => {
-    const newValue = e.target.checked;
-    setIsParagraph(newValue);
-    if (newValue) {
-      setIsQuote(false);
-    }
-    updateText(returnTextObject(), index);
+  const onChangeIsParagraph = () => {
+    setType(PARAGRAPH);
   };
 
   const onMoveUp = () => {
@@ -250,7 +257,7 @@ const Text = (props) => {
                   <input
                     id="1"
                     type="checkbox"
-                    checked={isQuote}
+                    checked={type == QUOTE}
                     onChange={onChangeIsQuote}
                     className="w-4 h-4 accent-nss-300 bg-gray-100 border-gray-300 rounded focus:ring-2 "
                   />
@@ -264,7 +271,7 @@ const Text = (props) => {
                   <input
                     id="2"
                     type="checkbox"
-                    checked={isParagraph}
+                    checked={type == PARAGRAPH}
                     onChange={onChangeIsParagraph}
                     className="w-4 h-4 accent-nss-300 bg-gray-100 border-gray-300 rounded focus:ring-2 "
                   />

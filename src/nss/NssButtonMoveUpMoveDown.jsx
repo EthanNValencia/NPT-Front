@@ -20,7 +20,7 @@ function NssButtonMoveUpMoveDown(props) {
         type="button"
         className={`${pickDivColor(
           disabledMoveUp
-        )} inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-t-xl transition ease-in-out duration-500 cursor-pointer`}
+        )} inline-flex items-center px-4 py-1 font-semibold leading-6 text-sm shadow rounded-t-xl transition ease-in-out duration-500 cursor-pointer`}
         onClick={onMoveUp}
         disabled={disabledMoveUp}
       >
@@ -32,7 +32,7 @@ function NssButtonMoveUpMoveDown(props) {
         type="button"
         className={`${pickDivColor(
           disabledMoveDown
-        )} inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-b-xl transition ease-in-out duration-500 cursor-pointer`}
+        )} inline-flex items-center px-4 py-1 font-semibold leading-6 text-sm shadow rounded-b-xl transition ease-in-out duration-500 cursor-pointer`}
         onClick={onMoveDown}
         disabled={disabledMoveDown}
       >
