@@ -33,7 +33,6 @@ function Texts(props) {
     };
     const updatedTexts = [...texts, { ...newText }];
     updateAllTextsArrays(updatedTexts);
-    setChangeDetected(true);
   };
 
   const findLargestId = (id) => {
@@ -151,6 +150,7 @@ const TextPreview = (props) => {
 
   const QUOTE = "QUOTE";
   const PARAGRAPH = "PARAGRAPH";
+
   const renderText = () => {
     if (text.type == QUOTE) {
       return <div className="text-md italic text-sm">"{text.text}"</div>;
@@ -188,8 +188,12 @@ const Text = (props) => {
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    updateText(returnTextObject(), index);
-  }, [type, index, text]);
+    if (type != textObject.type) {
+      updateText(returnTextObject(), index);
+    } else if (text != textObject.text) {
+      updateText(returnTextObject(), index);
+    }
+  }, [type, text]);
 
   const returnTextObject = () => {
     const newText = {

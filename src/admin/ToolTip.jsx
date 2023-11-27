@@ -1,6 +1,6 @@
 import React from "react";
 
-function ToolTipAdmin(props) {
+function ToolTip(props) {
   const { text } = props;
 
   const applyText = () => {
@@ -30,7 +30,7 @@ function ToolTipAdmin(props) {
   );
 }
 
-export default ToolTipAdmin;
+export default ToolTip;
 
 /*
 

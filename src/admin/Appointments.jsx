@@ -12,7 +12,7 @@ import NssEmail from "../emails/NssEmail";
 import { render } from "@react-email/render";
 import NptEmail002 from "../emails/NptEmail002";
 
-function AppointmentsAdmin(props) {
+function Appointments(props) {
   const { appointments, updateParentAppointments, employeeIndex } = props;
   const [newAppointments, setNewAppointments] = useState([...appointments]);
   const [hasApiError, setHasApiError] = useState(false);
@@ -158,4 +158,4 @@ function AppointmentsAdmin(props) {
   );
 }
 
-export default AppointmentsAdmin;
+export default Appointments;

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { adminGetWebsite, adminUpdateWebsite } from "../axios/api";
 import DataField from "./DataField";
-import SocialMediaProfileAdmin from "./SocialMediaProfileAdmin";
-import NssButton from "../nss/NssButton";
+import SocialMediaProfile from "./SocialMediaProfile";
 import ApiError from "../components/ApiError";
 import { AuthContext } from "../contexts/context";
 import NssButtonChevron from "../nss/NssButtonChevron";
@@ -10,7 +9,7 @@ import NssButtonSave from "../nss/NssButtonSave";
 import NssButtonEdit from "../nss/NssButtonEdit";
 import NssButtonReload from "../nss/NssButtonReload";
 
-function WebsiteAdmin() {
+function Website() {
   const [editMode, setShowEditMode] = useState(false);
   const [websiteObject, setWebsiteObject] = useState({});
   const [hasApiError, setHasApiError] = useState(false);
@@ -127,7 +126,9 @@ function WebsiteAdmin() {
     <div
       className={`bg-nss-21 border ${pickDivColor()} rounded-lg shadow-xl py-2 px-2 mt-2`}
     >
-      <div className="text-xl text-center py-2">Website Data</div>
+      <div className="text-xl text-center py-2">
+        Website Data (this entity needs work)
+      </div>
       <div className="grid grid-cols-2 gap-2">
         <div>
           <div className="text-xs font-bold">Name:</div>
@@ -176,7 +177,7 @@ function WebsiteAdmin() {
       </div>
       <div className="flex gap-2 pt-2"></div>
       <div className="flex justify-between">
-        <div className="grid grid-cols-3 gap-2">
+        <div className="flex gap-2">
           <NssButtonSave
             onClick={onSaveWebsite}
             label="Save Website"
@@ -201,7 +202,7 @@ function WebsiteAdmin() {
       </div>
       <div>
         {showProfile ? (
-          <SocialMediaProfileAdmin
+          <SocialMediaProfile
             socialMediaProfile={websiteObject.profile}
             parentId={websiteObject.id}
             loading={loading}
@@ -217,4 +218,4 @@ function WebsiteAdmin() {
   );
 }
 
-export default WebsiteAdmin;
+export default Website;

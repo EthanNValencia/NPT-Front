@@ -167,6 +167,7 @@ export async function adminGetEmployees(token) {
   };
   try {
     const response = await axios.get(adminEmployeeUrl, { headers });
+    // console.log(JSON.stringify(response.data));
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
@@ -417,6 +418,26 @@ export async function adminDeleteService(id, token) {
 
   try {
     const response = await axios.delete(servicesUrl, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    // console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
+export async function adminGetOffices(token) {
+  const servicesUrl = privateUrl + "/offices/";
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    console.log("Token: " + token);
+    const response = await axios.get(servicesUrl, { headers });
+    console.log(JSON.stringify(response.data));
     return response.data;
   } catch (error) {
     handleErrorReporting(error);

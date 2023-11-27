@@ -7,14 +7,14 @@ import {
 } from "../axios/api";
 import ApiError from "../components/ApiError";
 import DataField from "./DataField";
-import ToolTipAdmin from "./ToolTipAdmin";
+import ToolTip from "./ToolTip";
 import NssButtonAdd from "../nss/NssButtonAdd";
 import NssButtonSubtract from "../nss/NssButtonSubtract";
 import NssButtonEdit from "../nss/NssButtonEdit";
 import NssButtonReload from "../nss/NssButtonReload";
 import NssButtonSave from "../nss/NssButtonSave";
 
-function ServicesAdmin() {
+function Services() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
@@ -267,7 +267,7 @@ function Service(props) {
             <div>
               <div className="text-xs font-bold pr-2 inline-flex">
                 Employees
-                <ToolTipAdmin text={generateText()} />
+                <ToolTip text={generateText()} />
               </div>
               <div className="text-xs pr-2 text-center font-bold">
                 {newService.employees.length}
@@ -288,7 +288,7 @@ function Service(props) {
   );
 }
 
-export default ServicesAdmin;
+export default Services;
 
 /*
 

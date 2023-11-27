@@ -5,12 +5,13 @@ import { adminGetEmployees, adminGetUnansweredQuestions } from "../axios/api";
 import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
 import FaqAdmin from "../admin/FaqAdmin";
-import EmployeeAdmin from "../admin/EmployeeAdmin";
-import WebsiteAdmin from "../admin/WebsiteAdmin";
-import ServicesAdmin from "../admin/ServicesAdmin";
+import Employee from "../admin/Employee";
+import Website from "../admin/Website";
+import Services from "../admin/Services";
 import NssButtonChevron from "../nss/NssButtonChevron";
 import NssButtonAdd from "../nss/NssButtonAdd";
 import NssButtonReload from "../nss/NssButtonReload";
+import Offices from "../admin/Offices";
 
 // eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlam5lcGhld0B5YWhvby5jb20iLCJpYXQiOjE2OTg3NjQ3MDUsImV4cCI6MTY5ODc2NTQyNX0.-QKYmy_q2c31JQDve49YVD6dg3qbd3S4HXOyUBCTE-wIzkL7P4ZJOppAgYL7shcQpsJjmeX_04c9xMMuJoxLPA
 
@@ -254,8 +255,8 @@ function Admin() {
 
   const Employees = () => {
     return employeeObjects.map((employee, index) => (
-      <div key={index}>
-        <EmployeeAdmin
+      <div key={employee.id}>
+        <Employee
           employee={employee}
           removeEmployee={removeEmployee}
           createEmployee={createEmployee}
@@ -303,7 +304,7 @@ function Admin() {
         <div className="flex gap-2">
           <ReturnCategoryControls />
         </div>
-        <div className="">
+        <div>
           {showEmployees ? (
             <div>
               <Employees />
@@ -318,9 +319,9 @@ function Admin() {
           ) : (
             <></>
           )}
-          {showServices ? <ServicesAdmin /> : <></>}
-          {showOffices ? <div>Edit Office</div> : <></>}
-          {showWebsite ? <WebsiteAdmin /> : <></>}
+          {showServices ? <Services /> : <></>}
+          {showOffices ? <Offices /> : <></>}
+          {showWebsite ? <Website /> : <></>}
         </div>
       </div>
       <div>{hasApiError ? <ApiError /> : <></>}</div>

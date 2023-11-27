@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import DataField from "./DataField";
-import NssButton from "../nss/NssButton";
+import NssButtonEdit from "../nss/NssButtonEdit";
+import NssButtonAdd from "../nss/NssButtonAdd";
 
-const SocialMediaProfileAdmin = (props) => {
+const SocialMediaProfile = (props) => {
   const {
     socialMediaProfile,
     parentIndex,
@@ -14,10 +15,47 @@ const SocialMediaProfileAdmin = (props) => {
     ...socialMediaProfile,
   });
   const [showEdit, setShowEdit] = useState(false);
-  // console.log(loading);
-  // console.log(JSON.stringify(socialMediaProfile));
-  if (loading || socialMediaProfile == undefined) {
-    return <div>The data is being loaded...</div>;
+
+  const addSocialMediaProfile = () => {
+    const newProfile = {
+      linkedin: "",
+      youtube: "",
+      facebook: "",
+      myspace: "",
+      instagram: "",
+      yelp: "",
+      tiktok: "",
+      x: "",
+      pinterest: "",
+      snapchat: "",
+      whatsapp: "",
+      tumblr: "",
+      google: "",
+    };
+    setNewSocialMediaProfile(newProfile);
+    copyProfileToParent(newProfile);
+    setChangeDetected(true);
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-nss-21 border-2 rounded-lg shadow-xl py-2 px-2 mt-2">
+        The data is being loaded...
+      </div>
+    );
+  }
+
+  if (socialMediaProfile == undefined) {
+    return (
+      <div className="bg-nss-21 border-2 rounded-lg shadow-xl py-2 px-2 mt-2">
+        <div className="flex content-start py-2 gap-2">
+          <NssButtonAdd
+            onClick={addSocialMediaProfile}
+            label="Add Social Media Profile"
+          ></NssButtonAdd>
+        </div>
+      </div>
+    );
   }
 
   const onEditSocialMediaProfile = () => {
@@ -306,13 +344,14 @@ const SocialMediaProfileAdmin = (props) => {
         </div>
       </div>
       <div className="pt-2 flex justify-start">
-        <NssButton
+        <NssButtonEdit
           onClick={onEditSocialMediaProfile}
           label="Edit Social Media Profile"
-        ></NssButton>
+          selected={showEdit}
+        ></NssButtonEdit>
       </div>
     </div>
   );
 };
 
-export default SocialMediaProfileAdmin;
+export default SocialMediaProfile;

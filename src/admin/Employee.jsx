@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
-import NssButton from "../nss/NssButton";
-import SocialMediaProfileAdmin from "./SocialMediaProfileAdmin";
+import SocialMediaProfile from "./SocialMediaProfile";
 import DataField from "./DataField";
-import AppointmentsAdmin from "./AppointmentsAdmin";
-import ToolTipAdmin from "./ToolTipAdmin";
+import Appointments from "./Appointments";
+import ToolTip from "./ToolTip";
 import {
   deleteEmployeeApi,
   updateEmployeeApi,
@@ -18,8 +17,9 @@ import NssButtonSave from "../nss/NssButtonSave";
 import NssButtonEdit from "../nss/NssButtonEdit";
 import NssButtonSubtract from "../nss/NssButtonSubtract";
 import Texts from "./Texts";
+import Schedule from "./Schedule";
 
-function EmployeeAdmin(props) {
+function Employee(props) {
   const { employee, removeEmployee, index, updateEmployees, createEmployee } =
     props;
   const [localEmployee, setLocalEmployee] = useState({ ...employee });
@@ -182,7 +182,7 @@ function EmployeeAdmin(props) {
 
   const copyProfileToParent = (profile) => {
     const updatedEmployee = { ...localEmployee };
-    updatedEmployee.employeeSocialMediaProfile = profile;
+    updatedEmployee.profile = profile;
     setLocalEmployee(updatedEmployee);
     updateEmployees(updatedEmployee, index);
   };
@@ -204,58 +204,6 @@ function EmployeeAdmin(props) {
     const updatedEmployee = { ...localEmployee };
     updatedEmployee.informationalTexts = informationalTexts;
     setLocalEmployee(updatedEmployee);
-  };
-
-  const DailyScheduleCard = (props) => {
-    const { dailySchedule, index, employeeId } = props;
-    return (
-      <div key={index} className="w-44 border rounded-lg">
-        <div className="text-center">{dailySchedule.day}</div>
-        <div className="grid grid-cols-2 gap-2">
-          <div className="text-center">
-            <div className="text-xs font-bold">Begin Time:</div>
-            <div className="text-sm">{dailySchedule.beginTime}</div>
-          </div>
-          <div className="text-center">
-            <div className="text-xs font-bold">End Time:</div>
-            <div className="text-sm">{dailySchedule.endTime}</div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const Schedule = (props) => {
-    const { schedule, employeeId } = props;
-
-    const sortedSchedule = schedule.sort((a, b) => {
-      const dayOrder = {
-        Sun: 0,
-        Mon: 1,
-        Tue: 2,
-        Wed: 3,
-        Thu: 4,
-        Fri: 5,
-        Sat: 6,
-      };
-      return dayOrder[a.day] - dayOrder[b.day];
-    });
-
-    return (
-      <div>
-        <div className=" shadow-xl min-w-0 border-2 rounded-md mt-2">
-          <div className="overflow-x-auto flex p-4 gap-2">
-            {sortedSchedule.map((dailySchedule, index) => (
-              <DailyScheduleCard
-                dailySchedule={dailySchedule}
-                index={index}
-                employeeId={employeeId}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
   };
 
   const Office = (props) => {
@@ -362,9 +310,8 @@ function EmployeeAdmin(props) {
 
   return (
     <div
-      className={`${pickDivColor()} border rounded-lg shadow-xl py-2 px-2 my-2`}
+      className={`${pickDivColor()} border rounded-lg shadow-xl pt-2 pb-2 pl-2 my-2`}
     >
-      <div>Employee {index}</div>
       <div className="grid grid-cols-3">
         <div
           className="bg-nss-20 border p-2 mr-2 
@@ -372,8 +319,8 @@ function EmployeeAdmin(props) {
         >
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">First Name:</div>
-            <div>
-              <ToolTipAdmin text={"Examples: Tina, Scott, Jeffrey"} />
+            <div className="">
+              <ToolTip text={"Examples: Tina, Scott, Jeffrey"} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -400,7 +347,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Middle Name:</div>
             <div>
-              <ToolTipAdmin text={"Optional Field. Examples: T, Marie"} />
+              <ToolTip text={"Optional Field. Examples: T, Marie"} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -427,7 +374,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Last Name:</div>
             <div>
-              <ToolTipAdmin text={"Examples: Smith, Nephew, Epstein"} />
+              <ToolTip text={"Examples: Smith, Nephew, Epstein"} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -456,9 +403,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Role:</div>
             <div>
-              <ToolTipAdmin
-                text={"Examples: Physical Therapist, Receptionist"}
-              />
+              <ToolTip text={"Examples: Physical Therapist, Receptionist"} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -485,7 +430,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Role:</div>
             <div>
-              <ToolTipAdmin text={"Examples: RN, Stocker, PT, PTA"} />
+              <ToolTip text={"Examples: RN, Stocker, PT, PTA"} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -512,7 +457,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Meta:</div>
             <div>
-              <ToolTipAdmin text={"Short description about the employee."} />
+              <ToolTip text={"Short description about the employee."} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -541,7 +486,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Email:</div>
             <div>
-              <ToolTipAdmin text={"Employee work email address."} />
+              <ToolTip text={"Employee work email address."} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -568,7 +513,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Work Phone:</div>
             <div>
-              <ToolTipAdmin text={"Employee work phone number."} />
+              <ToolTip text={"Employee work phone number."} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -595,7 +540,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Personal Phone:</div>
             <div>
-              <ToolTipAdmin text={"This is optional."} />
+              <ToolTip text={"This is optional."} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -624,7 +569,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Img Url:</div>
             <div>
-              <ToolTipAdmin text={"The url for the employee image."} />
+              <ToolTip text={"The url for the employee image."} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -651,7 +596,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Subject:</div>
             <div>
-              <ToolTipAdmin text={"Example: she, he"} />
+              <ToolTip text={"Example: she, he"} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -678,7 +623,7 @@ function EmployeeAdmin(props) {
           <div className="grid grid-flow-col grid-cols-2">
             <div className="text-xs font-bold">Possessive:</div>
             <div>
-              <ToolTipAdmin text={"Example: her, him"} />
+              <ToolTip text={"Example: her, him"} />
             </div>
           </div>
           <div className="text-sm pr-2">
@@ -775,7 +720,7 @@ function EmployeeAdmin(props) {
       <div>
         {showDump ? <EmployeeDump employee={localEmployee} /> : <></>}
         {showProfile ? (
-          <SocialMediaProfileAdmin
+          <SocialMediaProfile
             socialMediaProfile={localEmployee.profile}
             parentIndex={index}
             loading={loading}
@@ -790,7 +735,7 @@ function EmployeeAdmin(props) {
       {showSchedule ? (
         <Schedule
           schedule={localEmployee.schedule}
-          employeeId={localEmployee.id}
+          parentId={localEmployee.id}
         />
       ) : (
         <></>
@@ -801,7 +746,7 @@ function EmployeeAdmin(props) {
         <></>
       )}
       {showAppointments ? (
-        <AppointmentsAdmin
+        <Appointments
           appointments={localEmployee.appointments}
           updateParentAppointments={updateAppointments}
           employeeIndex={index}
@@ -845,4 +790,4 @@ function EmployeeAdmin(props) {
   );
 }
 
-export default EmployeeAdmin;
+export default Employee;
