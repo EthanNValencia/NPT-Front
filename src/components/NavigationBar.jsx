@@ -11,7 +11,7 @@ function NavigationBar() {
 
   return (
     <header>
-      <nav className="bg-npt_colors-325 text-xs font-bold text-center grid grid-flow-row grid-cols-8 mt-2 rounded-lg">
+      <nav className="bg-npt_colors-325 text-xs font-bold text-center flex xs:flex-col xs:mt-0 xs:gap-1 sm:flex-row sm:gap-4 mt-2 rounded-lg">
         <NavLink className="hover:text-npt_colors-300" to="/">
           Home
         </NavLink>
@@ -29,9 +29,9 @@ function NavigationBar() {
         </NavLink>
         <NavLink
           className="hover:text-npt_colors-300 focus:text-npt_colors-300"
-          to="/reviews"
+          to="/resources"
         >
-          Reviews
+          Resources
         </NavLink>
         <NavLink className="hover:text-npt_colors-300" to="/dev">
           Dev

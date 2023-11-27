@@ -4,6 +4,9 @@ import { updateFaqApi, deleteFaqApi } from "../axios/api";
 import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
 import TextArea from "./TextArea";
+import NssButtonSubtract from "../nss/NssButtonSubtract";
+import NssButtonSave from "../nss/NssButtonSave";
+import NssButtonEdit from "../nss/NssButtonEdit";
 
 function FaqAdmin(props) {
   const { faq, removeFaq, index, updateFaqObjects } = props;
@@ -208,21 +211,20 @@ function FaqAdmin(props) {
           <div>
             <div className="flex justify-between">
               <div className="flex gap-2 pt-2">
-                <NssButton onClick={editFaq} disabled={loading} label="Edit" />
-                <NssButton
+                <NssButtonEdit
+                  onClick={editFaq}
+                  disabled={loading}
+                  label="Edit"
+                />
+                <NssButtonSave
                   onClick={saveFaq}
                   disabled={disableButton()}
                   label="Save"
                 />
-                <NssButton
+                <NssButtonSubtract
                   onClick={deleteFaq}
                   disabled={loading || id == null}
                   label="Delete"
-                />
-                <NssButton
-                  onClick={testLoading}
-                  disabled={false}
-                  label="Test Loading"
                 />
                 {!questionAnswered ? (
                   <NssButton

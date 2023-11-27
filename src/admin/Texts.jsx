@@ -112,7 +112,6 @@ function Texts(props) {
               selected={showPreview}
             ></NssButtonChevron>
           </div>
-          <div>{name}</div>
         </div>
         {showPreview ? (
           <div className="bg-nss-20 border-1 rounded-lg shadow-xl py-2 px-2 mt-2 break-words">

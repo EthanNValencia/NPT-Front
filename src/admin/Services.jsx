@@ -211,7 +211,6 @@ function Service(props) {
   const editService = () => {
     if (editMode) {
       updateServices(newService, index);
-      setChangeDetected(true);
     }
 
     setEditMode(!editMode);

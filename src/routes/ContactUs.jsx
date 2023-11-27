@@ -272,87 +272,13 @@ function ContactUs() {
 
   return (
     <div className="">
-      <div className="text-center">V1</div>
       {offices.map((office, index) => (
         <div key={index} className="flex justify-around flex-row">
           <div>
-            <div className="bg-npt_colors-350 text-white rounded-t-xl px-2 pt-2 text-center">
+            <div className="bg-npt_colors-350 text-white rounded-t-xl px-2 pt-2 text-center break-words">
               {office.introduction}
             </div>
-            <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-b-xl">
-              <div className="py-2 flex justify-center">
-                <div>
-                  <WalkIns acceptingWalkIns={office.acceptingWalkIns} />
-                </div>
-              </div>
-              <div className="flex flex-row gap-4 justify-center">
-                <NptPhoneButton label="Call Us" phone={office.phone} />
-                <NptEmailButton label="Email Us" email={office.email} />
-                <NptGoogleMapsButton
-                  label="Google Map Us"
-                  mapUrl={office.mapUrl}
-                />
-              </div>
-              <div>
-                <div className="grid grid-cols-2">
-                  <div>
-                    <DisclosureComponent
-                      title={"Email"}
-                      contents={office.email}
-                    />
-                    <DisclosureComponent title={"Fax"} contents={office.fax} />
-                    <DisclosureComponent
-                      title={"Phone"}
-                      contents={office.phone}
-                    />
-                    <DisclosureComponent
-                      title={"Address"}
-                      contents={
-                        office.street +
-                        "., " +
-                        office.unit +
-                        ", " +
-                        office.city +
-                        ", " +
-                        office.state +
-                        ", " +
-                        office.zip
-                      }
-                    />
-                  </div>
-                  <div className="py-2 px-2 flex items-center justify-center">
-                    <div>
-                      {sortOfficeSchedule(office.schedule).map(
-                        (schedule, index) => (
-                          <div>
-                            <Schedule
-                              index={index}
-                              day={schedule.day}
-                              beginTime={schedule.beginTime}
-                              endTime={schedule.endTime}
-                            />
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-center">
-                  {hasApiError ? <ApiError /> : <></>}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-      <div className="text-center">V2</div>
-      {offices.map((office, index) => (
-        <div key={index} className="flex justify-around flex-row pt-2">
-          <div>
-            <div className="bg-npt_colors-350 text-white rounded-t-xl px-2 pt-2 text-center">
-              {office.introduction}
-            </div>
-            <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-b-xl">
+            <div className="relative bg-white px-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-b-xl">
               <div className="py-2 flex justify-center">
                 <div>
                   <WalkIns acceptingWalkIns={false} />
@@ -432,3 +358,83 @@ function ContactUs() {
 }
 
 export default ContactUs;
+
+/*
+
+Old V1 (makes accessing data needlessly difficult)
+
+ <div className="text-center">V1</div>
+      {offices.map((office, index) => (
+        <div key={index} className="flex justify-around flex-row">
+          <div>
+            <div className="bg-npt_colors-350 text-white rounded-t-xl px-2 pt-2 text-center">
+              {office.introduction}
+            </div>
+            <div className="relative bg-white px-2 pt-2 pb-2 shadow-xl w-fit ring-1 ring-gray-900/5 rounded-b-xl">
+              <div className="py-2 flex justify-center">
+                <div>
+                  <WalkIns acceptingWalkIns={office.acceptingWalkIns} />
+                </div>
+              </div>
+              <div className="flex flex-row gap-4 justify-center">
+                <NptPhoneButton label="Call Us" phone={office.phone} />
+                <NptEmailButton label="Email Us" email={office.email} />
+                <NptGoogleMapsButton
+                  label="Google Map Us"
+                  mapUrl={office.mapUrl}
+                />
+              </div>
+              <div>
+                <div className="grid grid-cols-2">
+                  <div>
+                    <DisclosureComponent
+                      title={"Email"}
+                      contents={office.email}
+                    />
+                    <DisclosureComponent title={"Fax"} contents={office.fax} />
+                    <DisclosureComponent
+                      title={"Phone"}
+                      contents={office.phone}
+                    />
+                    <DisclosureComponent
+                      title={"Address"}
+                      contents={
+                        office.street +
+                        "., " +
+                        office.unit +
+                        ", " +
+                        office.city +
+                        ", " +
+                        office.state +
+                        ", " +
+                        office.zip
+                      }
+                    />
+                  </div>
+                  <div className="py-2 px-2 flex items-center justify-center">
+                    <div>
+                      {sortOfficeSchedule(office.schedule).map(
+                        (schedule, index) => (
+                          <div>
+                            <Schedule
+                              index={index}
+                              day={schedule.day}
+                              beginTime={schedule.beginTime}
+                              endTime={schedule.endTime}
+                            />
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  {hasApiError ? <ApiError /> : <></>}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+
+*/

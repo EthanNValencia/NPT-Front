@@ -190,15 +190,17 @@ function Website() {
             onClick={onReloadWebsite}
             label="Reload Website"
           ></NssButtonReload>
-          <NssButtonChevron
-            onClick={onShowProfile}
-            label="Show Profile"
-            selected={showProfile}
-          ></NssButtonChevron>
         </div>
         <div>
           <ReturnDisplayMessage />
         </div>
+      </div>
+      <div className="flex gap-2 pt-2">
+        <NssButtonChevron
+          onClick={onShowProfile}
+          label="Show Profile"
+          selected={showProfile}
+        ></NssButtonChevron>
       </div>
       <div>
         {showProfile ? (

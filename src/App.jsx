@@ -7,7 +7,6 @@ import AboutUs from "./routes/AboutUs";
 import Home from "./routes/Home";
 import ContactUs from "./routes/ContactUs";
 import FrequentlyAskedQuestions from "./routes/FrequentlyAskedQuestions";
-import Reviews from "./routes/Reviews";
 import Header from "./components/Header";
 import { UserProvider, AuthProvider } from "./contexts/context";
 import RequestName from "./routes/appointment-process/1_RequestName";
@@ -21,6 +20,7 @@ import Login from "./routes/Login";
 import Options from "./routes/Options";
 import { AuthContext } from "./contexts/context";
 import Services from "./routes/Services";
+import Resources from "./routes/Resources";
 
 const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
@@ -95,11 +95,11 @@ function App() {
                 }
               />
               <Route
-                path="reviews"
+                path="resources"
                 element={
                   <PrivateRoute>
                     <WSW>
-                      <Reviews />
+                      <Resources />
                     </WSW>
                   </PrivateRoute>
                 }
