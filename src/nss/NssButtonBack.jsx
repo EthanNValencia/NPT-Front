@@ -1,15 +1,15 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faMinus } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import { faBackward } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function NssButton(props) {
-  const { onClick, label, disabled, selected } = props;
+function NssButtonBack(props) {
+  const { onClick, label, disabled, selected, animateBounce } = props;
 
   const pickDivColor = () => {
     if (disabled) {
       return "bg-nss-10 text-nss-20";
     }
-    if (!selected && selected != undefined) {
+    if (selected && selected != undefined) {
       return "text-nss-10 bg-nss-305 hover:bg-nss-300 hover:text-white";
     }
     if (!disabled) {
@@ -25,23 +25,13 @@ function NssButton(props) {
         onClick={onClick}
         disabled={disabled}
       >
-        {label}
-        {selected != undefined ? (
-          selected ? (
-            <div>
-              <FontAwesomeIcon icon={faCheck} />
-            </div>
-          ) : (
-            <div>
-              <FontAwesomeIcon icon={faMinus} />
-            </div>
-          )
-        ) : (
-          <></>
-        )}
+        <div className="inline-flex items-center gap-2">
+          <FontAwesomeIcon icon={faBackward} />
+          {label}
+        </div>
       </button>
     </div>
   );
 }
 
-export default NssButton;
+export default NssButtonBack;

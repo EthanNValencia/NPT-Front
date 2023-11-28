@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import NssButton from "../nss/NssButton";
 import { adminGetEmployees, adminGetUnansweredQuestions } from "../axios/api";
 import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
@@ -12,6 +11,7 @@ import NssButtonChevron from "../nss/NssButtonChevron";
 import NssButtonAdd from "../nss/NssButtonAdd";
 import NssButtonReload from "../nss/NssButtonReload";
 import Offices from "../admin/Offices";
+import NssButtonBack from "../nss/NssButtonBack";
 
 // eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlam5lcGhld0B5YWhvby5jb20iLCJpYXQiOjE2OTg3NjQ3MDUsImV4cCI6MTY5ODc2NTQyNX0.-QKYmy_q2c31JQDve49YVD6dg3qbd3S4HXOyUBCTE-wIzkL7P4ZJOppAgYL7shcQpsJjmeX_04c9xMMuJoxLPA
 
@@ -186,8 +186,6 @@ function Admin() {
     setEmployeeObjects(newEmployeeList);
   };
 
-  const createOffice = () => {};
-
   const EmployeesAsDiv = () => {
     return employeeObjects.map((employee, index) => (
       <div key={index}>
@@ -229,14 +227,7 @@ function Admin() {
       );
     }
     if (showOffices) {
-      return (
-        <div className="flex gap-2 py-2">
-          <NssButtonAdd
-            onClick={createOffice}
-            label="Create Office"
-          ></NssButtonAdd>
-        </div>
-      );
+      return <></>;
     }
   };
 
@@ -298,7 +289,7 @@ function Admin() {
             ></NssButtonChevron>
           </div>
           <div>
-            <NssButton onClick={onGoBack} label="Back" />
+            <NssButtonBack onClick={onGoBack} label="Back" />
           </div>
         </div>
         <div className="flex gap-2">

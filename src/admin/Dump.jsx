@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import NssButton from "../nss/NssButton";
 
-function EmployeeDump(props) {
-  const { employee } = props;
+function Dump(props) {
+  const { data } = props;
   const [searchString, setSearchString] = useState("");
-  const [string, setString] = useState(JSON.stringify(employee));
+  const [string, setString] = useState(JSON.stringify(data));
   const [highLightedText, setHightLightedText] = useState("");
 
   useEffect(() => {
@@ -55,4 +54,4 @@ function EmployeeDump(props) {
   );
 }
 
-export default EmployeeDump;
+export default Dump;

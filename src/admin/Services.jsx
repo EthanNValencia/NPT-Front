@@ -22,6 +22,8 @@ function Services() {
   const [editMode, setEditMode] = useState(false);
   const authContext = useContext(AuthContext);
 
+  console.log(JSON.stringify(services));
+
   const newService = () => {
     const newService = {
       name: "",
@@ -60,6 +62,7 @@ function Services() {
   };
 
   async function deleteService(service) {
+    console.log(JSON.stringify(service));
     try {
       setLoading(true);
       const data = await adminDeleteService(service.id, authContext.token);
@@ -168,7 +171,7 @@ function Services() {
         <div className="grid 2xl:grid-cols-6 xl:grid-cols-4 md:grid-cols-2 gap-2">
           {services.map((service, index) => (
             <Service
-              key={index}
+              key={service.id}
               service={service}
               index={index}
               setChangeDetected={setChangeDetected}
@@ -223,6 +226,7 @@ function Service(props) {
   };
 
   const deleteThisService = () => {
+    console.log(newService);
     deleteService(newService);
   };
 

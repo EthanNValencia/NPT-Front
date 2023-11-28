@@ -12,12 +12,12 @@ import {
 } from "../axios/api";
 import EmployeeServices from "./EmployeeServices";
 import NssButtonChevron from "../nss/NssButtonChevron";
-import EmployeeDump from "./EmployeeDump";
 import NssButtonSave from "../nss/NssButtonSave";
 import NssButtonEdit from "../nss/NssButtonEdit";
 import NssButtonSubtract from "../nss/NssButtonSubtract";
 import Texts from "./Texts";
 import Schedule from "./Schedule";
+import Dump from "./Dump";
 
 function Employee(props) {
   const { employee, removeEmployee, index, updateEmployees, createEmployee } =
@@ -718,7 +718,7 @@ function Employee(props) {
         </div>
       </div>
       <div>
-        {showDump ? <EmployeeDump employee={localEmployee} /> : <></>}
+        {showDump ? <Dump data={localEmployee} /> : <></>}
         {showProfile ? (
           <SocialMediaProfile
             socialMediaProfile={localEmployee.profile}

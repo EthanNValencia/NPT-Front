@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/context";
 import NssButton from "../nss/NssButton";
 import ApiError from "../components/ApiError";
+import NssButtonExit from "../nss/NssButtonExit";
 
 function Options() {
   const authContext = useContext(AuthContext);
@@ -51,7 +52,7 @@ function Options() {
           onClick={onClickNpt}
           label="Office-Employee-Service-Appointment Website"
         />
-        <NssButton onClick={onLogout} label="Logout" />
+        <NssButtonExit onClick={onLogout} label="Logout" />
       </div>
       {hasApiError ? <ApiError /> : <></>}
     </div>

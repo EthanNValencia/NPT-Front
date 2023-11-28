@@ -4,15 +4,11 @@ import NssInputText from "../nss/NssInputText";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
-
-const Checkbox = ({ label, value, onChange }) => {
-  return (
-    <label>
-      <input type="checkbox" checked={value} onChange={onChange} />
-      {label}
-    </label>
-  );
-};
+import NssButtonSave from "../nss/NssButtonSave";
+import NssButtonEnter from "../nss/NssButtonEnter";
+import NssButtonSignUp from "../nss/NssButtonSignUp";
+import NssButtonBack from "../nss/NssButtonBack";
+import NssCheckbox from "../nss/NssCheckBox";
 
 function Login() {
   const [password, setPassword] = useState("password");
@@ -97,7 +93,7 @@ function Login() {
           <div className="flex justify-center">Login</div>
           <div>
             <div className="px-4 py-1">
-              <div className="text-xs font-extrabold">Username</div>
+              <div className="text-xs font-extrabold">Username/Email</div>
               <NssInputText
                 value={username}
                 onChange={onChangeUsername}
@@ -118,13 +114,13 @@ function Login() {
             </div>
           </div>
           <div className="flex justify-center gap-4 pt-2">
-            <NssButton onClick={onLogin} label="Login" />
+            <NssButtonEnter onClick={onLogin} label="Login" />
           </div>
           <div className="flex py-2 justify-center">
             <div className="flex justify-center gap-4 pt-2 pr-2">
               No account? Sign up here:
             </div>
-            <NssButton onClick={onSignUp} label="Sign Up" />
+            <NssButtonSignUp onClick={onSignUp} label="Sign Up" />
           </div>
           {auth ? <div>Authenticated!</div> : <></>}
         </div>
@@ -133,7 +129,7 @@ function Login() {
           <div className="flex justify-center">Create Account</div>
           <div>
             <div className="px-4 py-1">
-              <div className="text-xs font-extrabold">User name</div>
+              <div className="text-xs font-extrabold">Username/Email</div>
               <NssInputText
                 value={username}
                 onChange={onChangeUsername}
@@ -173,18 +169,22 @@ function Login() {
               />
             </div>
             <div className="px-4 py-1">
-              <div className="text-xs font-extrabold">Service name</div>
+              <div className="text-xs font-extrabold">Company name</div>
               <NssInputText
                 value={serviceName}
                 onChange={onChangeServiceName}
                 id="service"
-                placeholder="Enter service name"
+                placeholder="Enter company name"
                 type="text"
               />
             </div>
-            <div className="flex justify-center py-2 gap-2">
-              <Checkbox label="User" value={user} onChange={handleUserChange} />
-              <Checkbox
+            <div className="flex justify-center py-2 gap-2 accent-nss-300">
+              <NssCheckbox
+                label="User"
+                value={user}
+                onChange={handleUserChange}
+              />
+              <NssCheckbox
                 label="Admin"
                 value={admin}
                 onChange={handleAdminChange}
@@ -192,8 +192,8 @@ function Login() {
             </div>
           </div>
           <div className="flex justify-center gap-2">
-            <NssButton onClick={handleRegistration} label="Submit" />
-            <NssButton onClick={onSignUp} label="Login Page" />
+            <NssButtonSave onClick={handleRegistration} label="Submit" />
+            <NssButtonBack onClick={onSignUp} label="Login Page" />
           </div>
         </div>
       )}

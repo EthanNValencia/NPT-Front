@@ -20,7 +20,7 @@ const Schedule = (props) => {
   return (
     <div>
       <div className=" shadow-xl min-w-0 border-2 rounded-md mt-2">
-        <div className="overflow-x-auto flex p-4 gap-2">
+        <div className="overflow-x-auto flex p-1 gap-2">
           {sortedSchedule.map((dailySchedule, index) => (
             <ScheduleCard
               dailySchedule={dailySchedule}

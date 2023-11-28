@@ -445,3 +445,23 @@ export async function adminGetOffices(token) {
     throw error;
   }
 }
+
+export async function adminPostOffice(office, token) {
+  const servicesUrl = privateUrl + "/offices/";
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+
+  try {
+    console.log("Token: " + token);
+    const response = await axios.post(servicesUrl, office, { headers });
+    console.log(JSON.stringify(response.data));
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    // console.error("Error fetching data:", error);
+    throw error;
+  }
+}
