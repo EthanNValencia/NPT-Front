@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/context";
 import ApiError from "../components/ApiError";
 import SocialMediaProfile from "./SocialMediaProfile";
@@ -8,7 +8,7 @@ import ToolTip from "./ToolTip";
 import {
   deleteEmployeeApi,
   updateEmployeeApi,
-  adminGetServices,
+  adminGetEmployees,
 } from "../axios/api";
 import EmployeeServices from "./EmployeeServices";
 import NssButtonChevron from "../nss/NssButtonChevron";
@@ -18,10 +18,94 @@ import NssButtonSubtract from "../nss/NssButtonSubtract";
 import Texts from "./Texts";
 import Schedule from "./Schedule";
 import Dump from "./Dump";
+import NssButtonReload from "../nss/NssButtonReload";
+import NssButtonAdd from "../nss/NssButtonAdd";
+import { NewEmployee } from "./Objects";
+import EmployeeOffice from "./EmployeeOffice";
+
+function Employees() {
+  const [employees, setEmployees] = useState([]);
+  const authContext = useContext(AuthContext);
+  const [hasApiError, setHasApiError] = useState(false);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  async function fetchEmployees() {
+    try {
+      const data = await adminGetEmployees(authContext.token);
+      setEmployees(data);
+      // console.log(JSON.stringify(data[0]));
+      setHasApiError(false);
+    } catch (error) {
+      setHasApiError(true);
+    }
+  }
+
+  const loadEmployees = () => {
+    fetchEmployees();
+  };
+
+  const updateEmployees = (employee, index) => {
+    const updatedEmployeeObjects = [...employees];
+    if (index >= 0 && index < updatedEmployeeObjects.length) {
+      updatedEmployeeObjects[index] = employee;
+      setEmployees(updatedEmployeeObjects);
+    }
+  };
+
+  const createEmployee = () => {
+    const newEmployee = { ...NewEmployee };
+    setEmployees([newEmployee, ...employees]);
+  };
+
+  const removeEmployee = (employeeToRemove) => {
+    const newEmployeeList = employees.filter(
+      (employee) => employee.id !== employeeToRemove.id
+    );
+    setEmployees(newEmployeeList);
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between">
+        <div className="flex gap-2 py-2">
+          <NssButtonAdd
+            onClick={createEmployee}
+            label="Create Employee"
+          ></NssButtonAdd>
+          <NssButtonReload
+            onClick={loadEmployees}
+            label="Reload Employees"
+          ></NssButtonReload>
+        </div>
+
+        <div>
+          <div className="text-xs font-bold pt-2">
+            Number of Employees: {employees.length}
+          </div>
+        </div>
+      </div>
+      <div>
+        {employees.map((employee, index) => (
+          <div key={employee.id}>
+            <Employee
+              employee={employee}
+              index={index}
+              removeEmployee={removeEmployee}
+              updateEmployees={updateEmployees}
+            />
+          </div>
+        ))}
+      </div>
+      <div>{hasApiError ? <ApiError /> : <></>}</div>
+    </div>
+  );
+}
 
 function Employee(props) {
-  const { employee, removeEmployee, index, updateEmployees, createEmployee } =
-    props;
+  const { employee, removeEmployee, index, updateEmployees } = props;
   const [localEmployee, setLocalEmployee] = useState({ ...employee });
   const [loading, setLoading] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
@@ -206,64 +290,10 @@ function Employee(props) {
     setLocalEmployee(updatedEmployee);
   };
 
-  const Office = (props) => {
-    const { office, employeeId } = props;
-
-    return (
-      <div className="shadow-xl min-w-0 border-2 rounded-md p-2 mt-2">
-        <div>Office</div>
-        <div className="flex flex-row gap-2">
-          <div>
-            <div className="text-xs font-bold">Street:</div>
-            <div className="text-sm">
-              <DataField value={office.street} />
-            </div>
-          </div>
-          <div>
-            <div className="text-xs font-bold">Unit:</div>
-            <div className="text-sm">
-              <DataField value={office.unit} />
-            </div>
-          </div>
-          <div>
-            <div className="text-xs font-bold">City:</div>
-            <div className="text-sm">
-              <DataField value={office.city} />
-            </div>
-          </div>
-          <div>
-            <div className="text-xs font-bold">State:</div>
-            <div className="text-sm">
-              <DataField value={office.state} />
-            </div>
-          </div>
-          <div>
-            <div className="text-xs font-bold">Zip:</div>
-            <div className="text-sm">
-              <DataField value={office.zip} />
-            </div>
-          </div>
-          <div>
-            <div className="text-xs font-bold">Phone:</div>
-            <div className="text-sm">
-              <DataField value={office.phone} />
-            </div>
-          </div>
-          <div>
-            <div className="text-xs font-bold">Fax:</div>
-            <div className="text-sm">
-              <DataField value={office.fax} />
-            </div>
-          </div>
-          <div>
-            <div className="text-xs font-bold">Email:</div>
-            <div className="text-sm">
-              <DataField value={office.email} />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  const updateEmployeeOffice = (office) => {
+    const updatedEmployee = { ...localEmployee };
+    updatedEmployee.office = office;
+    setLocalEmployee(updatedEmployee);
   };
 
   const ReturnDisplayMessage = () => {
@@ -741,7 +771,12 @@ function Employee(props) {
         <></>
       )}
       {showOffice ? (
-        <Office office={localEmployee.office} employeeId={localEmployee.id} />
+        <EmployeeOffice
+          office={localEmployee.office}
+          employeeId={localEmployee.id}
+          updateEmployeeOffice={updateEmployeeOffice}
+          setChangeDetected={setChangeDetected}
+        />
       ) : (
         <></>
       )}
@@ -790,4 +825,4 @@ function Employee(props) {
   );
 }
 
-export default Employee;
+export default Employees;

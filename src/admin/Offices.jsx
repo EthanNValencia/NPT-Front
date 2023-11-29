@@ -13,6 +13,7 @@ import NssButtonSubtract from "../nss/NssButtonSubtract";
 import NssCheckbox from "../nss/NssCheckBox";
 import NssButtonAdd from "../nss/NssButtonAdd";
 import { NewOffice } from "./Objects";
+import NssButtonReload from "../nss/NssButtonReload";
 
 function Offices() {
   const [changeDetected, setChangeDetected] = useState(false);
@@ -42,6 +43,10 @@ function Offices() {
       console.error("Error loading offices:", error);
     }
   }
+
+  const reloadOffices = () => {
+    fetchOffices();
+  };
 
   const updateOffice = (office, index) => {
     const updatedOffices = [...offices];
@@ -76,11 +81,15 @@ function Offices() {
 
   return (
     <div>
-      <div className="flex gap-2 py-2">
+      <div className="flex gap-2 pt-2">
         <NssButtonAdd
           onClick={createOffice}
           label="Create Office"
         ></NssButtonAdd>
+        <NssButtonReload
+          onClick={reloadOffices}
+          label="Reload Offices"
+        ></NssButtonReload>
       </div>
       {offices.map((office, index) => (
         <Office
@@ -173,9 +182,14 @@ function Office(props) {
 
   return (
     <div className="pt-2">
-      <div className="shadow-xl min-w-0 border-2 rounded-md p-2">
-        <div className="grid 2xl:grid-cols-4 xl:grid-cols-2 md:grid-cols-1 gap-2 break-words">
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+      <div className="shadow-xl min-w-0 border-2 rounded-md px-2 pb-2">
+        <div className="p-2">
+          <div className="text-xs font-bold">
+            Number of Employees at this Office: {localOffice.employees.length}
+          </div>
+        </div>
+        <div className="grid 2xl:grid-cols-4 xl:grid-cols-2 md:grid-cols-1 gap-1 break-words">
+          <div className="bg-nss-20 border p-2 rounded-md">
             <div className="text-xs font-bold">Street:</div>
             <div className="text-sm">
               {editMode ? (
@@ -197,7 +211,7 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+          <div className="bg-nss-20 border p-2 rounded-md">
             <div className="text-xs font-bold">Unit:</div>
             <div className="text-sm">
               {editMode ? (
@@ -219,7 +233,7 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+          <div className="bg-nss-20 border p-2  rounded-md">
             <div className="text-xs font-bold">City:</div>
             <div className="text-sm">
               {editMode ? (
@@ -241,7 +255,7 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+          <div className="bg-nss-20 border p-2  rounded-md">
             <div className="text-xs font-bold">State:</div>
             <div className="text-sm">
               {editMode ? (
@@ -263,7 +277,7 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+          <div className="bg-nss-20 border p-2  rounded-md">
             <div className="text-xs font-bold">Zip:</div>
             <div className="text-sm">
               {editMode ? (
@@ -285,7 +299,7 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+          <div className="bg-nss-20 border p-2  rounded-md">
             <div className="text-xs font-bold">Phone:</div>
             <div className="text-sm">
               {editMode ? (
@@ -307,7 +321,7 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+          <div className="bg-nss-20 border p-2  rounded-md">
             <div className="text-xs font-bold">Fax:</div>
             <div className="text-sm">
               {editMode ? (
@@ -329,7 +343,7 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+          <div className="bg-nss-20 border p-2  rounded-md">
             <div className="text-xs font-bold">Email:</div>
             <div className="text-sm">
               {editMode ? (
@@ -351,7 +365,7 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+          <div className="bg-nss-20 border p-2  rounded-md">
             <div className="text-xs font-bold">Accepting Walk-Ins:</div>
             <div className="text-sm">
               {editMode ? (
@@ -367,7 +381,7 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
+          <div className="bg-nss-20 border p-2  rounded-md">
             <div className="text-xs font-bold">Map URL:</div>
             <div className="text-sm">
               {editMode ? (
@@ -389,10 +403,26 @@ function Office(props) {
               )}
             </div>
           </div>
-          <div className="bg-nss-20 border p-2 mr-2 rounded-md">
-            <div className="text-xs font-bold">Number of Employees:</div>
+          <div className="bg-nss-20 border p-2  rounded-md">
+            <div className="text-xs font-bold">Introduction:</div>
             <div className="text-sm">
-              <DataField value={localOffice.employees.length} />
+              {editMode ? (
+                <input
+                  className="bg-nss-21 text-xs placeholder-red-600 shadow appearance-none border rounded w-full py-1 px-3 text-green-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="introduction"
+                  type="text"
+                  placeholder="Enter office introduction..."
+                  value={localOffice.introduction}
+                  onChange={(e) => {
+                    const updatedOffice = { ...localOffice };
+                    updatedOffice.introduction = e.target.value;
+                    setLocalOffice(updatedOffice);
+                    setChangeDetected(true);
+                  }}
+                />
+              ) : (
+                <DataField value={localOffice.introduction} />
+              )}
             </div>
           </div>
         </div>

@@ -8,6 +8,52 @@ export const WeekDays = {
   Sun: "Sun",
 };
 
+export const ParagraphType = {
+  PARAGRAPH: "PARAGRAPH",
+  QUOTE: "QUOTE",
+};
+
+export const Profile = {
+  linkedin: "",
+  youtube: "",
+  facebook: "",
+  myspace: "",
+  instagram: "",
+  yelp: "",
+  tiktok: "",
+  x: "",
+  pinterest: "",
+  snapchat: "",
+  whatsapp: "",
+  tumblr: "",
+  google: "",
+  id: 1,
+};
+
+export const BiographicalText = {
+  id: null,
+  type: ParagraphType.PARAGRAPH,
+  position: null,
+  text: "",
+};
+
+export const InformationalText = {
+  id: null,
+  type: ParagraphType.PARAGRAPH,
+  position: null,
+  text: "",
+};
+
+export const NewSchedule = [
+  { id: null, day: WeekDays.Sat, beginTime: "00:00:00", endTime: "00:00:00" },
+  { id: null, day: WeekDays.Mon, beginTime: "07:00:00", endTime: "18:30:00" },
+  { id: null, day: WeekDays.Wed, beginTime: "07:00:00", endTime: "18:30:00" },
+  { id: null, day: WeekDays.Thu, beginTime: "07:00:00", endTime: "18:30:00" },
+  { id: null, day: WeekDays.Fri, beginTime: "13:00:00", endTime: "15:00:00" },
+  { id: null, day: WeekDays.Tue, beginTime: "07:00:00", endTime: "18:30:00" },
+  { id: null, day: WeekDays.Sun, beginTime: "00:00:00", endTime: "00:00:00" },
+];
+
 export const NewOffice = {
   officeId: null,
   street: "",
@@ -21,28 +67,31 @@ export const NewOffice = {
   acceptingWalkIns: false,
   mapUrl: "",
   introduction: "",
-  officeSocialMedialProfile: {
-    linkedin: "",
-    youtube: "",
-    facebook: "",
-    myspace: "",
-    instagram: "",
-    yelp: "",
-    tiktok: "",
-    x: "",
-    pinterest: "",
-    snapchat: "",
-    whatsapp: "",
-    tumblr: "",
-    google: "",
-    id: null,
-  },
-  schedule: [
-    { id: null, day: WeekDays.Mon, beginTime: "07:00:00", endTime: "18:30:00" },
-    { id: null, day: WeekDays.Wed, beginTime: "07:00:00", endTime: "18:30:00" },
-    { id: null, day: WeekDays.Thu, beginTime: "07:00:00", endTime: "18:30:00" },
-    { id: null, day: WeekDays.Fri, beginTime: "13:00:00", endTime: "15:00:00" },
-    { id: null, day: WeekDays.Tue, beginTime: "07:00:00", endTime: "18:30:00" },
-  ],
+  officeSocialMedialProfile: Profile,
+  schedule: NewSchedule,
   employees: [],
+};
+
+export const NewEmployee = {
+  id: null,
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  img: "",
+  role_id: "",
+  role: "",
+  meta: "",
+  email: "",
+  workPhone: "",
+  personalPhone: "",
+  subject: "",
+  possessive: "",
+  services: [],
+  appointments: [],
+  schedule: NewSchedule,
+  office: NewOffice,
+  employeeContent: null,
+  profile: Profile,
+  biographicalTexts: [],
+  informationalTexts: [],
 };

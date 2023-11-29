@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import NssButton from "../nss/NssButton";
 import { updateFaqApi, deleteFaqApi } from "../axios/api";
 import { AuthContext } from "../contexts/context";
@@ -7,8 +7,86 @@ import TextArea from "./TextArea";
 import NssButtonSubtract from "../nss/NssButtonSubtract";
 import NssButtonSave from "../nss/NssButtonSave";
 import NssButtonEdit from "../nss/NssButtonEdit";
+import NssButtonAdd from "../nss/NssButtonAdd";
+import NssButtonReload from "../nss/NssButtonReload";
+import { adminGetUnansweredQuestions } from "../axios/api";
+import DataField from "./DataField";
 
-function FaqAdmin(props) {
+function FAQs() {
+  const [faqs, setFaqs] = useState([]);
+  const authContext = useContext(AuthContext);
+  const [hasApiError, setHasApiError] = useState(false);
+
+  useEffect(() => {
+    fetchFaqs();
+  }, []);
+
+  async function fetchFaqs() {
+    try {
+      const data = await adminGetUnansweredQuestions(authContext.token);
+      setFaqs(data);
+      setHasApiError(false);
+    } catch (error) {
+      setHasApiError(true);
+    }
+  }
+
+  const updateFaqObjects = (faq, index) => {
+    const updatedFaqObjects = [...faqs];
+    if (index >= 0 && index < updatedFaqObjects.length) {
+      updatedFaqObjects[index] = faq;
+      setFaqs(updatedFaqObjects);
+    }
+  };
+
+  const createFaq = () => {
+    const newFaq = {
+      id: null,
+      questionIsAnswered: false,
+      question: null,
+      answer: null,
+    };
+    setFaqs([...faqs, newFaq]);
+  };
+
+  const loadFaqs = () => {
+    fetchFaqs();
+  };
+
+  const removeFaq = (faqToRemove) => {
+    const newFaqList = faqs.filter((faq) => faq.id !== faqToRemove.id);
+    setFaqs(newFaqList);
+  };
+
+  return (
+    <div>
+      <div className="flex gap-2 py-2">
+        <NssButtonAdd onClick={createFaq} label="Create FAQ"></NssButtonAdd>
+        <NssButtonReload
+          onClick={loadFaqs}
+          label="Reload FAQs"
+        ></NssButtonReload>
+      </div>
+      <div className="">
+        <div className="grid xl:grid-cols-2 gap-2 lg:grid-cols-1">
+          {faqs.map((faq, index) => (
+            <div key={faq.id} className="">
+              <FAQ
+                faq={faq}
+                removeFaq={removeFaq}
+                updateFaqObjects={updateFaqObjects}
+                index={index}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>{hasApiError ? <ApiError /> : <></>}</div>
+    </div>
+  );
+}
+
+function FAQ(props) {
   const { faq, removeFaq, index, updateFaqObjects } = props;
   const [id, setId] = useState(faq.id);
   const [question, setQuestion] = useState(faq.question);
@@ -92,10 +170,6 @@ function FaqAdmin(props) {
     }
   };
 
-  const testLoading = () => {
-    setLoading(!loading);
-  };
-
   const textFieldChangeDetected = (value) => {
     if (value == null || value == "") {
       setChangeDetected(false);
@@ -177,12 +251,12 @@ function FaqAdmin(props) {
   return (
     <div className="h-full">
       <div
-        className={`h-full bg-nss-21 border rounded-lg shadow-xl py-2 px-2 my-2 ${pickDivColor()}`}
+        className={`h-full bg-nss-21 border rounded-lg shadow-xl p-1 ${pickDivColor()}`}
       >
         <div className="h-full flex flex-col justify-between">
           <div>
-            <div key={id} className="grid grid-flow-col grid-cols-2 gap-x-2">
-              <div>
+            <div key={id} className="grid grid-flow-col grid-cols-2 gap-x-1">
+              <div className="bg-nss-20 border p-2  rounded-md">
                 <div className="text-xs font-bold">Question:</div>
                 {editMode ? (
                   <TextArea
@@ -191,10 +265,10 @@ function FaqAdmin(props) {
                     changeDetected={textFieldChangeDetected}
                   />
                 ) : (
-                  <div>{question}</div>
+                  <DataField value={question} />
                 )}
               </div>
-              <div>
+              <div className="bg-nss-20 border p-2  rounded-md">
                 <div className="text-xs font-bold">Answer:</div>
                 {!questionAnswered || editMode ? (
                   <TextArea
@@ -203,7 +277,7 @@ function FaqAdmin(props) {
                     changeDetected={textFieldChangeDetected}
                   />
                 ) : (
-                  <div>{answer}</div>
+                  <DataField value={answer} />
                 )}
               </div>
             </div>
@@ -246,4 +320,4 @@ function FaqAdmin(props) {
   );
 }
 
-export default FaqAdmin;
+export default FAQs;

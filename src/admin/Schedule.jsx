@@ -61,24 +61,26 @@ const ScheduleCard = (props) => {
   };
 
   return (
-    <div key={index} className="w-44 border rounded-lg">
-      <div className="text-center">{dailySchedule.day}</div>
-      <div className="grid grid-cols-2 gap-2">
-        <div className="text-center">
-          <div className="text-xs font-bold">Begin Time:</div>
-          <div className="text-sm">{dailySchedule.beginTime}</div>
-        </div>
+    <div>
+      <div key={index} className="w-44 border rounded-lg bg-nss-20">
+        <div className="text-center">{schedule.day}</div>
+        <div className="grid grid-cols-2 gap-2">
+          <div className="text-center">
+            <div className="text-xs font-bold">Begin Time:</div>
+            <div className="text-sm">{schedule.beginTime}</div>
+          </div>
 
-        <div className="text-center">
-          <div className="text-xs font-bold">End Time:</div>
-          <div className="text-sm">{dailySchedule.endTime}</div>
-        </div>
-        <div className="p-2">
-          <NssButtonEdit
-            onClick={editShedule}
-            label="Edit"
-            selected={editMode}
-          />
+          <div className="text-center">
+            <div className="text-xs font-bold">End Time:</div>
+            <div className="text-sm">{schedule.endTime}</div>
+          </div>
+          <div className="p-2">
+            <NssButtonEdit
+              onClick={editShedule}
+              label="Edit"
+              selected={editMode}
+            />
+          </div>
         </div>
       </div>
     </div>

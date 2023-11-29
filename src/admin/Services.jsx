@@ -157,16 +157,25 @@ function Services() {
 
   return (
     <div
-      className={`${pickDivColor()} border rounded-lg shadow-xl py-2 px-2 my-2`}
+      className={`${pickDivColor()} border rounded-lg shadow-xl pb-2 px-2 my-2`}
     >
-      <div className="flex gap-2 py-2">
-        <NssButtonAdd onClick={newService} label="New Service"></NssButtonAdd>
-        <NssButtonReload
-          onClick={reloadServices}
-          label="Reload Services"
-        ></NssButtonReload>
+      <div className="flex justify-between">
+        <div className="flex gap-2 py-2">
+          <NssButtonAdd onClick={newService} label="New Service"></NssButtonAdd>
+          <NssButtonReload
+            onClick={reloadServices}
+            label="Reload Services"
+          ></NssButtonReload>
+          <NssButtonSave
+            animateBounce={changeDetected}
+            onClick={saveServices}
+            label="Save Services"
+          ></NssButtonSave>
+        </div>
+        <div>
+          <ReturnDisplayMessage />
+        </div>
       </div>
-      Services
       <div>
         <div className="grid 2xl:grid-cols-6 xl:grid-cols-4 md:grid-cols-2 gap-2">
           {services.map((service, index) => (
@@ -182,18 +191,6 @@ function Services() {
           ))}
         </div>
         <div>{hasApiError ? <ApiError /> : <></>}</div>
-        <div className="flex gap-2 pt-2 justify-between">
-          <div>
-            <NssButtonSave
-              animateBounce={changeDetected}
-              onClick={saveServices}
-              label="Save Services"
-            ></NssButtonSave>
-          </div>
-          <div>
-            <ReturnDisplayMessage />
-          </div>
-        </div>
       </div>
     </div>
   );

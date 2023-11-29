@@ -26,7 +26,7 @@ function EmployeeServices(props) {
       // console.log(JSON.stringify(data));
       setHasApiError(false);
       setLoading(false);
-      setChangeDetected(false);
+      // setChangeDetected(false);
     } catch (error) {
       setLoading(false);
       setHasApiError(true);

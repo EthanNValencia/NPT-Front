@@ -273,7 +273,7 @@ function ContactUs() {
   return (
     <div className="">
       {offices.map((office, index) => (
-        <div key={index} className="flex justify-around flex-row">
+        <div key={index} className="flex justify-around flex-row m-2">
           <div>
             <div className="bg-npt_colors-350 text-white rounded-t-xl px-2 pt-2 text-center break-words">
               {office.introduction}
