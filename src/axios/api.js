@@ -435,9 +435,9 @@ export async function adminGetOffices(token) {
   };
 
   try {
-    console.log("Token: " + token);
+    //console.log("Token: " + token);
     const response = await axios.get(servicesUrl, { headers });
-    console.log(JSON.stringify(response.data));
+    //console.log(JSON.stringify(response.data));
     return response.data;
   } catch (error) {
     handleErrorReporting(error);
@@ -455,9 +455,9 @@ export async function adminPostOffice(office, token) {
   };
 
   try {
-    console.log("Token: " + token);
+    //console.log("Token: " + token);
     const response = await axios.post(servicesUrl, office, { headers });
-    console.log(JSON.stringify(response.data));
+    //console.log(JSON.stringify(response.data));
     return response.data;
   } catch (error) {
     handleErrorReporting(error);

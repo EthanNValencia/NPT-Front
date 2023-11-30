@@ -13,6 +13,7 @@ import NssButtonSubtract from "../nss/NssButtonSubtract";
 import NssButtonEdit from "../nss/NssButtonEdit";
 import NssButtonReload from "../nss/NssButtonReload";
 import NssButtonSave from "../nss/NssButtonSave";
+import StatusMessage, { pickDivColor } from "./StatusMessage";
 
 function Services() {
   const [services, setServices] = useState([]);
@@ -22,7 +23,7 @@ function Services() {
   const [editMode, setEditMode] = useState(false);
   const authContext = useContext(AuthContext);
 
-  console.log(JSON.stringify(services));
+  // console.log(JSON.stringify(services));
 
   const newService = () => {
     const newService = {
@@ -51,7 +52,7 @@ function Services() {
       setLoading(false);
       setHasApiError(true);
       setChangeDetected(false);
-      console.log("There was an error fetching the website data.");
+      // console.log("There was an error fetching the website data.");
       // console.error("Error loading employees:", error);
     }
   }
@@ -62,7 +63,6 @@ function Services() {
   };
 
   async function deleteService(service) {
-    console.log(JSON.stringify(service));
     try {
       setLoading(true);
       const data = await adminDeleteService(service.id, authContext.token);
@@ -76,7 +76,7 @@ function Services() {
       setLoading(false);
       setHasApiError(true);
       setChangeDetected(false);
-      console.log("There was an error fetching the website data.");
+      // console.log("There was an error fetching the website data.");
       // console.error("Error loading employees:", error);
     }
   }
@@ -94,52 +94,10 @@ function Services() {
       setLoading(false);
       setHasApiError(true);
       setChangeDetected(false);
-      console.log("There was an error fetching the website data.");
+      // console.log("There was an error fetching the website data.");
       // console.error("Error loading employees:", error);
     }
   }
-
-  const ReturnDisplayMessage = () => {
-    if (loading) {
-      return <div>Your changes are being submitted...</div>;
-    }
-    if (editMode) {
-      return (
-        <div className="text-yellow-400 font-bold pt-2 animate-pulse">
-          Edit mode is on.
-        </div>
-      );
-    }
-    if (changeDetected) {
-      return (
-        <div className="text-yellow-400 font-bold pt-2">
-          A change was detected. Do not forget to save.
-        </div>
-      );
-    }
-    if (!changeDetected) {
-      return (
-        <div className="text-green-700 font-bold pt-2">
-          No changes detected.
-        </div>
-      );
-    }
-  };
-
-  const pickDivColor = () => {
-    if (loading) {
-      return "border-r-8 border-red-400 animate-pulse";
-    }
-    if (editMode) {
-      return "border-r-8 border-yellow-600";
-    }
-    if (changeDetected) {
-      return "border-r-8 border-yellow-600";
-    }
-    if (!changeDetected) {
-      return "border-r-8 border-green-600";
-    }
-  };
 
   const saveServices = () => {
     putServices();
@@ -157,7 +115,11 @@ function Services() {
 
   return (
     <div
-      className={`${pickDivColor()} border rounded-lg shadow-xl pb-2 px-2 my-2`}
+      className={`${pickDivColor(
+        loading,
+        editMode,
+        changeDetected
+      )} border rounded-lg shadow-xl pb-2 px-2 my-2`}
     >
       <div className="flex justify-between">
         <div className="flex gap-2 py-2">
@@ -173,7 +135,11 @@ function Services() {
           ></NssButtonSave>
         </div>
         <div>
-          <ReturnDisplayMessage />
+          <StatusMessage
+            loading={loading}
+            editMode={editMode}
+            changeDetected={changeDetected}
+          />
         </div>
       </div>
       <div>
@@ -216,14 +182,8 @@ function Service(props) {
     setEditMode(!editMode);
   };
 
-  const pickDivColor = () => {
-    if (editMode) {
-      return "border-r-2 border-yellow-600";
-    }
-  };
-
   const deleteThisService = () => {
-    console.log(newService);
+    // console.log(newService);
     deleteService(newService);
   };
 
@@ -241,7 +201,9 @@ function Service(props) {
     <div>
       <div
         key={index}
-        className={`${pickDivColor()} border rounded-lg shadow-xl py-2 px-2`}
+        className={`${pickDivColor(
+          editMode
+        )} border rounded-lg shadow-xl py-2 px-2`}
       >
         <div>
           <div className="flex justify-between">

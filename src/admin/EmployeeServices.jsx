@@ -99,7 +99,7 @@ function Service(props) {
   };
 
   return (
-    <div key={index}>
+    <div key={service.id}>
       <NssButton
         onClick={onClickButton}
         label={service.name}

@@ -22,6 +22,7 @@ import NssButtonReload from "../nss/NssButtonReload";
 import NssButtonAdd from "../nss/NssButtonAdd";
 import { NewEmployee } from "./Objects";
 import EmployeeOffice from "./EmployeeOffice";
+import StatusMessage, { pickDivColor } from "./StatusMessage";
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
@@ -296,51 +297,13 @@ function Employee(props) {
     setLocalEmployee(updatedEmployee);
   };
 
-  const ReturnDisplayMessage = () => {
-    if (loading) {
-      return <div>Your changes are being submitted...</div>;
-    }
-    if (editMode) {
-      return (
-        <div className="text-yellow-400 font-bold pt-2 animate-pulse">
-          Edit mode is on.
-        </div>
-      );
-    }
-    if (changeDetected) {
-      return (
-        <div className="text-yellow-400 font-bold pt-2">
-          A change was detected. Do not forget to save.
-        </div>
-      );
-    }
-    if (!changeDetected) {
-      return (
-        <div className="text-green-700 font-bold pt-2">
-          No changes detected.
-        </div>
-      );
-    }
-  };
-
-  const pickDivColor = () => {
-    if (loading) {
-      return "border-r-8 border-red-400 animate-pulse";
-    }
-    if (editMode) {
-      return "border-r-8 border-yellow-600";
-    }
-    if (changeDetected) {
-      return "border-r-8 border-yellow-600";
-    }
-    if (!changeDetected) {
-      return "border-r-8 border-green-600";
-    }
-  };
-
   return (
     <div
-      className={`${pickDivColor()} border rounded-lg shadow-xl pt-2 pb-2 pl-2 my-2`}
+      className={`${pickDivColor(
+        loading,
+        editMode,
+        changeDetected
+      )} border rounded-lg shadow-xl pt-2 pb-2 pl-2 my-2`}
     >
       <div className="grid grid-cols-3">
         <div
@@ -744,7 +707,11 @@ function Employee(props) {
           </div>
         </div>
         <div className="pr-2">
-          <ReturnDisplayMessage />
+          <StatusMessage
+            loading={loading}
+            editMode={editMode}
+            changeDetected={changeDetected}
+          />
         </div>
       </div>
       <div>

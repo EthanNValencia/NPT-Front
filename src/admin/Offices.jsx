@@ -14,6 +14,7 @@ import NssCheckbox from "../nss/NssCheckBox";
 import NssButtonAdd from "../nss/NssButtonAdd";
 import { NewOffice } from "./Objects";
 import NssButtonReload from "../nss/NssButtonReload";
+import StatusMessage, { pickDivColor } from "./StatusMessage";
 
 function Offices() {
   const [changeDetected, setChangeDetected] = useState(false);
@@ -94,7 +95,7 @@ function Offices() {
       {offices.map((office, index) => (
         <Office
           office={office}
-          key={office.id}
+          key={office.officeId}
           index={index}
           setChangeDetected={setChangeDetected}
           changeDetected={changeDetected}
@@ -182,7 +183,13 @@ function Office(props) {
 
   return (
     <div className="pt-2">
-      <div className="shadow-xl min-w-0 border-2 rounded-md px-2 pb-2">
+      <div
+        className={`${pickDivColor(
+          loading,
+          editMode,
+          changeDetected
+        )} shadow-xl min-w-0 border-2 rounded-md px-2 pb-2`}
+      >
         <div className="p-2">
           <div className="text-xs font-bold">
             Number of Employees at this Office: {localOffice.employees.length}
@@ -426,7 +433,8 @@ function Office(props) {
             </div>
           </div>
         </div>
-        <div className="flex gap-2 pt-2">
+
+        <div className="flex gap-2 pt-2 ">
           <NssButtonSubtract
             onClick={onDeleteOffice}
             disabled={false}
@@ -443,22 +451,32 @@ function Office(props) {
             label="Save Office"
           ></NssButtonSave>
         </div>
-        <div className="flex gap-2 pt-2">
-          <NssButtonChevron
-            onClick={openProfile}
-            label="Profile"
-            selected={showProfile}
-          ></NssButtonChevron>
-          <NssButtonChevron
-            onClick={openSchedule}
-            label="Schedule"
-            selected={showSchedule}
-          ></NssButtonChevron>
-          <NssButtonChevron
-            onClick={openDump}
-            label="Dump"
-            selected={showDump}
-          ></NssButtonChevron>
+
+        <div className="flex justify-between">
+          <div className="flex gap-2 pt-2">
+            <NssButtonChevron
+              onClick={openProfile}
+              label="Profile"
+              selected={showProfile}
+            ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={openSchedule}
+              label="Schedule"
+              selected={showSchedule}
+            ></NssButtonChevron>
+            <NssButtonChevron
+              onClick={openDump}
+              label="Dump"
+              selected={showDump}
+            ></NssButtonChevron>
+          </div>
+          <div>
+            <StatusMessage
+              loading={loading}
+              editMode={editMode}
+              changeDetected={changeDetected}
+            />
+          </div>
         </div>
         {showProfile ? (
           <SocialMediaProfile
