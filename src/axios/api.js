@@ -284,6 +284,22 @@ export async function adminUpdateWebsite(website, token) {
   }
 }
 
+export async function adminCreatePage(website, token) {
+  const adminWebsiteUrl = privateUrl + "/website/pages";
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    const response = await axios.post(adminWebsiteUrl, website, { headers });
+    return response.data;
+  } catch (error) {
+    handleErrorReporting(error);
+    // console.error("Error fetching data:", error);
+    throw error;
+  }
+}
+
 export async function adminNotifyAppointment(appointment, token) {
   const adminNotifyUrl = privateUrl + "/notify/";
   const headers = {

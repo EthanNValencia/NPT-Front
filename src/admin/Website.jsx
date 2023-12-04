@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { adminGetWebsite, adminUpdateWebsite } from "../axios/api";
+import {
+  adminGetWebsite,
+  adminUpdateWebsite,
+  adminCreatePage,
+} from "../axios/api";
 import DataField from "./DataField";
 import SocialMediaProfile from "./SocialMediaProfile";
 import ApiError from "../components/ApiError";
@@ -8,14 +12,18 @@ import NssButtonChevron from "../nss/NssButtonChevron";
 import NssButtonSave from "../nss/NssButtonSave";
 import NssButtonEdit from "../nss/NssButtonEdit";
 import NssButtonReload from "../nss/NssButtonReload";
+import Dump from "./Dump";
+import NssButtonAdd from "../nss/NssButtonAdd";
 
 function Website() {
   const [editMode, setShowEditMode] = useState(false);
-  const [websiteObject, setWebsiteObject] = useState({});
+  const [website, setWebsite] = useState({});
   const [hasApiError, setHasApiError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [changeDetected, setChangeDetected] = useState(false);
+  const [showDump, setShowDump] = useState(false);
+  const [showPages, setShowPages] = useState(false);
   const authContext = useContext(AuthContext);
 
   const ReturnDisplayMessage = () => {
@@ -64,7 +72,7 @@ function Website() {
     try {
       setLoading(true);
       const data = await adminGetWebsite(authContext.token);
-      setWebsiteObject(data);
+      setWebsite(data);
       // console.log(JSON.stringify(data));
       setHasApiError(false);
       setLoading(false);
@@ -81,8 +89,26 @@ function Website() {
   async function updateWebsite() {
     try {
       setLoading(true);
-      const data = await adminUpdateWebsite(websiteObject, authContext.token);
-      setWebsiteObject(data);
+      const data = await adminUpdateWebsite(website, authContext.token);
+      setWebsite(data);
+      // console.log(JSON.stringify(data));
+      setHasApiError(false);
+      setLoading(false);
+      setChangeDetected(false);
+    } catch (error) {
+      setLoading(false);
+      setHasApiError(true);
+      setChangeDetected(false);
+      console.log("There was an error updating the website data.");
+      // console.error("Error loading employees:", error);
+    }
+  }
+
+  async function createPage() {
+    try {
+      setLoading(true);
+      const data = await adminCreatePage(website, authContext.token);
+      setWebsite(data);
       // console.log(JSON.stringify(data));
       setHasApiError(false);
       setLoading(false);
@@ -97,17 +123,31 @@ function Website() {
   }
 
   const copyProfile = (profile) => {
-    const updatedWebsiteObject = { ...websiteObject };
+    const updatedWebsiteObject = { ...website };
     updatedWebsiteObject.profile = profile;
-    setWebsiteObject(updatedWebsiteObject);
+    setWebsite(updatedWebsiteObject);
   };
 
   useEffect(() => {
     fetchWebsite();
   }, []);
 
-  const onShowProfile = () => {
+  const openProfile = () => {
     setShowProfile(!showProfile);
+    setShowDump(false);
+    setShowPages(false);
+  };
+
+  const openDump = () => {
+    setShowProfile(false);
+    setShowDump(!showDump);
+    setShowPages(false);
+  };
+
+  const openPages = () => {
+    setShowProfile(false);
+    setShowDump(false);
+    setShowPages(!showPages);
   };
 
   const onSaveWebsite = () => {
@@ -120,6 +160,13 @@ function Website() {
 
   const onEditWebsite = () => {
     setShowEditMode(!editMode);
+  };
+
+  const addPage = () => {
+    if (changeDetected) {
+      updateWebsite();
+    }
+    createPage();
   };
 
   return (
@@ -139,16 +186,16 @@ function Website() {
                 id="name"
                 type="text"
                 placeholder="Enter website name..."
-                value={websiteObject.name}
+                value={website.name}
                 onChange={(e) => {
-                  const updatedWebsiteObject = { ...websiteObject };
+                  const updatedWebsiteObject = { ...website };
                   updatedWebsiteObject.name = e.target.value;
-                  setWebsiteObject(updatedWebsiteObject);
+                  setWebsite(updatedWebsiteObject);
                   setChangeDetected(true);
                 }}
               />
             ) : (
-              <DataField value={websiteObject.name} />
+              <DataField value={website.name} />
             )}
           </div>
         </div>
@@ -161,16 +208,16 @@ function Website() {
                 id="homeUrl"
                 type="text"
                 placeholder="Enter home URL..."
-                value={websiteObject.homeUrl}
+                value={website.homeUrl}
                 onChange={(e) => {
-                  const updatedWebsiteObject = { ...websiteObject };
+                  const updatedWebsiteObject = { ...website };
                   updatedWebsiteObject.homeUrl = e.target.value;
-                  setWebsiteObject(updatedWebsiteObject);
+                  setWebsite(updatedWebsiteObject);
                   setChangeDetected(true);
                 }}
               />
             ) : (
-              <DataField value={websiteObject.homeUrl} />
+              <DataField value={website.homeUrl} />
             )}
           </div>
         </div>
@@ -197,16 +244,37 @@ function Website() {
       </div>
       <div className="flex gap-2 pt-2">
         <NssButtonChevron
-          onClick={onShowProfile}
+          onClick={openProfile}
           label="Show Profile"
           selected={showProfile}
         ></NssButtonChevron>
+        <NssButtonChevron
+          onClick={openDump}
+          label="Dump"
+          selected={showDump}
+        ></NssButtonChevron>
+        <NssButtonChevron
+          onClick={openPages}
+          label="Pages"
+          selected={showPages}
+        ></NssButtonChevron>
       </div>
       <div>
+        {showPages ? (
+          <Pages
+            changeDetected={changeDetected}
+            setChangeDetected={setChangeDetected}
+            addPage={addPage}
+            website={website}
+          ></Pages>
+        ) : (
+          <></>
+        )}
+        {showDump ? <Dump data={website} /> : <></>}
         {showProfile ? (
           <SocialMediaProfile
-            socialMediaProfile={websiteObject.profile}
-            parentId={websiteObject.id}
+            socialMediaProfile={website.profile}
+            parentId={website.id}
             loading={loading}
             copyProfileToParent={copyProfile}
             setChangeDetected={setChangeDetected}
@@ -219,5 +287,25 @@ function Website() {
     </div>
   );
 }
+
+const Pages = (props) => {
+  const { changeDetected, setChangeDetected, addPage, website } = props;
+
+  return (
+    <div className="bg-nss-21 border rounded-lg shadow-xl py-2 px-2 mt-2">
+      <div className="flex gap-1">
+        <NssButtonAdd onClick={addPage} label="Add Page"></NssButtonAdd>
+      </div>
+      {website.pages.map((page, index) => (
+        <Page page={page} key={page.id} />
+      ))}
+    </div>
+  );
+};
+
+const Page = (props) => {
+  const { page } = props;
+  return <div>{JSON.stringify(page)}</div>;
+};
 
 export default Website;

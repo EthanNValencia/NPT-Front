@@ -8,9 +8,10 @@ export const WeekDays = {
   Sun: "Sun",
 };
 
-export const ParagraphType = {
+export const TextType = {
   PARAGRAPH: "PARAGRAPH",
   QUOTE: "QUOTE",
+  IMAGE: "IMAGE",
 };
 
 export const Profile = {
@@ -32,14 +33,14 @@ export const Profile = {
 
 export const BiographicalText = {
   id: null,
-  type: ParagraphType.PARAGRAPH,
+  type: TextType.PARAGRAPH,
   position: null,
   text: "",
 };
 
 export const InformationalText = {
   id: null,
-  type: ParagraphType.PARAGRAPH,
+  type: TextType.PARAGRAPH,
   position: null,
   text: "",
 };

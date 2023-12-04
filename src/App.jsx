@@ -222,8 +222,8 @@ function APW({ children }) {
   // Admin Panel Wrap
   return (
     <div className="bg-nss-20 h-screen w-screen">
-      <div className="bg-nss-20 pt-2 pb-2 flex">
-        <div className="bg-nss-21 border rounded-lg shadow-md w-screen px-2 mx-2 border-nss-1">
+      <div className="bg-nss-20 flex">
+        <div className="bg-nss-21 border shadow-md w-screen border-nss-1">
           <div className="p-4">{children}</div>
         </div>
       </div>

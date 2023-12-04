@@ -39,7 +39,7 @@ const SocialMediaProfile = (props) => {
 
   if (loading) {
     return (
-      <div className="bg-nss-21 border-2 rounded-lg shadow-xl py-2 px-2 mt-2">
+      <div className="bg-nss-21 border rounded-lg shadow-xl py-2 px-2 mt-2">
         The data is being loaded...
       </div>
     );
@@ -47,7 +47,7 @@ const SocialMediaProfile = (props) => {
 
   if (socialMediaProfile == undefined) {
     return (
-      <div className="bg-nss-21 border-2 rounded-lg shadow-xl py-2 px-2 mt-2">
+      <div className="bg-nss-21 border rounded-lg shadow-xl py-2 px-2 mt-2">
         <div className="flex content-start py-2 gap-2">
           <NssButtonAdd
             onClick={addSocialMediaProfile}
